@@ -1,0 +1,11 @@
+41da56aafe2d8b5118815f83ff934b5e *DESCRIPTION
+14c7d021e0d16e170553efeeef6a31bc *LICENSE
+cde5ada8036d34f0147eb2d416f41fc3 *NAMESPACE
+00f5c966557edd4d4df9215cef1f431a *R/BS_European_Options.R
+a1137d5e03499e4f8dd76457114569a9 *R/Malliavin_Asian_Greeks.R
+cf794928715019cf81bd51d467156178 *R/utils-pipe.R
+2e17b9e9acbaeeccc2d0d0da4f6e5f78 *man/BS_European_Greeks.Rd
+1770d8585bbf0319d25ef22a2db5de29 *man/Malliavin_Asian_Greeks.Rd
+8f4aad003a999fae004ba9361f9a99d6 *man/pipe.Rd
+bb2415c00859f2ea2c7e4984f352af37 *tests/testthat.R
+225e3812b897786befc574f805c96dc2 *tests/testthat/test-.R

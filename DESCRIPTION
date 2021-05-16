@@ -1,0 +1,29 @@
+Package: greeks
+Title: Calculates Sensitivities of Prices of Financial Options
+Version: 0.0.1
+Authors@R: 
+    person(given = "Anselm",
+           family = "Hudde",
+           role = c("aut", "cre"), 
+           email = "anselmhudde@gmx.de",
+           comment = c(ORCID = "0000-0002-5652-2815"))
+Description: Provides functions to calculate sensitivities of   financial option 
+  prices for European and Asian options in the Black Scholes   model. Classical
+  formulas are implemented for European options in the Black Scholes Model, as
+  is presented in Hull, J. C. (2017). Options, Futures, and Other Derivatives,
+  Global Edition (9th Edition). Pearson. In the case of Asian options, Malliavin
+  Monte Carlo Greeks are implemented, see Hudde, A. & Rüschendorf, L. (2016).
+  European and Asian Malliavin Monte Carlo Greeks for general Jump Diffusions
+  with nonvanishing Brownian motion part. <arXiv:1603.00920>.
+License: MIT + file LICENSE
+Encoding: UTF-8
+RoxygenNote: 7.1.1
+Suggests: testthat (>= 3.0.0)
+Config/testthat/edition: 3
+Imports: magrittr
+NeedsCompilation: no
+Packaged: 2021-05-05 15:13:01 UTC; Compi
+Author: Anselm Hudde [aut, cre] (<https://orcid.org/0000-0002-5652-2815>)
+Maintainer: Anselm Hudde <anselmhudde@gmx.de>
+Repository: CRAN
+Date/Publication: 2021-05-06 09:00:02 UTC
