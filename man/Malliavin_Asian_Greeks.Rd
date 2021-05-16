@@ -2,8 +2,8 @@
 % Please edit documentation in R/Malliavin_Asian_Greeks.R
 \name{Malliavin_Asian_Greeks}
 \alias{Malliavin_Asian_Greeks}
-\title{This function calculates the fair value of an Asian call- or put-option by
-with the Malliavin Monte Carlo Method in the Black Scholes model.}
+\title{This function calculates the fair value of an Asian option with the Malliavin
+Monte Carlo Method in the Black Scholes model.}
 \usage{
 Malliavin_Asian_Greeks(
   initial_price = 100,
@@ -13,11 +13,12 @@ Malliavin_Asian_Greeks(
   volatility = 0.3,
   dividend_yield = 0,
   payoff = "call",
-  greek = c("fair_value", "delta", "rho", "theta"),
+  greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma"),
   model = "Black Scholes",
-  steps = time_to_maturity * 252,
+  steps = round(time_to_maturity * 252),
   paths = 10000,
-  seed = 1
+  seed = 1,
+  numeric_method = "monte_carlo"
 )
 }
 \arguments{
@@ -69,14 +70,20 @@ function.
 \item{seed}{\itemize{
 \item the seed of the random number generator
 }}
+
+\item{numeric_method}{\itemize{
+\item the numbers choosen for the numeric intergration,
+either a string in ("monte_carlo", "monte_carlo_antithetic", "equal_distance)
+or custum numbers in form of a matrix with nrows = paths
+}}
 }
 \value{
 Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-This function calculates the fair value of an Asian call- or put-option by
-with the Malliavin Monte Carlo Method in the Black Scholes model.
+This function calculates the fair value of an Asian option with the Malliavin
+Monte Carlo Method in the Black Scholes model.
 }
 \examples{
 Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,

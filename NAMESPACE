@@ -3,6 +3,7 @@
 export("%>%")
 export(BS_European_Greeks)
 export(Malliavin_Asian_Greeks)
+export(Malliavin_European_Greeks)
 importFrom("stats","dnorm")
 importFrom("stats","pnorm")
 importFrom("stats","rnorm")
