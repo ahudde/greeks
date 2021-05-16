@@ -5,5 +5,8 @@
 
 ## Installation
 ```{r }
+# The cran version can be installed by 
 install.packages("greeks")
+# The development version can be installed by
+devtools::install_github("anselmhudde/greeks")
 ```
