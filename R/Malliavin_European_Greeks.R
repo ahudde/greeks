@@ -16,9 +16,8 @@
 #' @param model - the model to be chosen.
 #' @param paths - the number of simulated paths.
 #' @param seed - the seed of the random number generator
-#' @param numeric_method - the numbers choosen for the numeric intergration,
-#' either a string in ("monte_carlo", "monte_carlo_antithetic", "equal_distance)
-#' or custum numbers in form of a vector of length == paths.
+#' @param antithetic - if TRUE, antithetic random numbers will be chosen to
+#' decrease variance
 #'
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
@@ -40,7 +39,7 @@ Malliavin_European_Greeks <- function(initial_price = 100,
                                    model = "Black Scholes",
                                    paths = 10000,
                                    seed = 1,
-                                   numeric_method = "monte_carlo") {
+                                   antithetic = FALSE) {
 
   result <- vector(mode = "numeric", length = length(greek))
 
@@ -55,17 +54,11 @@ Malliavin_European_Greeks <- function(initial_price = 100,
 
   ## the increments of the Brownian motion ###
 
-  if(numeric_method == "monte_carlo") {
-    W_T <- rnorm(n = paths, sd = sqrt(time_to_maturity))
-  } else if(numeric_method == "monte_carlo_antithetic") {
+  if(antithetic == TRUE) {
     W_T <- rnorm(n = paths/2, sd = sqrt(time_to_maturity))
     W_T <- rbind(W_T, -W_T)
-  } else if(numeric_method == "equal_distance") {
-    W_T <- seq(1/(paths+1), 1 - 1/(paths + 1), length.out = paths) %>%
-      qnorm(sd = sqrt(time_to_maturity))
-  } else if(class(numeric_method) == "numeric" &&
-            length(numeric_method) == paths) {
-    W_T <- numeric_method
+  } else {
+    W_T <- rnorm(n = paths, sd = sqrt(time_to_maturity))
   }
 
   if(!is.na(seed)) {

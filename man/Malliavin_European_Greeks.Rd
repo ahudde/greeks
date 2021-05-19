@@ -17,7 +17,7 @@ Malliavin_European_Greeks(
   model = "Black Scholes",
   paths = 10000,
   seed = 1,
-  numeric_method = "monte_carlo"
+  antithetic = FALSE
 )
 }
 \arguments{
@@ -66,10 +66,9 @@ function.
 \item the seed of the random number generator
 }}
 
-\item{numeric_method}{\itemize{
-\item the numbers choosen for the numeric intergration,
-either a string in ("monte_carlo", "monte_carlo_antithetic", "equal_distance)
-or custum numbers in form of a vector of length == paths.
+\item{antithetic}{\itemize{
+\item if TRUE, antithetic random numbers will be chosen to
+decrease variance
 }}
 }
 \value{

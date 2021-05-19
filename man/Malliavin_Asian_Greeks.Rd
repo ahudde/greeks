@@ -14,11 +14,11 @@ Malliavin_Asian_Greeks(
   dividend_yield = 0,
   payoff = "call",
   greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma"),
-  model = "Black Scholes",
+  model = "black_scholes",
   steps = round(time_to_maturity * 252),
   paths = 10000,
   seed = 1,
-  numeric_method = "monte_carlo"
+  antithetic = FALSE
 )
 }
 \arguments{
@@ -71,10 +71,9 @@ function.
 \item the seed of the random number generator
 }}
 
-\item{numeric_method}{\itemize{
-\item the numbers choosen for the numeric intergration,
-either a string in ("monte_carlo", "monte_carlo_antithetic", "equal_distance)
-or custum numbers in form of a matrix with nrows = paths
+\item{antithetic}{\itemize{
+\item if TRUE, antithetic random numbers will be chosen to
+decrease variance
 }}
 }
 \value{

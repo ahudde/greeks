@@ -17,9 +17,8 @@
 #' @param steps - the number of integration steps.
 #' @param paths - the number of simulated paths.
 #' @param seed - the seed of the random number generator
-#' @param numeric_method - the numbers choosen for the numeric intergration,
-#' either a string in ("monte_carlo", "monte_carlo_antithetic", "equal_distance)
-#' or custum numbers in form of a matrix with nrows = paths
+#' @param antithetic - if TRUE, antithetic random numbers will be chosen to
+#' decrease variance
 #'
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
@@ -38,11 +37,11 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
                                    payoff = "call",
                                    greek = c("fair_value", "delta", "rho", "vega",
                                              "theta", "gamma"),
-                                   model = "Black Scholes",
+                                   model = "black_scholes",
                                    steps = round(time_to_maturity*252),
                                    paths = 10000,
                                    seed = 1,
-                                   numeric_method = "monte_carlo") {
+                                   antithetic = FALSE) {
 
   dt <- 1/steps
 
@@ -59,20 +58,18 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   ## the increments of the Brownian motion ###
 
-  if(numeric_method == "monte_carlo") {
-    W <- rnorm(n = paths*steps, sd = sqrt(dt)) %>%
-      matrix(nrow = paths) %>%
-      apply(MARGIN = 1, FUN = cumsum) %>%
-      t()
-  } else if(numeric_method == "monte_carlo_antithetic") {
+  if(antithetic == TRUE) {
     W <- rnorm(n = paths/2*steps, sd = sqrt(dt)) %>%
       matrix(nrow = paths/2) %>%
       apply(MARGIN = 1, FUN = cumsum) %>%
       t()
+
     W <- rbind(W, -W)
-  } else if(class(numeric_method) == "matrix" &&
-                   prod(dim(numeric_method) == c(steps, paths))) {
-    W <- numeric_method
+  } else {
+    W <- rnorm(n = paths*steps, sd = sqrt(dt)) %>%
+      matrix(nrow = paths) %>%
+      apply(MARGIN = 1, FUN = cumsum) %>%
+      t()
   }
 
   if(!is.na(seed)) {
@@ -97,17 +94,33 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
       }
     }
 
-  if(model == "Black Scholes") {
+  X <- matrix(nrow = paths, ncol = steps+1)
 
-    X <- matrix(nrow = paths, ncol = steps+1)
-
-    for(i in 1:(steps + 1)) {
+  for(i in 1:(steps + 1)) {
       X[, i] <- initial_price *
         exp((r-(volatility^2)/2) * (i-1)*dt + (volatility*W[, i]))
+      }
+
+  if(model == "jump") {
+
+    Jumps <- rpois(n = steps * paths, lambda = 2 * dt) %>%
+      matrix(ncol = steps)
+
+    Y <- Jumps %>%
+      apply(MARGIN = 2, FUN = cumsum) %>%
+      t()
+
+    for(i in 1:paths) {
+      for(j in 1:steps) {
+        if(Jumps[i, j] != 0) {
+          Jumps[i, j] <- sum(rt(n = Jumps[i, j], df = 2))
+        }
+      }
     }
-  } else {
-    print("Unknown model")
-    return()
+
+    for(i in 1:(steps + 1)) {
+      X[, i] <- X[, i] * exp(Y[, i])
+    }
   }
 
   X_T <- X[, steps+1]
@@ -174,12 +187,12 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   if("gamma" %in% greek) {
     result["gamma"] <-
-      ((1/(volatility^2 * initial_price^2) *
-      (((1+x) * volatility^2) -
-      (((1+x)*W_T + 1) * volatility * I_0/I_1) +
-      ((W_T^2*I_0 - (2*volatility + (1+x)*volatility^2)*I_2) * (I_0/I_1^2)) +
-      ((W_T*I_2 + volatility*(2*I_2 - I_3)) * (I_0^2/I_1^3)) +
-      ((3*volatility * I_0^2*I_2^2) / I_1^4)))) %>%
+      ((1/(volatility^2*initial_price^2)) *
+         (2*volatility^2
+          - 4*volatility*W_T*I_0/I_1
+          + ((W_T^2 - T)*I_0 - 3*volatility^2*I_2)*I_0/I_1^2
+          + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
+          + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
       E()
   }
 
