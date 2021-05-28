@@ -12,8 +12,10 @@
 #' @param dividend_yield - dividend yield.
 #' @param payoff - the payoff function, either a string in ("put", "call"), or a
 #' function.
-#' @param greek - the greek to be calculated.
-#' @param model - the model to be chosen.
+#' @param greek - the Greek to be calculated.
+#' @param model - the model to be chosen in ("black_scholes", "jump_diffusion")
+#' @param lambda - the lambda of the Poisson process in the jump-diffusion model
+#' @param alpha - the alpha in the jump-diffusion model influences the jump size
 #' @param steps - the number of integration steps.
 #' @param paths - the number of simulated paths.
 #' @param seed - the seed of the random number generator
@@ -38,6 +40,9 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
                                    greek = c("fair_value", "delta", "rho", "vega",
                                              "theta", "gamma"),
                                    model = "black_scholes",
+                                   lambda = 3,
+                                   alpha = 0.4,
+                                   jump_distribution = rnorm,
                                    steps = round(time_to_maturity*252),
                                    paths = 10000,
                                    seed = 1,
@@ -52,7 +57,6 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
   ## the seed is set locally
 
   if(!is.na(seed)) {
-    old.seed <- .Random.seed
     set.seed(seed)
   }
 
@@ -70,10 +74,6 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
       matrix(nrow = paths) %>%
       apply(MARGIN = 1, FUN = cumsum) %>%
       t()
-  }
-
-  if(!is.na(seed)) {
-    .Random.seed <<- old.seed
   }
 
   W <- cbind(numeric(paths), W)
@@ -101,27 +101,25 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
         exp((r-(volatility^2)/2) * (i-1)*dt + (volatility*W[, i]))
       }
 
-  if(model == "jump") {
+  if(model == "jump_diffusion") {
 
-    Jumps <- rpois(n = steps * paths, lambda = 2 * dt) %>%
+    Jumps <- rpois(n = steps * paths, lambda = lambda*dt) %>%
       matrix(ncol = steps)
-
-    Y <- Jumps %>%
-      apply(MARGIN = 2, FUN = cumsum) %>%
-      t()
 
     for(i in 1:paths) {
       for(j in 1:steps) {
         if(Jumps[i, j] != 0) {
-          Jumps[i, j] <- sum(rt(n = Jumps[i, j], df = 2))
+          Jumps[i, j] <- exp(sum(alpha*jump_distribution(n = Jumps[i, j])))
+        } else {
+          Jumps[i, j] <- 1
         }
       }
     }
 
-    for(i in 1:(steps + 1)) {
-      X[, i] <- X[, i] * exp(Y[, i])
-    }
-  }
+    Jumps <- cbind(exp(numeric(paths)), Jumps)
+
+    X <- X * Jumps
+  }# model == jump
 
   X_T <- X[, steps+1]
 
@@ -190,7 +188,7 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
       ((1/(volatility^2*initial_price^2)) *
          (2*volatility^2
           - 4*volatility*W_T*I_0/I_1
-          + ((W_T^2 - T)*I_0 - 3*volatility^2*I_2)*I_0/I_1^2
+          + ((W_T^2 - T)*I_0 - 4*volatility^2*I_2)*I_0/I_1^2
           + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
           + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
       E()

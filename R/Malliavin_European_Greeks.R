@@ -48,7 +48,6 @@ Malliavin_European_Greeks <- function(initial_price = 100,
   ## the seed is set locally
 
   if(!is.na(seed)) {
-    old.seed <- .Random.seed
     set.seed(seed)
   }
 
@@ -59,10 +58,6 @@ Malliavin_European_Greeks <- function(initial_price = 100,
     W_T <- rbind(W_T, -W_T)
   } else {
     W_T <- rnorm(n = paths, sd = sqrt(time_to_maturity))
-  }
-
-  if(!is.na(seed)) {
-    .Random.seed <<- old.seed
   }
 
   ### the payoff function ###

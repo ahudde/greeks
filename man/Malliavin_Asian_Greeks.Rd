@@ -15,6 +15,9 @@ Malliavin_Asian_Greeks(
   payoff = "call",
   greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma"),
   model = "black_scholes",
+  lambda = 3,
+  alpha = 0.4,
+  jump_distribution = rnorm,
   steps = round(time_to_maturity * 252),
   paths = 10000,
   seed = 1,
@@ -52,11 +55,19 @@ function.
 }}
 
 \item{greek}{\itemize{
-\item the greek to be calculated.
+\item the Greek to be calculated.
 }}
 
 \item{model}{\itemize{
-\item the model to be chosen.
+\item the model to be chosen in ("black_scholes", "jump_diffusion")
+}}
+
+\item{lambda}{\itemize{
+\item the lambda of the Poisson process in the jump-diffusion model
+}}
+
+\item{alpha}{\itemize{
+\item the alpha in the jump-diffusion model influences the jump size
 }}
 
 \item{steps}{\itemize{
