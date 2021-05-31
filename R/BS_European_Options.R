@@ -3,8 +3,7 @@
 #'
 #' @export
 #'
-#' @importFrom "stats" "pnorm"
-#' @importFrom "stats" "dnorm"
+#' @import "stats"
 #'
 #' @param initial_price - initial price of the underlying asset
 #' @param exercise_price - strike price of the option

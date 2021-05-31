@@ -1,8 +1,10 @@
-#' This function calculates the fair value of an Asian option with the Malliavin
-#' Monte Carlo Method in the Black Scholes model.
+#' This function calculates the fair value of an European option by with the
+#' Malliavin Monte Carlo Method in the Black Scholes model.
+#'
 #' @export
 #'
-#' @importFrom "stats" "rnorm"
+#' @import "stats"
+#' @importFrom "matrixStats" "rowCumsums"
 #'
 #' @param initial_price - initial price of the underlying asset.
 #' @param exercise_price - strike price of the option.
@@ -16,6 +18,8 @@
 #' @param model - the model to be chosen in ("black_scholes", "jump_diffusion")
 #' @param lambda - the lambda of the Poisson process in the jump-diffusion model
 #' @param alpha - the alpha in the jump-diffusion model influences the jump size
+#' @param jump_distribution - the distribution of the jumps, choose a function
+#' which generates random numbers with the desired distribution
 #' @param steps - the number of integration steps.
 #' @param paths - the number of simulated paths.
 #' @param seed - the seed of the random number generator
@@ -40,9 +44,9 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
                                    greek = c("fair_value", "delta", "rho", "vega",
                                              "theta", "gamma"),
                                    model = "black_scholes",
-                                   lambda = 3,
-                                   alpha = 0.4,
-                                   jump_distribution = rnorm,
+                                   lambda = 0.2,
+                                   alpha = 0.3,
+                                   jump_distribution = function(n) stats::rt(n, df = 3),
                                    steps = round(time_to_maturity*252),
                                    paths = 10000,
                                    seed = 1,
@@ -54,7 +58,21 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   names(result) <- greek
 
-  ## the seed is set locally
+  ## the payoff function ##
+
+  if(class(payoff) == "function") {
+    print("custom payoff")
+  } else if(payoff == "call") {
+    payoff <- function(x) {
+      return(pmax(0, x-exercise_price))
+    }
+  } else if(payoff == "put") {
+    payoff <- function(x) {
+      return(pmax(0, exercise_price-x))
+    }
+  }
+
+  ## the seed is set
 
   if(!is.na(seed)) {
     set.seed(seed)
@@ -62,37 +80,19 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   ## the increments of the Brownian motion ###
 
-  if(antithetic == TRUE) {
+  if(antithetic == FALSE) {
+    W <-
+      c(numeric(paths), rnorm(n = paths*steps, sd = sqrt(dt))) %>%
+      matrix(nrow = paths, ncol = steps+1) %>%
+      rowCumsums()
+  } else {
     W <- rnorm(n = paths/2*steps, sd = sqrt(dt)) %>%
       matrix(nrow = paths/2) %>%
-      apply(MARGIN = 1, FUN = cumsum) %>%
-      t()
-
-    W <- rbind(W, -W)
-  } else {
-    W <- rnorm(n = paths*steps, sd = sqrt(dt)) %>%
-      matrix(nrow = paths) %>%
-      apply(MARGIN = 1, FUN = cumsum) %>%
-      t()
+      rowCumsums()
+    W <- cbind(numeric(paths), rbind(W, -W))
   }
 
-  W <- cbind(numeric(paths), W)
-
   W_T <- W[, steps + 1]
-
-  ### the payoff function ###
-
-  if(class(payoff) == "function") {
-    print("custom payoff")
-  } else if(payoff == "call") {
-    payoff <- function(x) {
-      return(pmax(0, x-exercise_price))
-      }
-    } else if(payoff == "put") {
-    payoff <- function(x) {
-      return(pmax(0, exercise_price-x))
-      }
-    }
 
   X <- matrix(nrow = paths, ncol = steps+1)
 
@@ -103,44 +103,49 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   if(model == "jump_diffusion") {
 
-    Jumps <- rpois(n = steps * paths, lambda = lambda*dt) %>%
-      matrix(ncol = steps)
+    Jumps <- c(numeric(paths), rpois(n = steps * paths, lambda = lambda*dt))
 
-    for(i in 1:paths) {
-      for(j in 1:steps) {
-        if(Jumps[i, j] != 0) {
-          Jumps[i, j] <- exp(sum(alpha*jump_distribution(n = Jumps[i, j])))
-        } else {
-          Jumps[i, j] <- 1
-        }
-      }
+    for(i in which(Jumps != 0)) {
+      Jumps[i] <- alpha * sum(jump_distribution(Jumps[i]))
     }
 
-    Jumps <- cbind(exp(numeric(paths)), Jumps)
+    Jumps <-
+      Jumps %>%
+      matrix(nrow = paths) %>%
+      rowCumsums()
 
-    X <- X * Jumps
+    X <- X * exp(Jumps)
   }# model == jump
 
   X_T <- X[, steps+1]
 
   ### the calculation of I_{(n)}, the integral \int_0^T t^n X_t dt ###
 
-  I_0 <- (X[, 1]/2 + rowSums(X[, 2:steps]) + X[, steps+1]/2) * dt
+  I_0 <- (X[, 1]/2 + .rowSums(X[, 2:steps], paths, (steps-1)) + X[, steps+1]/2) * dt
 
-  XW <- (X[, 1]*W[, 1]/2 + rowSums(X[, 2:steps]*W[, 2:steps]) +
+  if("vega" %in% greek) {
+    XW <- (X[, 1]*W[, 1]/2 + .rowSums(X[, 2:steps]*W[, 2:steps], paths, (steps-1)) +
            X[, steps+1]*W[, steps + 1]/2) * dt
+    tXW <- X[, steps+1]*W[, steps+1]/2 * (steps*dt) * dt
+    for(i in 1:(steps-1)) {
+      tXW <- tXW + X[, i+1]*W[, i+1] * (i*dt) * dt
+    }
+  }
 
-  tXW <- X[, steps+1]*W[, steps+1]/2 * (steps*dt) * dt
+  if(length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
+    I_1 <- X[, steps+1]/2 * (steps*dt) * dt
+    I_2 <- X[, steps+1]/2 * (steps*dt)^2 * dt
+    for(i in 1:(steps-1)) {
+      I_1 <- I_1 + X[, i+1] * (i*dt)   * dt
+      I_2 <- I_2 + X[, i+1] * (i*dt)^2 * dt
+    }
+  }
 
-  I_1 <- X[, steps+1]/2 * (steps*dt) * dt
-  I_2 <- X[, steps+1]/2 * (steps*dt)^2 * dt
-  I_3 <- X[, steps+1]/2 * (steps*dt)^3 * dt
-
-  for(i in 1:(steps-1)) {
-    I_1 <- I_1 + X[, i+1] * (i*dt) * dt
-    I_2 <- I_2 + X[, i+1] * (i*dt)^2 * dt
-    I_3 <- I_3 + X[, i+1] * (i*dt)^3 * dt
-    tXW <- tXW + X[, i+1]*W[, i+1] * (i*dt) * dt
+  if("gamma" %in% greek) {
+    I_3 <- X[, steps+1]/2 * (steps*dt)^3 * dt
+    for(i in 1:(steps-1)) {
+      I_3 <- I_3 + X[, i+1] * (i*dt)^3 * dt
+    }
   }
 
   E <- function(weight) {
@@ -197,4 +202,3 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
   return(result)
 
 }
-

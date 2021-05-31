@@ -2,8 +2,8 @@
 % Please edit documentation in R/Malliavin_Asian_Greeks.R
 \name{Malliavin_Asian_Greeks}
 \alias{Malliavin_Asian_Greeks}
-\title{This function calculates the fair value of an Asian option with the Malliavin
-Monte Carlo Method in the Black Scholes model.}
+\title{This function calculates the fair value of an European option by with the
+Malliavin Monte Carlo Method in the Black Scholes model.}
 \usage{
 Malliavin_Asian_Greeks(
   initial_price = 100,
@@ -15,9 +15,9 @@ Malliavin_Asian_Greeks(
   payoff = "call",
   greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma"),
   model = "black_scholes",
-  lambda = 3,
-  alpha = 0.4,
-  jump_distribution = rnorm,
+  lambda = 0.2,
+  alpha = 0.3,
+  jump_distribution = function(n) stats::rt(n, df = 3),
   steps = round(time_to_maturity * 252),
   paths = 10000,
   seed = 1,
@@ -70,6 +70,11 @@ function.
 \item the alpha in the jump-diffusion model influences the jump size
 }}
 
+\item{jump_distribution}{\itemize{
+\item the distribution of the jumps, choose a function
+which generates random numbers with the desired distribution
+}}
+
 \item{steps}{\itemize{
 \item the number of integration steps.
 }}
@@ -92,8 +97,8 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-This function calculates the fair value of an Asian option with the Malliavin
-Monte Carlo Method in the Black Scholes model.
+This function calculates the fair value of an European option by with the
+Malliavin Monte Carlo Method in the Black Scholes model.
 }
 \examples{
 Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,

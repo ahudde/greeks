@@ -1,8 +1,9 @@
 #' This function calculates the fair value of an European option by with the
 #' Malliavin Monte Carlo Method in the Black Scholes model.
+#'
 #' @export
 #'
-#' @importFrom "stats" "rnorm"
+#' @import "stats"
 #'
 #' @param initial_price - initial price of the underlying asset.
 #' @param exercise_price - strike price of the option.
