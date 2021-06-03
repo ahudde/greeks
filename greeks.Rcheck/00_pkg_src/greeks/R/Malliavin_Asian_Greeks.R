@@ -52,7 +52,7 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
                                    seed = 1,
                                    antithetic = FALSE) {
 
-  dt <- time_to_maturity/steps
+  dt <- 1/steps
 
   result <- vector(mode = "numeric", length = length(greek))
 
@@ -172,10 +172,12 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   if("theta" %in% greek) {
     result["theta"] <-
-      (r - 1/time_to_maturity +
-         (1/(volatility * time_to_maturity) * I_0 * W_T -
-            1/volatility * X_T * W_T + time_to_maturity * X_T) / I_1 +
-         (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
+      (r -
+      1/time_to_maturity +
+      (1/(volatility*time_to_maturity)*I_0*W_T -
+         1/volatility*X_T*W_T -
+         time_to_maturity*X_T)/I_1 +
+      (1/time_to_maturity*I_0*I_2 + I_2*W_T)/(I_1^2)) %>%
       E()
   }
 

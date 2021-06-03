@@ -19,9 +19,11 @@ License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
-Suggests: 
-    testthat (>= 3.0.0)
+Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Imports: 
-    magrittr,
-    matrixStats
+Imports: magrittr, matrixStats
+NeedsCompilation: no
+Packaged: 2021-06-03 12:53:08 UTC; Compi
+Author: Anselm Hudde [aut, cre] (<https://orcid.org/0000-0002-5652-2815>)
+Maintainer: Anselm Hudde <anselmhudde@gmx.de>
+Built: R 4.1.0; ; 2021-06-03 22:08:12 UTC; windows
