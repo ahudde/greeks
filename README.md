@@ -7,7 +7,7 @@ The package greeks provides functions to calculate sensitivities of financial op
 Furthermore, functions to calculate Malliavin Monte Carlo Greeks are given, as presented e.g. in Hudde, A. & Rüschendorf, L. (2016). 
 European and Asian Greeks for exponential Lévy processes (https://arxiv.org/abs/1603.00920).
 These functions work for classical payoff functions, as well as for any custom square integrable function provided by the user.
-Additionally, these calculations are not restricted to the Black Scholes model, but work for more general Lévy Jump diffusions, which is also customizable by the user.
+Additionally, these calculations are not restricted to the Black Scholes model, but work for more general Lévy Jump diffusion model, which is also customizable by the user.
 
 ## Installation
 ```{r }
