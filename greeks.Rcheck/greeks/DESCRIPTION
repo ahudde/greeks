@@ -1,6 +1,6 @@
 Package: greeks
 Title: Sensitivities of Prices of Financial Options
-Version: 0.2.1
+Version: 0.2.2
 Authors@R: 
     person(given = "Anselm",
            family = "Hudde",
@@ -21,9 +21,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Suggests: testthat (>= 3.0.0)
 Config/testthat/edition: 3
-Imports: magrittr, matrixStats
-NeedsCompilation: no
-Packaged: 2021-06-03 12:53:08 UTC; Compi
+Imports: magrittr, matrixStats, dqrng, Rcpp
+LinkingTo: RcppArmadillo, Rcpp
+NeedsCompilation: yes
+Packaged: 2021-06-11 16:14:25 UTC; Compi
 Author: Anselm Hudde [aut, cre] (<https://orcid.org/0000-0002-5652-2815>)
 Maintainer: Anselm Hudde <anselmhudde@gmx.de>
-Built: R 4.1.0; ; 2021-06-03 22:08:12 UTC; windows
+Built: R 4.1.0; x86_64-w64-mingw32; 2021-06-11 16:47:12 UTC; windows
+Archs: i386, x64

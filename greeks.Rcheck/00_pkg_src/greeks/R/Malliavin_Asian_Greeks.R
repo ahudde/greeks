@@ -4,7 +4,9 @@
 #' @export
 #'
 #' @import "stats"
+#' @import "Rcpp"
 #' @importFrom "matrixStats" "rowCumsums"
+#' @importFrom "dqrng" "dqrnorm" "dqset.seed"
 #'
 #' @param initial_price - initial price of the underlying asset.
 #' @param exercise_price - strike price of the option.
@@ -52,7 +54,7 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
                                    seed = 1,
                                    antithetic = FALSE) {
 
-  dt <- 1/steps
+  dt <- time_to_maturity/steps
 
   result <- vector(mode = "numeric", length = length(greek))
 
@@ -75,18 +77,21 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
   ## the seed is set
 
   if(!is.na(seed)) {
-    set.seed(seed)
+    dqset.seed(seed)
   }
 
   ## the increments of the Brownian motion ###
 
   if(antithetic == FALSE) {
     W <-
-      c(numeric(paths), rnorm(n = paths*steps, sd = sqrt(dt))) %>%
-      matrix(nrow = paths, ncol = steps+1) %>%
-      rowCumsums()
+     c(numeric(paths), dqrnorm(n = paths*steps, sd = sqrt(dt))) %>%
+     matrix(nrow = paths, ncol = steps+1) %>%
+     rowCumsums()
+    # W      <- c(numeric(paths), dqrnorm(n = paths*steps, sd = sqrt(dt)))
+    # dim(W) <- c(paths, steps+1)
+    # W      <- rowCumsums(W)
   } else {
-    W <- rnorm(n = paths/2*steps, sd = sqrt(dt)) %>%
+    W <- dqrnorm(n = paths/2*steps, sd = sqrt(dt)) %>%
       matrix(nrow = paths/2) %>%
       rowCumsums()
     W <- cbind(numeric(paths), rbind(W, -W))
@@ -94,12 +99,7 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   W_T <- W[, steps + 1]
 
-  X <- matrix(nrow = paths, ncol = steps+1)
-
-  for(i in 1:(steps + 1)) {
-      X[, i] <- initial_price *
-        exp((r-(volatility^2)/2) * (i-1)*dt + (volatility*W[, i]))
-      }
+  X <- calc_X(W, steps, paths, dt, initial_price, volatility, r)
 
   if(model == "jump_diffusion") {
 
@@ -121,31 +121,21 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   ### the calculation of I_{(n)}, the integral \int_0^T t^n X_t dt ###
 
-  I_0 <- (X[, 1]/2 + .rowSums(X[, 2:steps], paths, (steps-1)) + X[, steps+1]/2) * dt
+  I_0 <- (X[, 1]/2 + rowSums2(X, cols = 2:steps) + X[, steps+1]/2) * dt
 
   if("vega" %in% greek) {
-    XW <- (X[, 1]*W[, 1]/2 + .rowSums(X[, 2:steps]*W[, 2:steps], paths, (steps-1)) +
-           X[, steps+1]*W[, steps + 1]/2) * dt
-    tXW <- X[, steps+1]*W[, steps+1]/2 * (steps*dt) * dt
-    for(i in 1:(steps-1)) {
-      tXW <- tXW + X[, i+1]*W[, i+1] * (i*dt) * dt
-    }
+    XW <- (X[, 1]*W[, 1]/2 + rowSums2(X[, 2:steps]*W[, 2:steps]) +
+             X[, steps+1]*W[, steps + 1]/2) * dt
+    tXW <- calc_tXW(X, W, steps, paths, dt)
   }
 
   if(length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
-    I_1 <- X[, steps+1]/2 * (steps*dt) * dt
-    I_2 <- X[, steps+1]/2 * (steps*dt)^2 * dt
-    for(i in 1:(steps-1)) {
-      I_1 <- I_1 + X[, i+1] * (i*dt)   * dt
-      I_2 <- I_2 + X[, i+1] * (i*dt)^2 * dt
-    }
+    I_1 <- calc_I_1(X, steps, dt)
+    I_2 <- calc_I_2(X, steps, dt)
   }
 
   if("gamma" %in% greek) {
-    I_3 <- X[, steps+1]/2 * (steps*dt)^3 * dt
-    for(i in 1:(steps-1)) {
-      I_3 <- I_3 + X[, i+1] * (i*dt)^3 * dt
-    }
+    I_3 <- calc_I_3(X, steps, dt)
   }
 
   E <- function(weight) {
@@ -172,12 +162,10 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   if("theta" %in% greek) {
     result["theta"] <-
-      (r -
-      1/time_to_maturity +
-      (1/(volatility*time_to_maturity)*I_0*W_T -
-         1/volatility*X_T*W_T -
-         time_to_maturity*X_T)/I_1 +
-      (1/time_to_maturity*I_0*I_2 + I_2*W_T)/(I_1^2)) %>%
+      (r - 1/time_to_maturity +
+         (1/(volatility * time_to_maturity) * I_0 * W_T -
+            1/volatility * X_T * W_T + time_to_maturity * X_T) / I_1 +
+         (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
       E()
   }
 

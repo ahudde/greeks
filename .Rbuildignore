@@ -1,0 +1,9 @@
+^renv$
+^renv\.lock$
+^greeks\.Rproj$
+^\.Rproj\.user$
+^LICENSE\.md$
+^greeks\.Rcheck$
+^greeks.*\.tar\.gz$
+^greeks.*\.tgz$
+^README\.Rmd$

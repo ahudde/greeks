@@ -1,5 +1,36 @@
 * installing *source* package 'greeks' ...
 ** using staged installation
+** libs
+
+*** arch - i386
+"C:/rtools40/mingw32/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c RcppExports.cpp -o RcppExports.o
+"C:/rtools40/mingw32/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c calc_I_1.cpp -o calc_I_1.o
+"C:/rtools40/mingw32/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c calc_I_2.cpp -o calc_I_2.o
+"C:/rtools40/mingw32/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c calc_I_3.cpp -o calc_I_3.o
+"C:/rtools40/mingw32/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c calc_X.cpp -o calc_X.o
+"C:/rtools40/mingw32/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c calc_tXW.cpp -o calc_tXW.o
+C:/rtools40/mingw32/bin/g++ -shared -s -static-libgcc -o greeks.dll tmp.def RcppExports.o calc_I_1.o calc_I_2.o calc_I_3.o calc_X.o calc_tXW.o -fopenmp -LC:/PROGRA~1/R/R-41~1.0/bin/i386 -lRlapack -LC:/PROGRA~1/R/R-41~1.0/bin/i386 -lRblas -lgfortran -lm -lquadmath -LC:/PROGRA~1/R/R-41~1.0/bin/i386 -lR
+Error in system(sprintf("%s -Pg %s", nm, shQuote(f)), intern = TRUE) : 
+  '""' not found
+Calls: <Anonymous> -> lapply -> FUN -> strsplit -> system
+Execution halted
+make: *** [C:/PROGRA~1/R/R-41~1.0/share/make/winshlib.mk:35: symbols.rds] Error 1
+installing to C:/Users/Compi/Documents/greeks/greeks.Rcheck/00LOCK-greeks/00new/greeks/libs/i386
+
+*** arch - x64
+"C:/rtools40/mingw64/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c RcppExports.cpp -o RcppExports.o
+"C:/rtools40/mingw64/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c calc_I_1.cpp -o calc_I_1.o
+"C:/rtools40/mingw64/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c calc_I_2.cpp -o calc_I_2.o
+"C:/rtools40/mingw64/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c calc_I_3.cpp -o calc_I_3.o
+"C:/rtools40/mingw64/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c calc_X.cpp -o calc_X.o
+"C:/rtools40/mingw64/bin/"g++  -std=gnu++11 -I"C:/PROGRA~1/R/R-41~1.0/include" -DNDEBUG  -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/RcppArmadillo/include' -I'C:/Users/Compi/Documents/greeks/renv/library/R-4.1/x86_64-w64-mingw32/Rcpp/include'     -fopenmp   -O2 -Wall  -mfpmath=sse -msse2 -mstackrealign  -c calc_tXW.cpp -o calc_tXW.o
+C:/rtools40/mingw64/bin/g++ -shared -s -static-libgcc -o greeks.dll tmp.def RcppExports.o calc_I_1.o calc_I_2.o calc_I_3.o calc_X.o calc_tXW.o -fopenmp -LC:/PROGRA~1/R/R-41~1.0/bin/x64 -lRlapack -LC:/PROGRA~1/R/R-41~1.0/bin/x64 -lRblas -lgfortran -lm -lquadmath -LC:/PROGRA~1/R/R-41~1.0/bin/x64 -lR
+Error in system(sprintf("%s -Pg %s", nm, shQuote(f)), intern = TRUE) : 
+  '""' not found
+Calls: <Anonymous> -> lapply -> FUN -> strsplit -> system
+Execution halted
+make: *** [C:/PROGRA~1/R/R-41~1.0/share/make/winshlib.mk:35: symbols.rds] Error 1
+installing to C:/Users/Compi/Documents/greeks/greeks.Rcheck/00LOCK-greeks/00new/greeks/libs/x64
 ** R
 ** byte-compile and prepare package for lazy loading
 ** help
