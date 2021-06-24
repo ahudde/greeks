@@ -5,7 +5,7 @@
 #'
 #' @import "stats"
 #' @import "Rcpp"
-#' @importFrom "matrixStats" "rowCumsums"
+#' @importFrom "matrixStats" "rowCumsums" "rowSums2"
 #' @importFrom "dqrng" "dqrnorm" "dqset.seed"
 #'
 #' @param initial_price - initial price of the underlying asset.
@@ -126,16 +126,16 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
   if("vega" %in% greek) {
     XW <- (X[, 1]*W[, 1]/2 + rowSums2(X[, 2:steps]*W[, 2:steps]) +
              X[, steps+1]*W[, steps + 1]/2) * dt
-    tXW <- .Call("_greeks_calc_tXW", X, W, steps, paths, dt)
+    tXW <- calc_tXW(X, W, steps, paths, dt)
   }
 
   if(length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
-    I_1 <- .Call("_greeks_calc_I_1", X, steps, dt)
-    I_2 <- .Call("_greeks_calc_I_2", X, steps, dt)
+    I_1 <- calc_I_1(X, steps, dt)
+    I_2 <- calc_I_2(X, steps, dt)
   }
 
   if("gamma" %in% greek) {
-    I_3 <- .Call("_greeks_calc_I_3", X, steps, dt)
+    I_3 <- calc_I_3(X, steps, dt)
   }
 
   E <- function(weight) {
