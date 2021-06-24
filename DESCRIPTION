@@ -1,6 +1,6 @@
 Package: greeks
 Title: Sensitivities of Prices of Financial Options
-Version: 0.2.2
+Version: 0.3.0
 Authors@R: 
     person(given = "Anselm",
            family = "Hudde",
@@ -27,6 +27,5 @@ Imports:
     matrixStats,
     dqrng,
     Rcpp
-LinkingTo: 
-    RcppArmadillo,
+LinkingTo:
     Rcpp
