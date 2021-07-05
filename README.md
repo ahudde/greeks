@@ -14,5 +14,7 @@ Additionally, these calculations are not restricted to the Black Scholes model, 
 # The cran version can be installed by 
 install.packages("greeks")
 # The development version can be installed by
+install.packages("devtools")
+library("devtools")
 devtools::install_github("anselmhudde/greeks")
 ```
