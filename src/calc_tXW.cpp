@@ -1,7 +1,6 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//' @export
 // [[Rcpp::export]]
 NumericVector calc_tXW(NumericMatrix X, NumericMatrix W, int steps, int paths,
                        float dt) {

@@ -3,11 +3,9 @@
 
 using namespace Rcpp;
 
-
 using std::string;
 using std::max;
 
-//' @export
 // [[Rcpp::export]]
 NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
                                        double exercise_price = 100,

@@ -1,5 +1,5 @@
-#' This function calculates the fair value of an European option by with the
-#' Malliavin Monte Carlo Method in the Black Scholes model.
+#' Computes the Greeks of an American call- or put-option with the Binomial
+#' options pricing model
 #'
 #' @export
 #'
@@ -18,6 +18,8 @@
 #' function.
 #' @param greek - the Greek to be calculated.
 #' @param steps - the number of integration steps.
+#' @param eps - the step size for the finite difference method to calculate
+#' theta, vega, rho and epsilon
 #'
 #' @useDynLib greeks, .registration=TRUE
 #'
@@ -26,8 +28,8 @@
 #'
 #' @examples Binomial_American_Greeks(initial_price = 100, exercise_price = 100,
 #' r = 0, time_to_maturity = 1, volatility = 0.3, dividend_yield = 0,
-#' payoff = "call", greek = c("fair_value", "delta", "rho", "vega", "theta",
-#' "gamma"), steps = 20)
+#' payoff = "call", greek = c("fair_value", "delta", "vega", "theta", "rho",
+#' "epsilon", "gamma"), steps = 20)
 #'
 
 Binomial_American_Greeks <-
@@ -38,7 +40,8 @@ Binomial_American_Greeks <-
            volatility = 0.3,
            dividend_yield = 0,
            payoff = "call",
-           greek = c("fair_value", "delta", "vega", "theta", "rho", "epsilon", "gamma"),
+           greek = c("fair_value", "delta", "vega", "theta", "rho", "epsilon",
+                     "gamma"),
            steps = 1000,
            eps = 1/10000) {
 

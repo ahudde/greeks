@@ -1,7 +1,6 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-//' @export
 // [[Rcpp::export]]
 NumericVector calc_X(NumericMatrix W, int steps, int paths, float dt,
                      float initial_price, float volatility, float r) {
