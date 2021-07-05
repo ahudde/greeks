@@ -2,8 +2,8 @@
 % Please edit documentation in R/Malliavin_European_Greeks.R
 \name{Malliavin_European_Greeks}
 \alias{Malliavin_European_Greeks}
-\title{This function calculates the fair value of an European option by with the
-Malliavin Monte Carlo Method in the Black Scholes model.}
+\title{Computes the Greeks of an European option with the Malliavin Monte Carlo
+Method in the Black Scholes model.}
 \usage{
 Malliavin_European_Greeks(
   initial_price = 100,
@@ -76,8 +76,8 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-This function calculates the fair value of an European option by with the
-Malliavin Monte Carlo Method in the Black Scholes model.
+Computes the Greeks of an European option with the Malliavin Monte Carlo
+Method in the Black Scholes model.
 }
 \examples{
 Malliavin_European_Greeks(initial_price = 110, exercise_price = 100,
