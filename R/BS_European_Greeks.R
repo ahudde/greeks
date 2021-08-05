@@ -1,5 +1,5 @@
 #' Computes the greeks of an European call- or put-option in the Black Scholes
-#' model.
+#' model
 #'
 #' @export
 #'

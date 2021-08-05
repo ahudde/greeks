@@ -1,5 +1,5 @@
 #' Computes the Greeks of an European option with the Malliavin Monte Carlo
-#' Method in the Black Scholes model.
+#' Method in the Black Scholes model
 #'
 #' @export
 #'
@@ -11,8 +11,8 @@
 #' @param time_to_maturity - time to maturity.
 #' @param volatility - volatility of the underlying asset.
 #' @param dividend_yield - dividend yield.
-#' @param payoff - the payoff function, either a string in ("put", "call"), or a
-#' function.
+#' @param payoff - the payoff function, either a string in ("call", "put",
+#' "digital_call", "digital_put"), or a function.
 #' @param greek - the greek to be calculated.
 #' @param model - the model to be chosen.
 #' @param paths - the number of simulated paths.
@@ -72,6 +72,12 @@ Malliavin_European_Greeks <- function(initial_price = 100,
   } else if(payoff == "put") {
     payoff <- function(x) {
       return(pmax(0, exercise_price-x))
+    }
+  } else if(payoff == "digital_call") {
+    payoff <- function(x) {ifelse(x >= exercise_price, 1, 0)
+    }
+  } else if(payoff == "digital_put") {
+    payoff <- function(x) {ifelse(x <= exercise_price, 1, 0)
     }
   }
 

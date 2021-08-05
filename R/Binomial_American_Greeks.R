@@ -14,8 +14,7 @@
 #' @param time_to_maturity - time to maturity.
 #' @param volatility - volatility of the underlying asset.
 #' @param dividend_yield - dividend yield.
-#' @param payoff - the payoff function, either a string in ("put", "call"), or a
-#' function.
+#' @param payoff - the payoff function, a string in ("call", "put").
 #' @param greek - the Greek to be calculated.
 #' @param steps - the number of integration steps.
 #' @param eps - the step size for the finite difference method to calculate
