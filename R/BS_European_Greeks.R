@@ -8,12 +8,13 @@
 #' @param initial_price - initial price of the underlying asset
 #' @param exercise_price - strike price of the option
 #' @param r - risk-free interest rate
-#' @param time_to_maturity - time to maturity
+#' @param time_to_maturity - time to maturity in years
 #' @param dividend_yield - dividend yield
 #' @param volatility - volatility of the underlying asset
 #' @param payoff - in c("call", "put")
 #' @param greek - greeks to be calculated in c("fair_value", "delta", "vega",
-#' "theta", "rho", "epsilon", "lambda", "gamma", "vanna")
+#' "theta", "rho", "epsilon", "lambda", "gamma", "vanna", "charm", "vomma",
+#' "veta", "speed")
 #'
 #' @return Named vector containing the values of the greeks specified in the
 #' parameter \code{greek}.
@@ -22,16 +23,17 @@
 #' r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 #' greek = c("fair_value", "delta", "gamma"), payoff = "put")
 
-BS_European_Greeks <- function(initial_price = 100,
-                               exercise_price = 100,
-                               r = 0,
-                               time_to_maturity = 1,
-                               volatility = 0.3,
-                               dividend_yield = 0,
-                               payoff = "call",
-                               greek = c("fair_value", "delta", "vega", "theta",
-                                         "rho", "epsilon", "lambda", "gamma",
-                                         "vanna")) {
+BS_European_Greeks <-
+  function(initial_price = 100,
+           exercise_price = 100,
+           r = 0,
+           time_to_maturity = 1,
+           volatility = 0.3,
+           dividend_yield = 0,
+           payoff = "call",
+           greek = c("fair_value", "delta", "vega", "theta", "rho", "epsilon",
+                     "lambda", "gamma", "vanna", "charm", "vomma", "veta",
+                     "speed")) {
 
   result <- vector(mode = "numeric", length = length(greek))
 
@@ -97,6 +99,33 @@ BS_European_Greeks <- function(initial_price = 100,
       result['vanna'] <-
         -exp(-dividend_yield*time_to_maturity)*dnorm(d1)*d2/volatility
     }
+    if("charm" %in% greek) {
+      result["charm"] <-
+        (dividend_yield * exp(-dividend_yield * time_to_maturity) * pnorm(d1)) -
+        (exp(-dividend_yield * time_to_maturity) * dnorm(d1) *
+        (2 * (r - dividend_yield) * time_to_maturity -
+           d2 * volatility * sqrt(time_to_maturity))/(2 * time_to_maturity * volatility * sqrt(time_to_maturity)))
+    }
+    if("vomma" %in% greek) {
+      result["vomma"] <-
+        initial_price * exp(-dividend_yield  * time_to_maturity) * dnorm(d1) *
+        sqrt(time_to_maturity) * d1 * d2 / volatility
+    }
+    if("veta" %in% greek) {
+      result["veta"] <-
+        -initial_price * exp(-dividend_yield * time_to_maturity) * dnorm(d1) *
+        sqrt(time_to_maturity) *
+        (dividend_yield + ((r - dividend_yield) * d1) / (volatility * sqrt(time_to_maturity))
+         - ((1 + d1 * d2) / (2 * T)))
+    }
+
+    # third-order Greeks
+
+    if("speed" %in% greek) {
+      result["speed"] =  -exp(-dividend_yield  * time_to_maturity) * dnorm(d1) /
+        (initial_price^2  * volatility * sqrt(time_to_maturity)) *
+        (d1 / (volatility * sqrt(time_to_maturity)) + 1)
+    }
 
   }
   if(payoff == "put") {
@@ -154,7 +183,33 @@ BS_European_Greeks <- function(initial_price = 100,
       result['vanna'] <-
         -exp(-dividend_yield*time_to_maturity)*dnorm(d1)*d2/volatility
     }
+    if("charm" %in% greek) {
+      result["charm"] <-
+        (-dividend_yield * exp(-dividend_yield * time_to_maturity) * pnorm(-d1)) -
+        (exp(-dividend_yield * time_to_maturity) * dnorm(d1) *
+           (2 * (r - dividend_yield) * time_to_maturity -
+              d2 * volatility * sqrt(time_to_maturity))/(2 * time_to_maturity * volatility * sqrt(time_to_maturity)))
+    }
+    if("vomma" %in% greek) {
+      result["vomma"] <-
+        initial_price * exp(-dividend_yield  * time_to_maturity) * dnorm(d1) *
+        sqrt(time_to_maturity) * d1 * d2 / volatility
+    }
+    if("veta" %in% greek) {
+      result["veta"] <-
+        -initial_price * exp(-dividend_yield * time_to_maturity) * dnorm(d1) *
+        sqrt(time_to_maturity) *
+        (dividend_yield + ((r - dividend_yield) * d1) / (volatility * sqrt(time_to_maturity))
+         - ((1 + d1 * d2) / (2 * time_to_maturity)))
+    }
 
+    # third-order Greeks
+
+    if("speed" %in% greek) {
+      result["speed"] =  -exp(-dividend_yield  * time_to_maturity) * dnorm(d1) /
+        (initial_price^2  * volatility * sqrt(time_to_maturity)) *
+        (d1 / (volatility * sqrt(time_to_maturity)) + 1)
+    }
 
   }
 

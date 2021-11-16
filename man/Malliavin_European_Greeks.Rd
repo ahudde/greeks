@@ -3,7 +3,7 @@
 \name{Malliavin_European_Greeks}
 \alias{Malliavin_European_Greeks}
 \title{Computes the Greeks of an European option with the Malliavin Monte Carlo
-Method in the Black Scholes model.}
+Method in the Black Scholes model}
 \usage{
 Malliavin_European_Greeks(
   initial_price = 100,
@@ -22,44 +22,44 @@ Malliavin_European_Greeks(
 }
 \arguments{
 \item{initial_price}{\itemize{
-\item initial price of the underlying asset.
+\item initial price of the underlying asset
 }}
 
 \item{exercise_price}{\itemize{
-\item strike price of the option.
+\item strike price of the option
 }}
 
 \item{r}{\itemize{
-\item risk-free interest rate.
+\item risk-free interest rate
 }}
 
 \item{time_to_maturity}{\itemize{
-\item time to maturity.
+\item time to maturity in years
 }}
 
 \item{volatility}{\itemize{
-\item volatility of the underlying asset.
+\item volatility of the underlying asset
 }}
 
 \item{dividend_yield}{\itemize{
-\item dividend yield.
+\item dividend yield
 }}
 
 \item{payoff}{\itemize{
-\item the payoff function, either a string in ("put", "call"), or a
-function.
+\item the payoff function, either a string in ("call", "put",
+"digital_call", "digital_put"), or a function
 }}
 
 \item{greek}{\itemize{
-\item the greek to be calculated.
+\item the greek to be calculated
 }}
 
 \item{model}{\itemize{
-\item the model to be chosen.
+\item the model to be chosen
 }}
 
 \item{paths}{\itemize{
-\item the number of simulated paths.
+\item the number of simulated paths
 }}
 
 \item{seed}{\itemize{
@@ -73,11 +73,11 @@ decrease variance
 }
 \value{
 Named vector containing the values of the Greeks specified in the
-parameter \code{greek}.
+parameter \code{greek}
 }
 \description{
 Computes the Greeks of an European option with the Malliavin Monte Carlo
-Method in the Black Scholes model.
+Method in the Black Scholes model
 }
 \examples{
 Malliavin_European_Greeks(initial_price = 110, exercise_price = 100,

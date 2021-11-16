@@ -44,8 +44,7 @@ Binomial_American_Greeks(
 }}
 
 \item{payoff}{\itemize{
-\item the payoff function, either a string in ("put", "call"), or a
-function.
+\item the payoff function, a string in ("call", "put").
 }}
 
 \item{greek}{\itemize{

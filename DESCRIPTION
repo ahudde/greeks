@@ -1,25 +1,26 @@
 Package: greeks
 Title: Sensitivities of Prices of Financial Options
-Version: 0.3.1
+Version: 0.4.0
 Authors@R: 
     person(given = "Anselm",
            family = "Hudde",
            role = c("aut", "cre"), 
            email = "anselmhudde@gmx.de",
            comment = c(ORCID = "0000-0002-5652-2815"))
-Description: Methods to calculate sensitivities of financial option 
- prices for European and Asian and American options in the Black Scholes model. Classical
- formulas are implemented for European options in the Black Scholes Model, as
- is presented in Hull, J. C. (2017). Options, Futures, and Other Derivatives,
- Global Edition (9th Edition). Pearson. In the case of Asian options, Malliavin
- Monte Carlo Greeks are implemented, see Hudde, A. & Rüschendorf, L. (2016).
- European and Asian Greeks for exponential Lévy processes. <arXiv:1603.00920>.
- For American options, the Binomial Tree Method is implemented, see also as
- is presented in Hull, J. C. (2017). 
+Description: Methods to calculate sensitivities of financial option prices for
+ European, Asian, American and Digital Options options in the Black Scholes
+ model. Classical formulas are implemented for European options in the Black
+ Scholes Model, as is presented in Hull, J. C. (2017). Options, Futures, and
+ Other Derivatives, Global Edition (9th Edition). Pearson. In the case of Asian
+ options, Malliavin Monte Carlo Greeks are implemented, see Hudde, A. &
+ Rüschendorf, L. (2016). European and Asian Greeks for exponential Lévy
+ processes. <arXiv:1603.00920>.
+ For American options, the Binomial Tree Method is implemented, as is presented
+ in Hull, J. C. (2017). 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

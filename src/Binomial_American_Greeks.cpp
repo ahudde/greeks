@@ -6,15 +6,28 @@ using namespace Rcpp;
 using std::string;
 using std::max;
 
+
+double american_call(double x, double price, double exercise_price) {
+  return max(x, price - exercise_price);
+  }
+
+double american_put(double x, double price, double exercise_price) {
+  return max(x, exercise_price - price);
+}
+
 // [[Rcpp::export]]
 NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
-                                       double exercise_price = 100,
-                                       double r = 0,
-                                       double time_to_maturity = 1,
-                                       double volatility = 0.3,
-                                       double dividend_yield = 0,
-                                       std::string payoff = "call",
-                                       const int steps = 20) {
+                                           double exercise_price = 100,
+                                           double r = 0,
+                                           double time_to_maturity = 1,
+                                           double volatility = 0.3,
+                                           double dividend_yield = 0,
+                                           std::string payoff = "call",
+                                           const int steps = 1000) {
+
+  // payoff_function
+
+  double (*payoff_function)(double x, double price, double exercise_price);
 
   // iterators
   int i;
@@ -44,39 +57,28 @@ NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
 
   NumericVector value(steps+1);
 
-  if (payoff == "call") {
-    for(i = 0; i <= steps; i++) {
-      value(i) = max(price(2*steps - 2*i) - exercise_price, 0.0);
+  if(payoff == "call") {
+    payoff_function = &american_call;
+  } else if(payoff == "put") {
+    payoff_function = &american_put;
     }
-  } else if (payoff == "put") {
-    for(i = 0; i <= steps; i++) {
-      value(i) = max(exercise_price - price(2*steps - 2*i), 0.0);
+
+  for(i = 0; i <= steps; i++) {
+      value(i) = payoff_function(0.0, price(2*steps - 2*i), exercise_price);
+    }
+
+  for(j = steps-1; j >= 1; j--) {
+    for(i = 0; i <= j; i++) {
+      value(i) = payoff_function(p_*value(i) + q_*value(i+1),
+            price(2*steps - 2*i + j - steps), exercise_price);
     }
   }
 
-  if (payoff == "call") {
-    for(j = steps-1; j >= 1; j--) {
-      for(i = 0; i <= j; i++) {
-        value(i) = max(p_*value(i) + q_*value(i+1),
-                       price(2*steps - 2*i + j - steps) - exercise_price);
-      }
-    }
-    result("fair_value") = max(p_*value(0) + q_*value(1),
-           price(2*steps + j - steps) - exercise_price);
-    result("delta") = (value(0) - value(1)) / (initial_price * (up - down));
-    result("gamma") = (value(0) - 2*result("fair_value") + value(1)) /
-      (initial_price * (up - down) * (up - down));
-  } else if (payoff == "put") {
-    for(j = steps-1; j >= 1; j--) {
-      for(i = 0; i <= j; i++) {
-        value(i) = max(p_*value(i) + q_*value(i+1),
-                       exercise_price - price(2*steps - 2*i + j - steps));
-      }
-    }
-    result("delta") = (value(0) - value(1)) / (initial_price * (up - down));
-    result("fair_value") = max(p_*value(0) + q_*value(1),
-           exercise_price - price(2*steps + j - steps));
-  }
+  result("fair_value") = max(p_*value(0) + q_*value(1),
+         price(2*steps + j - steps) - exercise_price);
+  result("delta") = (value(0) - value(1)) / (initial_price * (up - down));
+  result("gamma") = (value(0) - 2*result("fair_value") + value(1)) /
+    (initial_price * (up - down) * (up - down));
 
   return result;
 

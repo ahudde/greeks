@@ -8,22 +8,22 @@
 #' @importFrom "matrixStats" "rowCumsums" "rowSums2"
 #' @importFrom "dqrng" "dqrnorm" "dqset.seed"
 #'
-#' @param initial_price - initial price of the underlying asset.
-#' @param exercise_price - strike price of the option.
-#' @param r - risk-free interest rate.
-#' @param time_to_maturity - time to maturity.
-#' @param volatility - volatility of the underlying asset.
-#' @param dividend_yield - dividend yield.
+#' @param initial_price - initial price of the underlying asset
+#' @param exercise_price - strike price of the option
+#' @param r - risk-free interest rate
+#' @param time_to_maturity - time to maturity in years
+#' @param volatility - volatility of the underlying asset
+#' @param dividend_yield - dividend yield
 #' @param payoff - the payoff function, either a string in ("call", "put",
-#' "digital_call", "digital_put"), or a function.
-#' @param greek - the Greek to be calculated.
+#' "digital_call", "digital_put"), or a function
+#' @param greek - the Greek to be calculated
 #' @param model - the model to be chosen in ("black_scholes", "jump_diffusion")
 #' @param lambda - the lambda of the Poisson process in the jump-diffusion model
 #' @param alpha - the alpha in the jump-diffusion model influences the jump size
 #' @param jump_distribution - the distribution of the jumps, choose a function
 #' which generates random numbers with the desired distribution
-#' @param steps - the number of integration steps.
-#' @param paths - the number of simulated paths.
+#' @param steps - the number of integration steps
+#' @param paths - the number of simulated paths
 #' @param seed - the seed of the random number generator
 #' @param antithetic - if TRUE, antithetic random numbers will be chosen to
 #' decrease variance
