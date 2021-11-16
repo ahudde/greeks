@@ -23,14 +23,23 @@ devtools::install_github("anselmhudde/greeks")
 ## How to start
 
 Most of the Greeks can easily can calculated with the function Greeks.
-```{r }
-# Load package
-library(greeks)
-# Option price and most common Greeks of a call option on a share with price 100 and with exercise price 120, riskless interest rate of 1%, and volatility of 30%.
-Greeks(initial_price = 100,
-       exercise_price = 120,
-       r = 0.01,
-       time_to_maturity = 5,
-       volatility = 0.30,
-       payoff = "call")
-```
+
+    # Load package
+    library(greeks)
+    # Option price and most common Greeks of a call option on a share with price 100
+    # and with exercise price 120, riskless interest rate of 1%, and volatility of
+    # 30%.
+
+    Greeks(initial_price = 100,
+           exercise_price = 120,
+           r = 0.01,
+           time_to_maturity = 5,
+           volatility = 0.30,
+           payoff = "call")
+
+    ##    fair_value         delta          vega         theta           rho 
+    ##  21.577149923   0.554941778  88.358901748  -2.989937331 169.585139380 
+    ##         gamma 
+    ##   0.005890593
+    
+    
