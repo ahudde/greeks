@@ -5,6 +5,10 @@ Binomial_American_Greeks_cpp <- function(initial_price = 100, exercise_price = 1
     .Call(`_greeks_Binomial_American_Greeks_cpp`, initial_price, exercise_price, r, time_to_maturity, volatility, dividend_yield, payoff, steps)
 }
 
+calc_I <- function(X, steps, dt) {
+    .Call(`_greeks_calc_I`, X, steps, dt)
+}
+
 calc_I_1 <- function(X, steps, dt) {
     .Call(`_greeks_calc_I_1`, X, steps, dt)
 }
@@ -21,7 +25,19 @@ calc_X <- function(W, dt, initial_price, volatility, r) {
     .Call(`_greeks_calc_X`, W, dt, initial_price, volatility, r)
 }
 
+calc_XW <- function(X, W, steps, paths, dt) {
+    .Call(`_greeks_calc_XW`, X, W, steps, paths, dt)
+}
+
 calc_tXW <- function(X, W, steps, paths, dt) {
     .Call(`_greeks_calc_tXW`, X, W, steps, paths, dt)
+}
+
+make_BM <- function(v, steps, paths) {
+    .Call(`_greeks_make_BM`, v, steps, paths)
+}
+
+rowCumsums <- function(m) {
+    .Call(`_greeks_rowCumsums`, m)
 }
 

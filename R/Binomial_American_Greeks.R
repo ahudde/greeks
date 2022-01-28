@@ -5,7 +5,6 @@
 #'
 #' @import "stats"
 #' @import "Rcpp"
-#' @importFrom "matrixStats" "rowCumsums"
 #' @importFrom "dqrng" "dqrnorm" "dqset.seed"
 #'
 #' @param initial_price - initial price of the underlying asset.

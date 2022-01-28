@@ -35,23 +35,18 @@
 #' greek = c("fair_value", "delta", "rho"), payoff = "put")
 #'
 
-Malliavin_Asian_Greeks <- function(initial_price = 100,
-                                   exercise_price = 100,
-                                   r = 0,
-                                   time_to_maturity = 1,
-                                   volatility = 0.3,
-                                   dividend_yield = 0,
-                                   payoff = "call",
-                                   greek = c("fair_value", "delta", "rho", "vega",
-                                             "theta", "gamma"),
-                                   model = "black_scholes",
-                                   lambda = 0.2,
-                                   alpha = 0.3,
-                                   jump_distribution = function(n) stats::rt(n, df = 3),
-                                   steps = round(time_to_maturity*252),
-                                   paths = 10000,
-                                   seed = 1,
-                                   antithetic = FALSE) {
+Malliavin_Asian_Greeks_Black_Scholes <-
+  function(initial_price = 100,
+           exercise_price = 100,
+           r = 0,
+           time_to_maturity = 1,
+           volatility = 0.3,
+           dividend_yield = 0,
+           payoff = "call",
+           steps = round(time_to_maturity*252),
+           paths = 10000,
+           seed = 1,
+           antithetic = FALSE) {
 
   dt <- time_to_maturity/steps
 
@@ -85,32 +80,25 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
     dqset.seed(seed)
   }
 
-  W <- make_BM(dqrnorm(n = paths*steps, sd = sqrt(dt)), paths = paths, steps = steps)
+  for (i in 1:steps) {
 
-  X <- calc_X(W, dt, initial_price, volatility, r)
+    W <- make_BM(dqrnorm(n = paths*steps, sd = sqrt(dt)), paths = paths, steps = steps)
 
-  if(model == "jump_diffusion") {
+    X <- calc_X(W, dt, initial_price, volatility, r)
 
-    Jumps <- c(numeric(paths), rpois(n = steps * paths, lambda = lambda *
-                                       dt))
-    for (i in which(Jumps != 0)) {
-      Jumps[i] <- alpha * sum(jump_distribution(Jumps[i]))
+    W_T <- W[, steps + 1]
+
+    X_T <- X[, steps+1]
+
+    if("vega" %in% greek) {
+      XW <- calc_XW(X, W, steps, paths, dt)
+      tXW <- calc_tXW(X, W, steps, paths, dt)
     }
-    Jumps <- Jumps %>% matrix(nrow = paths) %>% rowCumsums()
-    X <- X * exp(Jumps)
 
-  } # model == "jump_diffusion"
+    rm(W)
 
-  W_T <- W[, steps + 1]
-
-  X_T <- X[, steps+1]
-
-  if("vega" %in% greek) {
-    XW <- calc_XW(X, W, steps, paths, dt)
-    tXW <- calc_tXW(X, W, steps, paths, dt)
   }
 
-  rm(W)
 
   ### the calculation of I_{(n)}, the integral \int_0^T t^n X_t dt ###
 

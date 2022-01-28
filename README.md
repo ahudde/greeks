@@ -3,7 +3,7 @@
 ![](https://cranlogs.r-pkg.org/badges/grand-total/greeks?color=brightgreen)
 ![](https://www.r-pkg.org/badges/version-ago/greeks)
 
-The package greeks provides functions to calculate sensitivities of financial option prices for European, Asian, American and Digital options in the Black Scholes model, and in more general jump diffusion models.
+The package `greeks` provides functions to calculate sensitivities of financial option prices for European, Asian, American and Digital options in the Black Scholes model, and in more general jump diffusion models.
 Classical formulas are implemented for European options in the Black Scholes Model. 
 Furthermore, functions to calculate Malliavin Monte Carlo Greeks are given, as presented e.g., in Hudde, A. & Rüschendorf, L. (2016). 
 European and Asian Greeks for exponential Lévy processes (https://arxiv.org/abs/1603.00920).
