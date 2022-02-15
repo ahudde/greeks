@@ -1,4 +1,4 @@
-#' Computes the greeks of vaious options
+#' Computes the Greeks of various options
 #'
 #' @export
 #'
@@ -15,12 +15,9 @@
 #' @param greek - greeks to be calculated in c("fair_value", "delta", "vega",
 #' "theta", "rho", "epsilon", "lambda", "gamma", "vanna")
 #'
-#' @return Named vector containing the values of the greeks specified in the
+#' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
 #'
-#' @examples BS_European_Greeks(initial_price = 120, exercise_price = 100,
-#' r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
-#' greek = c("fair_value", "delta", "gamma"), payoff = "put")
 
 Greeks <-
   function(initial_price,
