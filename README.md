@@ -65,20 +65,14 @@ Most of the options prices and Greeks can easily can calculated with the functio
 
 The package `greeks` also provides a function to compute implied volatilies for a wide range of options types and payoff functions:
 
-    # Implied volatiliy of an Asian digital call option with on a share with price
-    # 65, with exercise price of 50, a time to maturity of 3 months, and an option
-    # price of 5.52:
+    # Implied volatiliy of an Asian call option with on an option price of 15, a
+    # share price of 100, an exercise_price of 100, a risk-free interest rate of
+    # 0.05 and a time to maturity of 1.
     
-    Implied_Volatility(option_prize = 0.01,
-         initial_price = 65,
-         exercise_price = 50,
-         r = 0,
-         time_to_maturity = 0.25,
-         dividend_yield = 0,
-         model = "Black_Scholes",
-         option_type = "Asian",
-         payoff = "digital_call",
-         start_volatility = 0.3,
-         max_iter = 100,
-         precision = 1e-9) 
+    library(greeks)
+    
+    Implied_Volatility(option_price = 15, initial_price = 100,
+                 exercise_price = 100, r = 0.05, time_to_maturity = 1,
+                 option_type = "Asian", payoff = "call")
 
+    ## [1] 0.6330451
