@@ -24,7 +24,7 @@ devtools::install_github("anselmhudde/greeks")
 
 ## How to start
 
-Most of the options prices and Greeks can easily can calculated with the function Greeks.
+Most of the options prices and Greeks can easily be computed with the function Greeks.
 
     # Load package
 
