@@ -56,19 +56,19 @@ Binomial_American_Greeks <-
                                     payoff = payoff,
                                     steps = steps)
 
-  if("fair_value" %in% greek) {
+  if ("fair_value" %in% greek) {
     result["fair_value"] <- v["fair_value"]
   }
 
-  if("delta" %in% greek) {
+  if ("delta" %in% greek) {
     result["delta"] <- v["delta"]
   }
 
-  if("gamma" %in% greek) {
+  if ("gamma" %in% greek) {
     result["gamma"] <- v["gamma"]
   }
 
-  if("vega" %in% greek) {
+  if ("vega" %in% greek) {
     v_up <- Binomial_American_Greeks_cpp(initial_price = initial_price,
                                  exercise_price = exercise_price,
                                  r = r,
@@ -90,7 +90,7 @@ Binomial_American_Greeks <-
     result["vega"] <- (v_up - v_down) / (2*eps)
   }
 
-  if("theta" %in% greek) {
+  if ("theta" %in% greek) {
     v_up <-
       Binomial_American_Greeks_cpp(initial_price = initial_price,
                                    exercise_price = exercise_price,
@@ -113,7 +113,7 @@ Binomial_American_Greeks <-
     result["theta"] <- - (v_up - v_down) / (2*eps)
   }
 
-  if("rho" %in% greek) {
+  if ("rho" %in% greek) {
     v_up <-
       Binomial_American_Greeks_cpp(initial_price = initial_price,
                                    exercise_price = exercise_price,
@@ -136,7 +136,7 @@ Binomial_American_Greeks <-
     result["rho"] <- (v_up - v_down) / (2*eps)
   }
 
-  if("epsilon" %in% greek) {
+  if ("epsilon" %in% greek) {
     v_up <-
       Binomial_American_Greeks_cpp(initial_price = initial_price,
                                    exercise_price = exercise_price,

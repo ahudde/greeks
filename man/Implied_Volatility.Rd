@@ -59,7 +59,7 @@ type of option to be considered}
 
 \item{precision}{precision of the computation}
 
-\item{max_iter}{maxial number of iterations of the approximation}
+\item{max_iter}{maximal number of iterations of the approximation}
 }
 \value{
 Named vector containing the values of the greeks specified in the
@@ -69,7 +69,6 @@ parameter \code{greek}.
 Computes the implied volatility for various options via Newton's method
 }
 \examples{
-BS_European_Greeks(initial_price = 120, exercise_price = 100,
-r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
-greek = c("fair_value", "delta", "gamma"), payoff = "put")
+Implied_Volatility(15, r = 0.05, option_type = "Asian",
+payoff = "call")
 }

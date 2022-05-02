@@ -24,7 +24,7 @@ devtools::install_github("anselmhudde/greeks")
 
 ## How to start
 
-Most of the options prices and Greeks can easily be computed with the function Greeks.
+Most of the options prices and Greeks can easily can calculated with the function Greeks.
 
     # Load package
 
@@ -69,10 +69,9 @@ The package `greeks` also provides a function to compute implied volatilies for 
     # share price of 100, an exercise_price of 100, a risk-free interest rate of
     # 0.05 and a time to maturity of 1.
     
-    library(greeks)
-    
     Implied_Volatility(option_price = 15, initial_price = 100,
                  exercise_price = 100, r = 0.05, time_to_maturity = 1,
                  option_type = "Asian", payoff = "call")
-
+    
     ## [1] 0.6330451
+

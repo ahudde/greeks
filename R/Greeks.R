@@ -31,7 +31,7 @@ Greeks <-
            payoff = "call",
            greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma")){
 
-    if(tolower(option_type) == "european" && tolower(model) == "black_scholes") {
+    if (tolower(option_type) == "european" && tolower(model) == "black_scholes") {
       return(BS_European_Greeks(payoff = payoff,
                                 greek = greek,
                                 initial_price = initial_price,
@@ -42,7 +42,7 @@ Greeks <-
                                 dividend_yield = dividend_yield))
     }
 
-    else if(tolower(option_type) == "american" && tolower(model) == "black_scholes") {
+    else if (tolower(option_type) == "american" && tolower(model) == "black_scholes") {
       return(Binomial_American_Greeks(payoff = payoff,
                                       greek = greek,
                                       initial_price = initial_price,
@@ -53,7 +53,7 @@ Greeks <-
                                       dividend_yield = dividend_yield))
     }
 
-    else if(tolower(option_type) == "asian" && tolower(model) == "black_scholes") {
+    else if (tolower(option_type) == "asian" && tolower(model) == "black_scholes") {
       return(Malliavin_Asian_Greeks(payoff = payoff,
                                     greek = greek,
                                     initial_price = initial_price,
@@ -64,7 +64,7 @@ Greeks <-
                                     dividend_yield = dividend_yield))
     }
 
-    else if(tolower(option_type) == "asian" && tolower(model) == "black_scholes") {
+    else if (tolower(option_type) == "asian" && tolower(model) == "black_scholes") {
       return(Malliavin_Asian_Greeks(payoff = payoff,
                                     greek = greek,
                                     initial_price = initial_price,
@@ -75,10 +75,10 @@ Greeks <-
                                     dividend_yield = dividend_yield))
     }
 
-    else if(tolower(option_type) == "digital" && tolower(model) == "black_scholes") {
-      if(tolower(payoff) == "call") {
+    else if (tolower(option_type) == "digital" && tolower(model) == "black_scholes") {
+      if (tolower(payoff) == "call") {
         payoff <- "digital_call"
-      } else if(tolower(payoff) == "put") {
+      } else if (tolower(payoff) == "put") {
         payoff <- "digital_put"
       } else {
         stop("Wrong input or not yet implemented.")

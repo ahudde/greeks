@@ -12,7 +12,7 @@
 #' @param option_type in c("European", "American", "Asian", "Digital") - the
 #' type of option to be considered
 #' @param payoff - in c("call", "put")
-#' @param max_iter maxial number of iterations of the approximation
+#' @param max_iter maximal number of iterations of the approximation
 #' @param start_volatility initial guess
 #' @param precision precision of the computation
 #'
@@ -35,7 +35,36 @@ Implied_Volatility <-
     payoff = "call",
     start_volatility = 0.3,
     precision = 1e-6,
-    max_iter = 30){
+    max_iter = 30) {
+
+    ## first the simplest European option case
+
+    if (option_type == "European" && payoff %in% c("put", "call")) {
+      return(BS_Implied_Volatility(
+        option_price = option_price,
+        initial_price = initial_price,
+        exercise_price = exercise_price,
+        r = r,
+        time_to_maturity = time_to_maturity,
+        dividend_yield = dividend_yield,
+        payoff = payoff,
+        start_volatility = start_volatility))
+    }
+
+    ## Now the other cases
+
+    # Start volatility given by the European case
+
+    start_volatility <-
+      BS_Implied_Volatility(
+        option_price = option_price,
+        initial_price = initial_price,
+        exercise_price = exercise_price,
+        r = r,
+        time_to_maturity = time_to_maturity,
+        dividend_yield = dividend_yield,
+        payoff = payoff,
+        start_volatility = start_volatility)
 
     fair_value_and_vega_function <-
       function(volatility) {
@@ -61,15 +90,15 @@ Implied_Volatility <-
              exercise_price = exercise_price,
              r = r,
              time_to_maturity = time_to_maturity,
-             volatility = volatility,
+             volatility = 1e-9,
              dividend_yield = dividend_yield,
              model = model,
              option_type = option_type,
              payoff = payoff,
              greek = "fair_value")
 
-    if(option_price_0 > option_price) {
-      stop("Option price is too low. Problem cannot be solved.")
+    if (option_price_0 > option_price) {
+      stop("Option price is too low. Implied volatility is not defined.")
     }
 
     iter <- 0
@@ -78,13 +107,13 @@ Implied_Volatility <-
 
       iter <- iter + 1
 
-      if(iter > max_iter) {
+      if (iter > max_iter) {
         stop("Computation not succesful. Try with lower precision, larger number of Iterations (max_iter) or larger number of paths")
       }
 
       fair_value_and_vega <- fair_value_and_vega_function(volatility)
 
-      if(any(is.na(fair_value_and_vega))) {
+      if (any(is.na(fair_value_and_vega))) {
         stop("Numerical error. Option price possibly too high.")
       }
 
@@ -94,7 +123,7 @@ Implied_Volatility <-
 
       # print(c(volatility = volatility, diff = fair_value - option_price))
 
-      if(abs(fair_value - option_price) < precision) {
+      if (abs(fair_value - option_price) < precision) {
         return(volatility)
       }
 

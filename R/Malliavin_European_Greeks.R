@@ -49,13 +49,13 @@ Malliavin_European_Greeks <-
 
   ## the seed is set
 
-  if(!is.na(seed)) {
+  if (!is.na(seed)) {
     dqset.seed(seed)
   }
 
   ## the increments of the Brownian motion ###
 
-  if(antithetic == TRUE) {
+  if (antithetic == TRUE) {
     W_T <- dqrnorm(n = paths/2, sd = sqrt(time_to_maturity))
     W_T <- rbind(W_T, -W_T)
   } else {
@@ -64,25 +64,25 @@ Malliavin_European_Greeks <-
 
   ### the payoff function ###
 
-  if(class(payoff) == "function") {
+  if (inherits(payoff, "function")) {
     print("custom payoff")
-  } else if(payoff == "call") {
+  } else if (payoff == "call") {
     payoff <- function(x) {
       return(pmax(0, x-exercise_price))
     }
-  } else if(payoff == "put") {
+  } else if (payoff == "put") {
     payoff <- function(x) {
       return(pmax(0, exercise_price-x))
     }
-  } else if(payoff == "digital_call") {
+  } else if (payoff == "digital_call") {
     payoff <- function(x) {ifelse(x >= exercise_price, 1, 0)
     }
-  } else if(payoff == "digital_put") {
+  } else if (payoff == "digital_put") {
     payoff <- function(x) {ifelse(x <= exercise_price, 1, 0)
     }
   }
 
-  if(model == "Black Scholes") {
+  if (model == "Black Scholes") {
     X_T <- initial_price *
       exp((r-(volatility^2)/2)*time_to_maturity + (volatility*W_T))
     } else {
@@ -94,30 +94,30 @@ Malliavin_European_Greeks <-
     return(exp(-r*time_to_maturity) * mean(payoff(X_T) * weight))
   }
 
-  if("fair_value" %in% greek) {
+  if ("fair_value" %in% greek) {
     result["fair_value"] <-
       E(1)
   }
 
-  if("delta" %in% greek) {
+  if ("delta" %in% greek) {
     result["delta"] <-
       (W_T / (initial_price * volatility * time_to_maturity)) %>%
       E()
   }
 
-  if("vega" %in% greek) {
+  if ("vega" %in% greek) {
     result["vega"] <-
       (W_T^2/(volatility*time_to_maturity) - W_T - 1/volatility) %>%
       E()
   }
 
-  if("rho" %in% greek) {
+  if ("rho" %in% greek) {
     result["rho"] <-
       (time_to_maturity * (W_T/(volatility*time_to_maturity) - 1)) %>%
       E()
   }
 
-  if("theta" %in% greek) {
+  if ("theta" %in% greek) {
     result["theta"] <-
       -(W_T^2/(2*time_to_maturity^2) +
          (r - volatility^2/2)*W_T/(volatility*time_to_maturity) -
@@ -125,7 +125,7 @@ Malliavin_European_Greeks <-
       E()
   }
 
-  if("gamma" %in% greek) {
+  if ("gamma" %in% greek) {
     result["gamma"] <-
       ((1 / (initial_price^2 * volatility * time_to_maturity)) *
       (W_T^2/(volatility*time_to_maturity) - W_T - 1/volatility)) %>%

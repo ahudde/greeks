@@ -13,6 +13,7 @@ Malliavin_Asian_Greeks_Black_Scholes(
   volatility = 0.3,
   dividend_yield = 0,
   payoff = "call",
+  greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma"),
   steps = round(time_to_maturity * 252),
   paths = 10000,
   seed = 1,
@@ -47,6 +48,10 @@ Malliavin_Asian_Greeks_Black_Scholes(
 \item{payoff}{\itemize{
 \item the payoff function, either a string in ("call", "put",
 "digital_call", "digital_put"), or a function
+}}
+
+\item{greek}{\itemize{
+\item the Greek to be calculated
 }}
 
 \item{steps}{\itemize{

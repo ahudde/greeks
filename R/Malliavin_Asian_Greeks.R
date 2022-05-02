@@ -35,23 +35,24 @@
 #' greek = c("fair_value", "delta", "rho"), payoff = "put")
 #'
 
-Malliavin_Asian_Greeks <- function(initial_price = 100,
-                                   exercise_price = 100,
-                                   r = 0,
-                                   time_to_maturity = 1,
-                                   volatility = 0.3,
-                                   dividend_yield = 0,
-                                   payoff = "call",
-                                   greek = c("fair_value", "delta", "rho", "vega",
-                                             "theta", "gamma"),
-                                   model = "black_scholes",
-                                   lambda = 0.2,
-                                   alpha = 0.3,
-                                   jump_distribution = function(n) stats::rt(n, df = 3),
-                                   steps = round(time_to_maturity*252),
-                                   paths = 10000,
-                                   seed = 1,
-                                   antithetic = FALSE) {
+Malliavin_Asian_Greeks <- function(
+    initial_price = 100,
+    exercise_price = 100,
+    r = 0,
+    time_to_maturity = 1,
+    volatility = 0.3,
+    dividend_yield = 0,
+    payoff = "call",
+    greek = c("fair_value", "delta", "rho", "vega",
+              "theta", "gamma"),
+    model = "black_scholes",
+    lambda = 0.2,
+    alpha = 0.3,
+    jump_distribution = function(n) stats::rt(n, df = 3),
+    steps = round(time_to_maturity*252),
+    paths = 10000,
+    seed = 1,
+    antithetic = FALSE) {
 
   dt <- time_to_maturity/steps
 
@@ -61,27 +62,27 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   ## the payoff function ##
 
-  if(class(payoff) == "function") {
+  if (inherits(payoff, "function")) {
     print("custom payoff")
-  } else if(payoff == "call") {
+  } else if (payoff == "call") {
     payoff <- function(x) {
-      return(pmax(0, x-exercise_price))
+      return(pmax(0, x - exercise_price))
     }
-  } else if(payoff == "put") {
+  } else if (payoff == "put") {
     payoff <- function(x) {
-      return(pmax(0, exercise_price-x))
+      return(pmax(0, exercise_price - x))
     }
-  } else if(payoff == "digital_call") {
+  } else if (payoff == "digital_call") {
     payoff <- function(x) {ifelse(x >= exercise_price, 1, 0)
     }
-  } else if(payoff == "digital_put") {
+  } else if (payoff == "digital_put") {
     payoff <- function(x) {ifelse(x <= exercise_price, 1, 0)
     }
   }
 
   ## the seed is set
 
-  if(!is.na(seed)) {
+  if (!is.na(seed)) {
     dqset.seed(seed)
   }
 
@@ -89,7 +90,7 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   X <- calc_X(W, dt, initial_price, volatility, r)
 
-  if(model == "jump_diffusion") {
+  if (model == "jump_diffusion") {
 
     Jumps <- c(numeric(paths), rpois(n = steps * paths, lambda = lambda *
                                        dt))
@@ -103,9 +104,9 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   W_T <- W[, steps + 1]
 
-  X_T <- X[, steps+1]
+  X_T <- X[, steps + 1]
 
-  if("vega" %in% greek) {
+  if ("vega" %in% greek) {
     XW <- calc_XW(X, W, steps, paths, dt)
     tXW <- calc_tXW(X, W, steps, paths, dt)
   }
@@ -116,12 +117,12 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
 
   I_0 <- calc_I(X, steps, dt)
 
-  if(length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
+  if (length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
     I_1 <- calc_I_1(X, steps, dt)
     I_2 <- calc_I_2(X, steps, dt)
   }
 
-  if("gamma" %in% greek) {
+  if ("gamma" %in% greek) {
     I_3 <- calc_I_3(X, steps, dt)
   }
 
@@ -129,25 +130,25 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
     return(exp(-r*time_to_maturity) * mean(payoff(I_0/time_to_maturity) * weight))
   }
 
-  if("fair_value" %in% greek) {
+  if ("fair_value" %in% greek) {
     result["fair_value"] <-
       E(1)
   }
 
-  if("delta" %in% greek) {
+  if ("delta" %in% greek) {
     result["delta"] <-
       (1/(volatility * initial_price) *
          (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
       E()
   }
 
-  if("rho" %in% greek) {
+  if ("rho" %in% greek) {
     result["rho"] <-
       (W_T/volatility - time_to_maturity) %>%
       E()
   }
 
-  if("theta" %in% greek) {
+  if ("theta" %in% greek) {
     result["theta"] <-
       (r - 1/time_to_maturity +
          (1/(volatility * time_to_maturity) * I_0 * W_T -
@@ -156,7 +157,7 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
       E()
   }
 
-  if("vega" %in% greek) {
+  if ("vega" %in% greek) {
     result["vega"] <-
       ((1 / volatility) *
          ( -(1 + volatility * W_T) +
@@ -165,7 +166,7 @@ Malliavin_Asian_Greeks <- function(initial_price = 100,
       E()
   }
 
-  if("gamma" %in% greek) {
+  if ("gamma" %in% greek) {
     result["gamma"] <-
       ((1/(volatility^2*initial_price^2)) *
          (2*volatility^2
