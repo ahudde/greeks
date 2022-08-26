@@ -46,16 +46,19 @@ Greeks(
 \item the model to be chosen
 }}
 
-\item{option_type}{in c("European", "American", "Asian", "Digital") - the
+\item{option_type}{in c("European", "American", "Asian", "Digital",
+"Binomial) - the
 type of option to be considered}
 
 \item{payoff}{\itemize{
-\item in c("call", "put")
+\item in c("call", "put", "cash_or_nothing_call",
+"cash_or_nothing_put", "asset_or_nothing_call", "asset_or_nothing_put")
 }}
 
 \item{greek}{\itemize{
-\item greeks to be calculated in c("fair_value", "delta", "vega",
-"theta", "rho", "epsilon", "lambda", "gamma", "vanna")
+\item Greeks to be calculated in c("fair_value", "delta", "vega",
+"theta", "rho", "epsilon", "lambda", "gamma", "vanna", "charm", "vomma",
+"veta", "vera", "speed", "zomma", "color", "ultima")
 }}
 }
 \value{
