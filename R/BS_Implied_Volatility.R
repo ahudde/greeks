@@ -1,4 +1,4 @@
-#' Computes the implied volatility for European-, binomial- and Asian options.
+#' Computes the implied volatility for European-, American- and Asian options.
 #'
 #' @export
 #'
@@ -20,11 +20,9 @@
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
 #'
-#' @examples Binomial_American_Greeks(initial_price = 100, exercise_price = 100,
-#' r = 0, time_to_maturity = 1, volatility = 0.3, dividend_yield = 0,
-#' payoff = "call", greek = c("fair_value", "delta", "vega", "theta", "rho",
-#' "epsilon", "gamma"), steps = 20)
-#'
+#' @examples BS_Implied_Volatility(option_price = 27, initial_price = 100,
+#' exercise_price = 100, r = 0.03, time_to_maturity = 5, dividend_yield = 0.015,
+#' payoff = "call")
 
 BS_Implied_Volatility <-
   function(option_price,
@@ -54,7 +52,7 @@ BS_Implied_Volatility <-
 
       volatility <- start_volatility
 
-      while(TRUE) {
+      while (TRUE) {
 
         d1 <- (log(initial_price/exercise_price) +
                  (r - dividend_yield + (volatility^2)/2) * time_to_maturity) /
@@ -66,7 +64,9 @@ BS_Implied_Volatility <-
           initial_price * exp(-dividend_yield*time_to_maturity) * pnorm(d1) -
           exp(-r*time_to_maturity) * exercise_price * pnorm(d2)
 
-        #print(c(volatility, fair_value - option_price))
+        vega <-
+          initial_price*exp(-dividend_yield*time_to_maturity) * dnorm(d1) *
+          sqrt(time_to_maturity)
 
         if (abs(fair_value - option_price) < precision) {
           volatility <-
@@ -75,10 +75,6 @@ BS_Implied_Volatility <-
 
           return(volatility)
         }
-
-        vega <-
-          initial_price*exp(-dividend_yield*time_to_maturity) * dnorm(d1) *
-          sqrt(time_to_maturity)
 
         volatility <-
           volatility -
@@ -94,7 +90,7 @@ BS_Implied_Volatility <-
 
       volatility <- start_volatility
 
-      while(TRUE) {
+      while (TRUE) {
 
         d1 <- (log(initial_price/exercise_price) +
                  (r - dividend_yield + (volatility^2)/2) * time_to_maturity) /
@@ -105,8 +101,6 @@ BS_Implied_Volatility <-
         fair_value <-
           exp(-r*time_to_maturity) * exercise_price * pnorm(-d2) -
           initial_price * exp(-dividend_yield * time_to_maturity) * pnorm(-d1)
-
-        #print(c(volatility, fair_value - option_price))
 
         if (abs(fair_value - option_price) < precision) {
           volatility <-

@@ -2,7 +2,7 @@
 % Please edit documentation in R/BS_Implied_Volatility.R
 \name{BS_Implied_Volatility}
 \alias{BS_Implied_Volatility}
-\title{Computes the implied volatility for European-, binomial- and Asian options.}
+\title{Computes the implied volatility for European-, American- and Asian options.}
 \usage{
 BS_Implied_Volatility(
   option_price,
@@ -58,12 +58,10 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the implied volatility for European-, binomial- and Asian options.
+Computes the implied volatility for European-, American- and Asian options.
 }
 \examples{
-Binomial_American_Greeks(initial_price = 100, exercise_price = 100,
-r = 0, time_to_maturity = 1, volatility = 0.3, dividend_yield = 0,
-payoff = "call", greek = c("fair_value", "delta", "vega", "theta", "rho",
-"epsilon", "gamma"), steps = 20)
-
+BS_Implied_Volatility(option_price = 27, initial_price = 100,
+exercise_price = 100, r = 0.03, time_to_maturity = 5, dividend_yield = 0.015,
+payoff = "call")
 }

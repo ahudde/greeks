@@ -2,8 +2,8 @@
 % Please edit documentation in R/BS_European_Greeks.R
 \name{BS_European_Greeks}
 \alias{BS_European_Greeks}
-\title{Computes the greeks of an European call- or put-option in the Black Scholes
-model}
+\title{Computes the Greeks of an European call- or put-option, or of digital options
+in the Black Scholes model}
 \usage{
 BS_European_Greeks(
   initial_price = 100,
@@ -43,22 +43,23 @@ BS_European_Greeks(
 }}
 
 \item{payoff}{\itemize{
-\item in c("call", "put")
+\item in c("call", "put", "cash_or_nothing_call",
+"cash_or_nothing_put", "asset_or_nothing_call", "asset_or_nothing_put")
 }}
 
 \item{greek}{\itemize{
-\item greeks to be calculated in c("fair_value", "delta", "vega",
+\item Greeks to be calculated in c("fair_value", "delta", "vega",
 "theta", "rho", "epsilon", "lambda", "gamma", "vanna", "charm", "vomma",
-"veta", "speed")
+"veta", "vera", "speed", "zomma", "color", "ultima")
 }}
 }
 \value{
-Named vector containing the values of the greeks specified in the
+Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the greeks of an European call- or put-option in the Black Scholes
-model
+Computes the Greeks of an European call- or put-option, or of digital options
+in the Black Scholes model
 }
 \examples{
 BS_European_Greeks(initial_price = 120, exercise_price = 100,
