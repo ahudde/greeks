@@ -37,86 +37,63 @@ BS_Implied_Volatility <-
 
     ## check if option price can be obtained
 
-    if (option_price < BS_European_Greeks(initial_price = initial_price,
-                                         exercise_price = exercise_price,
-                                         r = r,
-                                         time_to_maturity = time_to_maturity,
-                                         volatility = 1e-9,
-                                         dividend_yield = dividend_yield,
-                                         payoff = payoff,
-                                         greek = "fair_value")) {
-      stop("Option price is too low. Implied volatility is not defined.")
-    }
+    volatility <- start_volatility
+
+    d1 <- (log(initial_price/exercise_price) +
+             (r - dividend_yield + (volatility^2)/2) * time_to_maturity) /
+      (volatility * sqrt(time_to_maturity))
+
+    d2 <- d1 - volatility * sqrt(time_to_maturity)
 
     if (payoff == "call") {
 
-      volatility <- start_volatility
+      fair_value <-
+        initial_price * exp(-dividend_yield*time_to_maturity) * pnorm(d1) -
+        exp(-r*time_to_maturity) * exercise_price * pnorm(d2)
 
-      while (TRUE) {
+    } else if (payoff == "put") {
 
-        d1 <- (log(initial_price/exercise_price) +
-                 (r - dividend_yield + (volatility^2)/2) * time_to_maturity) /
-          (volatility * sqrt(time_to_maturity))
+      fair_value <-
+        exp(-r*time_to_maturity) * exercise_price * pnorm(-d2) -
+        initial_price * exp(-dividend_yield * time_to_maturity) * pnorm(-d1)
 
-        d2 <- d1 - volatility * sqrt(time_to_maturity)
+    }
+
+    if (option_price < fair_value) {
+      stop("Option price is too low. Implied volatility is not defined.")
+    }
+
+    while (TRUE) {
+
+      vega <-
+        initial_price*exp(-dividend_yield*time_to_maturity) * dnorm(d1) *
+        sqrt(time_to_maturity)
+
+      volatility <-
+        volatility -
+        ((fair_value - option_price) / vega)
+
+      if (abs(fair_value - option_price) < precision) {
+        return(volatility)
+      }
+
+      d1 <- (log(initial_price/exercise_price) +
+               (r - dividend_yield + (volatility^2)/2) * time_to_maturity) /
+        (volatility * sqrt(time_to_maturity))
+
+      d2 <- d1 - volatility * sqrt(time_to_maturity)
+
+      if (payoff == "call") {
 
         fair_value <-
           initial_price * exp(-dividend_yield*time_to_maturity) * pnorm(d1) -
           exp(-r*time_to_maturity) * exercise_price * pnorm(d2)
 
-        vega <-
-          initial_price*exp(-dividend_yield*time_to_maturity) * dnorm(d1) *
-          sqrt(time_to_maturity)
-
-        if (abs(fair_value - option_price) < precision) {
-          volatility <-
-            volatility -
-            ((fair_value - option_price) / vega)
-
-          return(volatility)
-        }
-
-        volatility <-
-          volatility -
-          ((fair_value - option_price) / vega)
-
-      }
-
-    }
-
-    if (payoff == "put") {
-
-      fair_value <- option_price + 1
-
-      volatility <- start_volatility
-
-      while (TRUE) {
-
-        d1 <- (log(initial_price/exercise_price) +
-                 (r - dividend_yield + (volatility^2)/2) * time_to_maturity) /
-          (volatility * sqrt(time_to_maturity))
-
-        d2 <- d1 - volatility * sqrt(time_to_maturity)
+      } else if (payoff == "put") {
 
         fair_value <-
           exp(-r*time_to_maturity) * exercise_price * pnorm(-d2) -
           initial_price * exp(-dividend_yield * time_to_maturity) * pnorm(-d1)
-
-        if (abs(fair_value - option_price) < precision) {
-          volatility <-
-            volatility -
-            ((fair_value - option_price) / vega)
-
-          return(volatility)
-        }
-
-        vega <-
-          initial_price*exp(-dividend_yield*time_to_maturity) * dnorm(d1) *
-          sqrt(time_to_maturity)
-
-        volatility <-
-          volatility -
-          ((fair_value - option_price) / vega)
 
       }
 
