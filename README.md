@@ -41,7 +41,7 @@ the interactive shiny app by calling
     Greeks_UI()
 
 or online on
-![anselmhudde.shinyapps.io/greeks/](https://anselmhudde.shinyapps.io/greeks/)
+[anselmhudde.shinyapps.io/greeks/](https://anselmhudde.shinyapps.io/greeks/)
 
 ![Greeks_UI](https://user-images.githubusercontent.com/60978072/212536904-562e4e3d-402d-484e-af3c-352901c319f8.png)
 
