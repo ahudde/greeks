@@ -29,7 +29,7 @@ Config/testthat/edition: 3
 Imports: magrittr, dqrng, Rcpp, tibble, ggplot2, plotly, shiny, tidyr
 LinkingTo: Rcpp
 NeedsCompilation: yes
-Packaged: 2023-01-15 11:25:40 UTC; Compi
+Packaged: 2023-01-15 12:39:21 UTC; Compi
 Author: Anselm Hudde [aut, cre] (<https://orcid.org/0000-0002-5652-2815>)
 Maintainer: Anselm Hudde <anselmhudde@gmx.de>
 VignetteBuilder: knitr

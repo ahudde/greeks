@@ -8,3 +8,5 @@ src/*.dll
 inst/doc
 README.md
 *.png
+/doc/
+/Meta/
