@@ -13,8 +13,8 @@ BS_European_Greeks(
   volatility = 0.3,
   dividend_yield = 0,
   payoff = "call",
-  greek = c("fair_value", "delta", "vega", "theta", "rho", "epsilon", "lambda",
-    "gamma", "vanna", "charm", "vomma", "veta", "speed")
+  greek = c("fair_value", "delta", "vega", "theta", "rho", "epsilon", "lambda", "gamma",
+    "vanna", "charm", "vomma", "veta", "speed")
 )
 }
 \arguments{

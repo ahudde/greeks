@@ -3,28 +3,52 @@
 ![](https://cranlogs.r-pkg.org/badges/grand-total/greeks?color=brightgreen)
 ![](https://www.r-pkg.org/badges/version-ago/greeks)
 
-The package `greeks` provides functions to compute financial option prices and sensitivities of financial option prices for European, Asian, American and Digital options in the Black Scholes model, and in more general jump diffusion models.
-Furthermore, based on the implementations of Vega, efficient funcions for calculting implied volatilities not just for European options, but also for American, Asian and digital options are provided.
+The package `greeks` provides functions to compute financial option prices and
+sensitivities of financial option prices for European, American, Asian, and
+Digital options in the Black Scholes model, and in more general jump diffusion
+models.
+Furthermore, based on the implementations of Vega, efficient functions for
+calculating implied volatilities not just for European options, but also for
+American, Asian, and digital options are provided.
 
-Classical formulas are implemented for European options in the Black Scholes Model. 
-Furthermore, functions to calculate Malliavin Monte Carlo Greeks are given, as presented e.g., in Hudde, A. & Rüschendorf, L. (2016). 
-European and Asian Greeks for exponential Lévy processes (https://arxiv.org/abs/1603.00920).
-These functions work for classical payoff functions, as well as for any custom square integrable function provided by the user.
-Additionally, these calculations are not restricted to the Black Scholes model, but work for more general Lévy Jump diffusion model, which is also customizable by the user.
+Classical formulas are implemented for European options in the Black Scholes
+Model. 
+Furthermore, functions to calculate Malliavin Monte Carlo Greeks are given, as
+presented e.g., in Hudde, A. & Rüschendorf, L. (2016). 
+European and Asian Greeks for exponential Lévy processes
+(https://arxiv.org/abs/1603.00920).
+These functions work for classical payoff functions, as well as for any custom
+square integrable function provided by the user.
+Additionally, these calculations are not restricted to the Black Scholes model,
+but work for more general Lévy Jump diffusion model, which is also customizable
+by the user.
 
 ## Installation
-```{r }
-# The cran version can be installed by 
-install.packages("greeks")
-# The development version can be installed by
-install.packages("devtools")
-library("devtools")
-devtools::install_github("anselmhudde/greeks")
-```
+
+    # The cran version can be installed by 
+    install.packages("greeks")
+    # The development version can be installed by
+    install.packages("devtools")
+    library("devtools")
+    devtools::install_github("anselmhudde/greeks")
+
+## Computing option prices and Greeks in the shiny app
+
+The option prices and volatilities for European options can be displayed with
+the interactive shipy app by calling
+
+    library(greeks)
+    Greeks_UI()
+
+or online on
+![anselmhudde.shinyapps.io/greeks/](https://anselmhudde.shinyapps.io/greeks/)
+
+1[](Greeks_UI.png)
 
 ## How to start
 
-Most of the options prices and Greeks can easily can calculated with the function Greeks.
+Most of the options prices and Greeks can easily be calculated with the function
+Greeks.
 
     # Load package
 

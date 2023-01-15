@@ -1,6 +1,6 @@
 Package: greeks
 Title: Sensitivities of Prices of Financial Options and Implied Volatilites
-Version: 0.7.0
+Version: 0.8.1
 Authors@R: 
     person(given = "Anselm",
            family = "Hudde",
@@ -9,7 +9,8 @@ Authors@R:
            comment = c(ORCID = "0000-0002-5652-2815"))
 Description: Methods to calculate sensitivities of financial option prices for
  European, Asian, American and Digital Options options in the Black Scholes
- model, and in more general jump diffusion models. Furthermore, methods to
+ model, and in more general jump diffusion models. A shiny app to interactively
+ view plot the results is included. Furthermore, methods to
  compute implied volatilities are provided for a wide range of option types and
  custom payoff functions. Classical formulas are implemented for European
  options in the Black Scholes Model, as is presented in Hull, J. C. (2017).
@@ -21,15 +22,24 @@ Description: Methods to calculate sensitivities of financial option prices for
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.0
-Suggests: testthat (>= 3.0.0)
+RoxygenNote: 7.2.2
+Suggests: 
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Imports: 
     magrittr,
     dqrng,
-    Rcpp
+    Rcpp,
+    tibble,
+    ggplot2,
+    plotly,
+    shiny,
+    tidyr
 LinkingTo: Rcpp
 NeedsCompilation: yes
 Packaged: 2022-01-28 23:05:43 UTC; Compi
 Author: Anselm Hudde [aut, cre] (<https://orcid.org/0000-0002-5652-2815>)
 Maintainer: Anselm Hudde <anselmhudde@gmx.de>
+VignetteBuilder: knitr
