@@ -35,7 +35,7 @@ by the user.
 ## Computing option prices and Greeks in the shiny app
 
 The option prices and volatilities for European options can be displayed with
-the interactive shipy app by calling
+the interactive shiny app by calling
 
     library(greeks)
     Greeks_UI()
@@ -43,9 +43,9 @@ the interactive shipy app by calling
 or online on
 ![anselmhudde.shinyapps.io/greeks/](https://anselmhudde.shinyapps.io/greeks/)
 
-1[](Greeks_UI.png)
+![Greeks_UI](https://user-images.githubusercontent.com/60978072/212536904-562e4e3d-402d-484e-af3c-352901c319f8.png)
 
-## How to start
+## The function Greeks
 
 Most of the options prices and Greeks can easily be calculated with the function
 Greeks.
@@ -54,7 +54,7 @@ Greeks.
 
     library(greeks)
 
-    # Option price and most common Greeks of an European call option on a share with
+    # Option price and most common Greeks of a European call option on a share with
     # price 100 and volatility of 30%, where the exercise price is 120, the time to
     # maturity of 5 years, and the riskless interest rate of 1%.
 
@@ -87,9 +87,9 @@ Greeks.
     
 ## Computing implied volatilities
 
-The package `greeks` also provides a function to compute implied volatilies for a wide range of options types and payoff functions:
+The package `greeks` also provides a function to compute implied volatilities for a wide range of option types and payoff functions:
 
-    # Implied volatiliy of an Asian call option with on an option price of 15, a
+    # Implied volatility of an Asian call option with on an option price of 15, a
     # share price of 100, an exercise_price of 100, a risk-free interest rate of
     # 0.05 and a time to maturity of 1.
     
