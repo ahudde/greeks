@@ -45,55 +45,56 @@ Greeks_UI_x <- function() {
           selected = c("fair_value", "delta"),
           multiple = TRUE)
       )
-    ),
-    fluidRow(
+    ), # fluidRow
+   fluidRow(
       # initial_price
-      conditionalPanel(
-        condition = "input.x_axis =='initial price'",
-        column(
-          width = 6,
-          sliderInput(
-            inputId = "initial_price",
-            label = "Initial Price",
-            min = 0,
-            max = 200,
-            value = c(0, 200))
-          )
-        ),
-        conditionalPanel(
-          condition = "input.x_axis != 'initial price'",
-          column(
-            width = 6,
-            sliderInput(
-              inputId = "initial_price",
-              label = "Initial Price",
-              min = 0,
-              max = 200,
-              value = 100)
-          )
-        ),
-      column(
-        width = 6,
-        sliderInput(
-          inputId = "exercise_price",
-          label = "Exercise Price",
-          min = 0,
-          max = 200,
-          value = 100)
-        )
-    ),
-    fluidRow(
-      column(
-        width = 6,
-        sliderInput(
-          inputId = "r",
-          label = "riskless intereset rate",
-          min = -0.1,
-          max = 1,
+     conditionalPanel(
+       condition = ("input.x_axis == 'initial price'"),
+       column(
+         width = 6,
+         sliderInput(
+           inputId = "initial_price",
+           label = "initial price",
+           min = 0,
+           max = 200,
+           value = c(0, 200)
+           )
+       )
+     ),
+     conditionalPanel(
+       condition = ("input.x_axis != 'initial price'"),
+       column(
+         width = 6,
+         sliderInput(
+           inputId = "initial_price_",
+           label = "initial price",
+           min = 0,
+           max = 200,
+           value = 100
+           )
+       )
+     ), # conditionalPanel
+     column(
+       width = 6,
+       sliderInput(
+         inputId = "exercise_price",
+         label = "Exercise Price",
+         min = 0,
+         max = 200,
+         value = 100)),
+   ), # fluidRow
+
+   fluidRow(
+     column(
+       width = 6,
+       sliderInput(
+         inputId = "r",
+         label = "riskless intereset rate",
+         min = -0.1,
+         max = 1,
           value = 0)
-        ),
-      conditionalPanel(
-        condition = "input.x_axis =='time to maturity'",
+       ),
+
         column(
           width = 6,
           sliderInput(
@@ -104,20 +105,6 @@ Greeks_UI_x <- function() {
             value = c(0, 20),
             step = 0.1)
           )
-        ),
-      conditionalPanel(
-        condition = "input.x_axis != 'time to maturity'",
-        column(
-          width = 6,
-          sliderInput(
-            inputId = "time_to_maturity",
-            label = "Time to Maturity",
-            min = 0,
-            max = 20,
-            value = 1,
-            step = 0.1)
-          )
-        )
       ),
     fluidRow(
       column(
@@ -147,10 +134,17 @@ Greeks_UI_x <- function() {
 
     output$plot <- renderPlotly(
       {
-        initial_price <- seq(
-          input$initial_price[1],
-          input$initial_price[2],
-          by = round(max(0.01, (input$initial_price[2] - input$initial_price[1])/100), 2))
+
+        input_ <- input
+
+        if(input$x_axis == "initial price") {
+          initial_price <- seq(
+            input$initial_price[1],
+            input$initial_price[2],
+            by = round(max(0.01, (input$initial_price[2] - input$initial_price[1])/100), 2))
+        } else {
+          initial_price <- input$initial_price_
+        }
 
         FUN = function(x) {
           Greeks(
@@ -195,7 +189,8 @@ Greeks_UI_x <- function() {
                                   color = .data$Greek)) +
           theme_minimal() +
           xlab("Initial Price") +
-          ggtitle("Prices and Sensitivites of European Options")
+          ggtitle("Prices and Sensitivites of European Options") +
+          xlab(initial_price[1])
 
         ggplotly(plot)
 
@@ -206,3 +201,5 @@ Greeks_UI_x <- function() {
   shinyApp(ui = ui, server = server, options = list(height = 1000))
 
 }
+
+Greeks_UI_x()
