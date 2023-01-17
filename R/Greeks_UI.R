@@ -116,7 +116,7 @@ Greeks_UI <- function() {
             volatility = input$volatility,
             dividend_yield = input$dividend_yield,
             payoff = input$payoff,
-            greek = input$greek) |>
+            greek = input$greek) %>%
             round(4)
         }
 
@@ -143,7 +143,7 @@ Greeks_UI <- function() {
         }
 
         plot <-
-          Option_price |>
+          Option_price %>%
           ggplot() +
           geom_line(mapping = aes(x = .data$initial_price,
                                   y = .data$Value,
