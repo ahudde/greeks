@@ -71,7 +71,8 @@ Greeks_UI <- function() {
           label = "Time to Maturity",
           min = 0,
           max = 20,
-          value = 1)
+          value = 1,
+          step = 0.1)
         )
       ),
     fluidRow(
