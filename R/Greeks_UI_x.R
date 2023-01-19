@@ -20,8 +20,8 @@ Greeks_UI_x <- function() {
           inputId = "x_axis",
           label = "x_axis",
           choices = c(
-            "initial price", "exercise price", "time to maturity"),
-          selected = "initial price",
+            "Initial Price", "Time to Maturity"),
+          selected = "Initial Price",
           multiple = FALSE)
       ),
       # payoff
@@ -48,28 +48,28 @@ Greeks_UI_x <- function() {
       )
     ),
     fluidRow(
-      # initial price
+      # Initial Price
       conditionalPanel(
-        condition = ("input.x_axis != 'initial price'"),
+        condition = ("input.x_axis != 'Initial Price'"),
         column(
           width = 6,
           sliderInput(
             inputId = "initial_price_1",
-            label = "initial price",
+            label = "Initial Price",
             min = 0,
             max = 200,
             value = 100
           )
         )
       ), # condionalPanel
-      # initial price
+      # Initial Price
       conditionalPanel(
-        condition = ("input.x_axis == 'initial price'"),
+        condition = ("input.x_axis == 'Initial Price'"),
         column(
           width = 6,
           sliderInput(
             inputId = "initial_price_2",
-            label = "initial price",
+            label = "Initial Price",
             min = 0,
             max = 200,
             value = c(0, 200)
@@ -91,21 +91,42 @@ Greeks_UI_x <- function() {
         width = 6,
         sliderInput(
           inputId = "r",
-          label = "riskless intereset rate",
+          label = "Riskless Interest Rate",
           min = -0.1,
           max = 1,
           value = 0)
       ),
-      column(
-        width = 6,
-        sliderInput(
-          inputId = "time_to_maturity",
-          label = "Time to Maturity",
-          min = 0,
-          max = 20,
-          value = 1,
-          step = 0.1)
-      )
+
+      # Time to Maturity
+      conditionalPanel(
+        condition = ("input.x_axis != 'Time to Maturity'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "time_to_maturity_1",
+            label = "Time to Maturity",
+            min = 0,
+            max = 20,
+            value = 1,
+            step = 0.1
+          )
+        )
+      ), # condionalPanel
+      # Initial Price
+      conditionalPanel(
+        condition = ("input.x_axis == 'Time to Maturity'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "time_to_maturity_2",
+            label = "Time to Maturity",
+            min = 0,
+            max = 20,
+            value = c(0, 20),
+            step = 0.1
+          )
+        )
+      ) # conditionalPanel
     ),
     fluidRow(
       column(
@@ -136,8 +157,7 @@ Greeks_UI_x <- function() {
     output$plot <- renderPlotly(
       {
 
-        if(tolower(input$x_axis) == "initial price") {
-          initial_price <- input$initial_price_2
+        if(input$x_axis == "Initial Price") {
           initial_price <- seq(
             input$initial_price_2[1],
             input$initial_price_2[2],
@@ -146,12 +166,21 @@ Greeks_UI_x <- function() {
           initial_price <- input$initial_price_1
         }
 
+        if(input$x_axis == "Time to Maturity") {
+          time_to_maturity <- seq(
+            input$time_to_maturity_2[1],
+            input$time_to_maturity_2[2],
+            by = round(max(0.01, (input$time_to_maturity_2[2] - input$time_to_maturity_2[1])/100), 2))
+        } else {
+          time_to_maturity <- input$time_to_maturity_1
+        }
+
         FUN = function(x) {
           Greeks(
-            initial_price = x,
+            initial_price = initial_price,
             exercise_price = input$exercise_price,
             r = input$r,
-            time_to_maturity = input$time_to_maturity,
+            time_to_maturity = time_to_maturity,
             volatility = input$volatility,
             dividend_yield = input$dividend_yield,
             payoff = input$payoff,
@@ -159,24 +188,48 @@ Greeks_UI_x <- function() {
             round(4)
         }
 
+        FUN = function(x) {
+          if (input$x_axis == "Initial Price") {
+            initial_price <- x
+          } else if (input$x_axis == "Time to Maturity") {
+            time_to_maturity <- x
+          }
+          Greeks(
+            initial_price = initial_price,
+            exercise_price = input$exercise_price,
+            r = input$r,
+            time_to_maturity = time_to_maturity,
+            volatility = input$volatility,
+            dividend_yield = input$dividend_yield,
+            payoff = input$payoff,
+            greek = input$greek) %>%
+            round(4)
+        }
+
+        if (input$x_axis == "Initial Price") {
+          x <- initial_price
+        } else if (input$x_axis == "Time to Maturity") {
+          x <- time_to_maturity
+        }
+
         if (length(input$greek) == 1) {
           Option_price <-
             tibble(
               Value = sapply(
-                X = initial_price,
+                X = x,
                 FUN = FUN),
-              initial_price = initial_price,
+              x,
               Greek = input$greek)
         } else {
           Option_price <-
             sapply(
-              X = matrix(initial_price),
+              X = matrix(x),
               FUN = FUN
             ) %>%
             t() %>%
             as_tibble() %>%
-            add_column(initial_price) %>%
-            pivot_longer(cols = -initial_price,
+            add_column(x) %>%
+            pivot_longer(cols = -x,
                          names_to = "Greek",
                          values_to = "Value")
         }
@@ -184,11 +237,11 @@ Greeks_UI_x <- function() {
         plot <-
           Option_price %>%
           ggplot() +
-          geom_line(mapping = aes(x = .data$initial_price,
+          geom_line(mapping = aes(x = .data$x,
                                   y = .data$Value,
                                   color = .data$Greek)) +
           theme_minimal() +
-          xlab("Initial Price") +
+          xlab(input$x_axis) +
           ggtitle("Prices and Sensitivites of European Options")
 
         ggplotly(plot)
