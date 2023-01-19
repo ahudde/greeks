@@ -82,7 +82,7 @@ Greeks_UI <- function() {
         column(
           width = 6,
           sliderInput(
-            inputId = "initial_price_1",
+            inputId = "initial_price",
             label = "Initial Price",
             min = 0,
             max = 200,
@@ -111,7 +111,7 @@ Greeks_UI <- function() {
         column(
           width = 6,
           sliderInput(
-            inputId = "exercise_price_1",
+            inputId = "exercise_price",
             label = "Exercise Price",
             min = 0,
             max = 200,
@@ -148,7 +148,7 @@ Greeks_UI <- function() {
         column(
           width = 6,
           sliderInput(
-            inputId = "r_1",
+            inputId = "r",
             label = "Riskless Interest Rate",
             min = -0.1,
             max = 1,
@@ -177,7 +177,7 @@ Greeks_UI <- function() {
         column(
           width = 6,
           sliderInput(
-            inputId = "time_to_maturity_1",
+            inputId = "time_to_maturity",
             label = "Time to Maturity",
             min = 0,
             max = 20,
@@ -215,7 +215,7 @@ Greeks_UI <- function() {
         column(
           width = 6,
           sliderInput(
-            inputId = "volatility_1",
+            inputId = "volatility",
             label = "Volatility",
             min = 0,
             max = 1,
@@ -244,7 +244,7 @@ Greeks_UI <- function() {
         column(
           width = 6,
           sliderInput(
-            inputId = "dividend_yield_1",
+            inputId = "dividend_yield",
             label = "Dividend Yield",
             min = 0,
             max = 1,
@@ -277,58 +277,53 @@ Greeks_UI <- function() {
     output$plot <- renderPlotly(
       {
 
+        initial_price <- input$initial_price
+        exercise_price <- input$exercise_price
+        r <- input$r
+        time_to_maturity <- input$time_to_maturity
+        volatility <- input$volatility
+        dividend_yield <- input$dividend_yield
+
         if(input$x_axis == "initial_price") {
-          initial_price <- seq(
+          x <- seq(
             input$initial_price_2[1],
             input$initial_price_2[2],
             by = round(max(0.01, (input$initial_price_2[2] - input$initial_price_2[1])/100), 2))
-        } else {
-          initial_price <- input$initial_price_1
         }
 
         if(input$x_axis == "exercise_price") {
-          exercise_price <- seq(
+          x <- seq(
             input$exercise_price_2[1],
             input$exercise_price_2[2],
             by = round(max(0.01, (input$exercise_price_2[2] - input$exercise_price_2[1])/100), 2))
-        } else {
-          exercise_price <- input$exercise_price_1
         }
 
         if(input$x_axis == "r") {
-          r <- seq(
+          x <- seq(
             input$r_2[1],
             input$r_2[2],
             by = round(max(0.01, (input$r_2[2] - input$r_2[1])/100), 2))
-        } else {
-          r <- input$r_1
         }
 
         if(input$x_axis == "time_to_maturity") {
-          time_to_maturity <- seq(
+          x <- seq(
             input$time_to_maturity_2[1],
             input$time_to_maturity_2[2],
             by = round(max(0.01, (input$time_to_maturity_2[2] - input$time_to_maturity_2[1])/100), 2))
-        } else {
-          time_to_maturity <- input$time_to_maturity_1
         }
 
         if(input$x_axis == "volatility") {
-          volatility <- seq(
+          x <- seq(
             input$volatility_2[1],
             input$volatility_2[2],
             length.out = 100)
-        } else {
-          volatility <- input$volatility_1
         }
 
         if(input$x_axis == "dividend_yield") {
-          dividend_yield <- seq(
+          x <- seq(
             input$dividend_yield_2[1],
             input$dividend_yield_2[2],
             length.out = 100)
-        } else {
-          dividend_yield <- input$dividend_yield_1
         }
 
         FUN = function(x) {
@@ -345,8 +340,6 @@ Greeks_UI <- function() {
             greek = input$greek) %>%
             round(4)
         }
-
-        x <- get(input$x_axis)
 
         if (length(input$greek) == 1) {
           Option_price <-
