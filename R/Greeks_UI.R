@@ -35,8 +35,13 @@ Greeks_UI <- function() {
         selectInput(
           inputId = "payoff",
           label = "Payoff",
-          choices = c("call", "put", "cash_or_nothing_call", "cash_or_nothing_put",
-                      "asset_or_nothing_call", "asset_or_nothing_put"),
+          choices = list(
+            "Call" = "call",
+            "Put" = "put",
+            "Cash or nothing Call" = "cash_or_nothing_call",
+            "Cash or nothing Put" = "cash_or_nothing_put",
+            "Asset or nothin Call" = "asset_or_nothing_call",
+            "Asset or nothing Put" =  "asset_or_nothing_put"),
           selected = "call",
           multiple = FALSE)
       ),
@@ -46,8 +51,20 @@ Greeks_UI <- function() {
         selectInput(
           inputId = "greek",
           label = "Greek",
-          choices = c("fair_value", "delta", "vega", "theta", "rho", "epsilon",
-                      "lambda", "gamma", "vanna", "charm", "vomma", "veta", "speed"),
+          choices = list(
+            "Fair Value" = "fair_value",
+            "Delta" = "delta",
+            "Vega" = "vega",
+            "Theta" = "theta",
+            "Rho" = "rho",
+            "Epsilon" = "epsilon",
+            "Lambda" = "lambda",
+            "Gamma" = "gamma",
+            "Vanna" = "vanna",
+            "Charm" = "charm",
+            "Vomma" = "vomma",
+            "Veta" = "veta",
+            "Speed" = "speed"),
           selected = c("fair_value", "delta"),
           multiple = TRUE)
       )
