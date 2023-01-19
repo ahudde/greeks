@@ -289,8 +289,13 @@ Greeks_UI <- function() {
         x_from <- x_bounds[1]
         x_to <- x_bounds[2]
 
-        x <- seq(x_from, x_to,
-                 by = round(max(0.01, (x_to - x_from)/100), 2))
+        step_size <- (x_to - x_from)/200
+
+        precision <- max(ceiling(-log(step_size, base = 10)), 4)
+
+        step_size <- round(step_size, precision)
+
+        x <- seq(x_from, x_to, by = step_size)
 
         FUN = function(x) {
           assign(input$x_axis, x)
