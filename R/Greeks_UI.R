@@ -187,7 +187,7 @@ Greeks_UI <- function() {
     ), # fluidRow
 
     ############################################################################
-    ###### third row of slider panels with 'Volatility' and 'Dividend Yield ####
+    ##### third row of slider panels with 'Volatility' and 'Dividend Yield #####
     ############################################################################
 
     fluidRow(
