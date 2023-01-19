@@ -13,6 +13,19 @@ Greeks_UI <- function() {
 
   ui <- fluidPage(
     fluidRow(
+      # x-axis
+      column(
+        width = 3,
+        selectInput(
+          inputId = "x_axis",
+          label = "x_axis",
+          choices = c(
+            "Initial Price", "Exercise Price", "Riskless Interest Rate",
+            "Time to Maturity", "Volatility", "Dividend Yield"),
+          selected = "Initial Price",
+          multiple = FALSE)
+      ),
+      # payoff
       column(
         width = 3,
         selectInput(
@@ -23,6 +36,7 @@ Greeks_UI <- function() {
           selected = "call",
           multiple = FALSE)
       ),
+      # greek
       column(
         width = 9,
         selectInput(
@@ -34,66 +48,204 @@ Greeks_UI <- function() {
           multiple = TRUE)
       )
     ),
+
+    ############################################################################
+    ### first row of slider panels with 'Initial Price' and 'Exercise Price' ###
+    ############################################################################
+
     fluidRow(
-      column(
-        width = 6,
-        sliderInput(
-          inputId = "initial_price",
-          label = "Initial Price",
-          min = 0,
-          max = 200,
-          value = c(0, 200))
-        ),
-      column(
-        width = 6,
-        sliderInput(
-          inputId = "exercise_price",
-          label = "Exercise Price",
-          min = 0,
-          max = 200,
-          value = 100)
+
+      # Initial Price
+      conditionalPanel(
+        condition = ("input.x_axis != 'Initial Price'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "initial_price_1",
+            label = "Initial Price",
+            min = 0,
+            max = 200,
+            value = 100
+          )
         )
-    ),
-    fluidRow(
-      column(
-        width = 6,
-        sliderInput(
-          inputId = "r",
-          label = "riskless intereset rate",
-          min = -0.1,
-          max = 1,
-          value = 0)
-        ),
-      column(
-        width = 6,
-        sliderInput(
-          inputId = "time_to_maturity",
-          label = "Time to Maturity",
-          min = 0,
-          max = 20,
-          value = 1,
-          step = 0.1)
+      ), # condionalPanel
+      # Initial Price
+      conditionalPanel(
+        condition = ("input.x_axis == 'Initial Price'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "initial_price_2",
+            label = "Initial Price",
+            min = 0,
+            max = 200,
+            value = c(0, 200)
+          )
         )
-      ),
+      ), # condionalPanel
+
+      # Exercise Price
+      conditionalPanel(
+        condition = ("input.x_axis != 'Exercise Price'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "exercise_price_1",
+            label = "Exercise Price",
+            min = 0,
+            max = 200,
+            value = 100
+          )
+        )
+      ), # condionalPanel
+      # Exercise Price
+      conditionalPanel(
+        condition = ("input.x_axis == 'Exercise Price'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "exercise_price_2",
+            label = "Exercise Price",
+            min = 0,
+            max = 200,
+            value = c(0, 200)
+          )
+        )
+      ), # condionalPanel
+    ), # fluidRow
+
+    ############################################################################
+    ######### second row of slider panels with 'Riskless Interest Rate' ########
+    ########################## and 'Time to Maturity' ##########################
+    ############################################################################
+
     fluidRow(
-      column(
-        width = 6,
-        sliderInput(
-          inputId = "volatility",
-          label = "Volatility",
-          min = 0,
-          max = 1,
-          value = 0.3)
-        ),
-      column(
-        width = 6,
-        sliderInput(
-          inputId = "dividend_yield",
-          label = "Dividend Yield",
-          min = 0,
-          max = 1,
-          value = 0.02)
-      )),
+
+      # Riskless Interest Rate
+      conditionalPanel(
+        condition = ("input.x_axis != 'Riskless Interest Rate'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "riskless_interest_rate_1",
+            label = "Riskless Interest Rate",
+            min = -0.1,
+            max = 1,
+            value = 0
+          )
+        )
+      ), # conditionalPanel
+      # Riskless Interest Rate
+      conditionalPanel(
+        condition = ("input.x_axis == 'Riskless Interest Rate'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "riskless_interest_rate_2",
+            label = "Riskless Interest Rate",
+            min = -0.1,
+            max = 1,
+            value = c(-0.1, 1)
+          )
+        )
+      ), # condionalPanel
+
+      # Time to Maturity
+      conditionalPanel(
+        condition = ("input.x_axis != 'Time to Maturity'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "time_to_maturity_1",
+            label = "Time to Maturity",
+            min = 0,
+            max = 20,
+            value = 1,
+            step = 0.1
+          )
+        )
+      ), # condionalPanel
+      # Time to Maturity
+      conditionalPanel(
+        condition = ("input.x_axis == 'Time to Maturity'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "time_to_maturity_2",
+            label = "Time to Maturity",
+            min = 0,
+            max = 20,
+            value = c(0, 20),
+            step = 0.1
+          )
+        )
+      ) # conditionalPanel
+    ), # fluidRow
+
+    ############################################################################
+    ###### third row of slider panels with 'Volatility' and 'Dividend Yield ####
+    ############################################################################
+
+    fluidRow(
+
+      # Volatility
+      conditionalPanel(
+        condition = ("input.x_axis != 'Volatility'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "volatility_1",
+            label = "Volatility",
+            min = 0,
+            max = 1,
+            value = 0.3
+          )
+        )
+      ), # condionalPanel
+      # Volatility
+      conditionalPanel(
+        condition = ("input.x_axis == 'Volatility'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "volatility_2",
+            label = "Volatility",
+            min = 0.01,
+            max = 1,
+            value = c(0.01, 1)
+          )
+        )
+      ), # conditionalPanel
+
+      # Dividend Yield
+      conditionalPanel(
+        condition = ("input.x_axis != 'Dividend Yield'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "dividend_yield_1",
+            label = "Dividend Yield",
+            min = 0,
+            max = 1,
+            value = 0
+          )
+        )
+      ), # condionalPanel
+      # Dividend Yield
+      conditionalPanel(
+        condition = ("input.x_axis == 'Dividend Yield'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "dividend_yield_2",
+            label = "Dividend Yield",
+            min = 0,
+            max = 1,
+            value = c(0, 1)
+          )
+        )
+      ) # conditionalPanel
+    ), # fluidRow
 
     plotlyOutput(outputId = "plot")
     #plotOutput("plot")
@@ -103,42 +255,120 @@ Greeks_UI <- function() {
 
     output$plot <- renderPlotly(
       {
-        initial_price <- seq(
-          input$initial_price[1],
-          input$initial_price[2],
-          by = round(max(0.01, (input$initial_price[2] - input$initial_price[1])/100), 2))
+
+        if(input$x_axis == "Initial Price") {
+          initial_price <- seq(
+            input$initial_price_2[1],
+            input$initial_price_2[2],
+            by = round(max(0.01, (input$initial_price_2[2] - input$initial_price_2[1])/100), 2))
+        } else {
+          initial_price <- input$initial_price_1
+        }
+
+        if(input$x_axis == "Exercise Price") {
+          exercise_price <- seq(
+            input$exercise_price_2[1],
+            input$exercise_price_2[2],
+            by = round(max(0.01, (input$exercise_price_2[2] - input$exercise_price_2[1])/100), 2))
+        } else {
+          exercise_price <- input$exercise_price_1
+        }
+
+        if(input$x_axis == "Riskless Interest Rate") {
+          r <- seq(
+            input$riskless_interest_rate_2[1],
+            input$riskless_interest_rate_2[2],
+            by = round(max(0.01, (input$riskless_interest_rate_2[2] - input$riskless_interest_rate_2[1])/100), 2))
+        } else {
+          r <- input$riskless_interest_rate_1
+        }
+
+        if(input$x_axis == "Time to Maturity") {
+          time_to_maturity <- seq(
+            input$time_to_maturity_2[1],
+            input$time_to_maturity_2[2],
+            by = round(max(0.01, (input$time_to_maturity_2[2] - input$time_to_maturity_2[1])/100), 2))
+        } else {
+          time_to_maturity <- input$time_to_maturity_1
+        }
+
+        if(input$x_axis == "Volatility") {
+          volatility <- seq(
+            input$volatility_2[1],
+            input$volatility_2[2],
+            length.out = 100)
+        } else {
+          volatility <- input$volatility_1
+        }
+
+        if(input$x_axis == "Dividend Yield") {
+          dividend_yield <- seq(
+            input$dividend_yield_2[1],
+            input$dividend_yield_2[2],
+            length.out = 100)
+        } else {
+          dividend_yield <- input$dividend_yield_1
+        }
 
         FUN = function(x) {
+          if (input$x_axis == "Initial Price") {
+            initial_price <- x
+          } else if (input$x_axis == "Exercise Price") {
+            exercise_price <- x
+          } else if (input$x_axis == "Riskless Interest Rate") {
+            r <- x
+          } else if (input$x_axis == "Time to Maturity") {
+            time_to_maturity <- x
+          } else if (input$x_axis == "Volatility") {
+            volatility <- x
+          } else if (input$x_axis == "Dividend Yield") {
+            dividend_yield <- x
+          }
+
           Greeks(
-            initial_price = x,
-            exercise_price = input$exercise_price,
-            r = input$r,
-            time_to_maturity = input$time_to_maturity,
-            volatility = input$volatility,
-            dividend_yield = input$dividend_yield,
+            initial_price = initial_price,
+            exercise_price = exercise_price,
+            r = r,
+            time_to_maturity = time_to_maturity,
+            volatility = volatility,
+            dividend_yield = dividend_yield,
             payoff = input$payoff,
             greek = input$greek) %>%
             round(4)
+        }
+
+        if (input$x_axis == "Initial Price") {
+          x <- initial_price
+        } else if (input$x_axis == "Exercise Price") {
+          x <- exercise_price
+        } else if (input$x_axis == "Riskless Interest Rate") {
+          x <- r
+        } else if (input$x_axis == "Time to Maturity") {
+          x <- time_to_maturity
+        } else if (input$x_axis == "Volatility") {
+          x <- volatility
+        } else if (input$x_axis == "Dividend Yield") {
+          x <- dividend_yield
         }
 
         if (length(input$greek) == 1) {
           Option_price <-
             tibble(
               Value = sapply(
-                X = initial_price,
+                X = x,
                 FUN = FUN),
-              initial_price = initial_price,
+              x,
               Greek = input$greek)
         } else {
           Option_price <-
             sapply(
-              X = matrix(initial_price),
+              X = matrix(x),
               FUN = FUN
             ) %>%
             t() %>%
             as_tibble() %>%
-            add_column(initial_price) %>%
-            pivot_longer(cols = -initial_price,
+            add_column(x) %>%
+            pivot_longer(cols = -x,
                          names_to = "Greek",
                          values_to = "Value")
         }
@@ -146,11 +376,11 @@ Greeks_UI <- function() {
         plot <-
           Option_price %>%
           ggplot() +
-          geom_line(mapping = aes(x = .data$initial_price,
+          geom_line(mapping = aes(x = .data$x,
                                   y = .data$Value,
                                   color = .data$Greek)) +
           theme_minimal() +
-          xlab("Initial Price") +
+          xlab(input$x_axis) +
           ggtitle("Prices and Sensitivites of European Options")
 
         ggplotly(plot)
