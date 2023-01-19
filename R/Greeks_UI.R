@@ -284,35 +284,10 @@ Greeks_UI <- function() {
         volatility <- input$volatility
         dividend_yield <- input$dividend_yield
 
-        if(input$x_axis == "initial_price") {
-          x_from <- input$initial_price_2[1]
-          x_to <- input$initial_price_2[2]
-        }
+        x_bounds <- input[[eval(paste(input$x_axis, "_2", sep = ""))]]
 
-        if(input$x_axis == "exercise_price") {
-          x_from <- input$exercise_price_2[1]
-          x_to <- input$exercise_price_2[2]
-        }
-
-        if(input$x_axis == "r") {
-          x_from <- input$r_2[1]
-          x_to <- input$r_2[2]
-        }
-
-        if(input$x_axis == "time_to_maturity") {
-          x_from <- input$time_to_maturity_2[1]
-          x_to <- input$time_to_maturity_2[2]
-        }
-
-        if(input$x_axis == "volatility") {
-          x_from <- input$volatility_2[1]
-          x_to <- input$volatility_2[2]
-        }
-
-        if(input$x_axis == "dividend_yield") {
-          x_from <- input$dividend_yield_2[1]
-          x_to <- input$dividend_yield_2[2]
-        }
+        x_from <- x_bounds[1]
+        x_to <- x_bounds[2]
 
         x <- seq(x_from, x_to,
                  by = round(max(0.01, (x_to - x_from)/100), 2))
