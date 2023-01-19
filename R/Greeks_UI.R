@@ -285,46 +285,37 @@ Greeks_UI <- function() {
         dividend_yield <- input$dividend_yield
 
         if(input$x_axis == "initial_price") {
-          x <- seq(
-            input$initial_price_2[1],
-            input$initial_price_2[2],
-            by = round(max(0.01, (input$initial_price_2[2] - input$initial_price_2[1])/100), 2))
+          x_from <- input$initial_price_2[1]
+          x_to <- input$initial_price_2[2]
         }
 
         if(input$x_axis == "exercise_price") {
-          x <- seq(
-            input$exercise_price_2[1],
-            input$exercise_price_2[2],
-            by = round(max(0.01, (input$exercise_price_2[2] - input$exercise_price_2[1])/100), 2))
+          x_from <- input$exercise_price_2[1]
+          x_to <- input$exercise_price_2[2]
         }
 
         if(input$x_axis == "r") {
-          x <- seq(
-            input$r_2[1],
-            input$r_2[2],
-            by = round(max(0.01, (input$r_2[2] - input$r_2[1])/100), 2))
+          x_from <- input$r_2[1]
+          x_to <- input$r_2[2]
         }
 
         if(input$x_axis == "time_to_maturity") {
-          x <- seq(
-            input$time_to_maturity_2[1],
-            input$time_to_maturity_2[2],
-            by = round(max(0.01, (input$time_to_maturity_2[2] - input$time_to_maturity_2[1])/100), 2))
+          x_from <- input$time_to_maturity_2[1]
+          x_to <- input$time_to_maturity_2[2]
         }
 
         if(input$x_axis == "volatility") {
-          x <- seq(
-            input$volatility_2[1],
-            input$volatility_2[2],
-            length.out = 100)
+          x_from <- input$volatility_2[1]
+          x_to <- input$volatility_2[2]
         }
 
         if(input$x_axis == "dividend_yield") {
-          x <- seq(
-            input$dividend_yield_2[1],
-            input$dividend_yield_2[2],
-            length.out = 100)
+          x_from <- input$dividend_yield_2[1]
+          x_to <- input$dividend_yield_2[2]
         }
+
+        x <- seq(x_from, x_to,
+                 by = round(max(0.01, (x_to - x_from)/100), 2))
 
         FUN = function(x) {
           assign(input$x_axis, x)
