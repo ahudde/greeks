@@ -21,7 +21,7 @@ Greeks_UI_x <- function() {
           label = "x_axis",
           choices = c(
             "Initial Price", "Exercise Price", "Riskless Interest Rate",
-            "Time to Maturity", "Volatility"),
+            "Time to Maturity", "Volatility", "Dividend Yield"),
           selected = "Initial Price",
           multiple = FALSE)
       ),
@@ -183,7 +183,7 @@ Greeks_UI_x <- function() {
     ), # fluidRow
 
     ############################################################################
-    ###### third row of slider panels with 'Volatility' and 'Divided Yield #####
+    ###### third row of slider panels with 'Volatility' and 'Dividend Yield ####
     ############################################################################
 
     fluidRow(
@@ -218,15 +218,33 @@ Greeks_UI_x <- function() {
       ), # conditionalPanel
 
       # Dividend Yield
-      column(
-        width = 6,
-        sliderInput(
-          inputId = "dividend_yield",
-          label = "Dividend Yield",
-          min = 0,
-          max = 1,
-          value = 0.02)
-      )
+      conditionalPanel(
+        condition = ("input.x_axis != 'Dividend Yield'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "dividend_yield_1",
+            label = "Dividend Yield",
+            min = 0,
+            max = 1,
+            value = 0
+          )
+        )
+      ), # condionalPanel
+      # Dividend Yield
+      conditionalPanel(
+        condition = ("input.x_axis == 'Dividend Yield'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "dividend_yield_2",
+            label = "Dividend Yield",
+            min = 0,
+            max = 1,
+            value = c(0, 1)
+          )
+        )
+      ) # conditionalPanel
       ), # fluidRow
 
     plotlyOutput(outputId = "plot")
@@ -283,6 +301,15 @@ Greeks_UI_x <- function() {
           volatility <- input$volatility_1
         }
 
+        if(input$x_axis == "Dividend Yield") {
+          dividend_yield <- seq(
+            input$dividend_yield_2[1],
+            input$dividend_yield_2[2],
+            length.out = 100)
+        } else {
+          dividend_yield <- input$dividend_yield_1
+        }
+
         FUN = function(x) {
           if (input$x_axis == "Initial Price") {
             initial_price <- x
@@ -294,6 +321,8 @@ Greeks_UI_x <- function() {
             time_to_maturity <- x
           } else if (input$x_axis == "Volatility") {
             volatility <- x
+          } else if (input$x_axis == "Dividend Yield") {
+            dividend_yield <- x
           }
 
           Greeks(
@@ -302,7 +331,7 @@ Greeks_UI_x <- function() {
             r = r,
             time_to_maturity = time_to_maturity,
             volatility = volatility,
-            dividend_yield = input$dividend_yield,
+            dividend_yield = dividend_yield,
             payoff = input$payoff,
             greek = input$greek) %>%
             round(4)
@@ -318,6 +347,8 @@ Greeks_UI_x <- function() {
           x <- time_to_maturity
         } else if (input$x_axis == "Volatility") {
           x <- volatility
+        } else if (input$x_axis == "Dividend Yield") {
+          x <- dividend_yield
         }
 
         if (length(input$greek) == 1) {
