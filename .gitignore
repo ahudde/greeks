@@ -11,6 +11,4 @@ README.md
 *.png
 /doc/
 /Meta/
-greeks.Rcheck/
-greeks*.tar.gz
 greeks*.tgz
