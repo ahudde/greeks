@@ -20,7 +20,7 @@ Greeks_UI_x <- function() {
           inputId = "x_axis",
           label = "x_axis",
           choices = c(
-            "Initial Price", "Time to Maturity"),
+            "Initial Price", "Exercise Price", "Time to Maturity"),
           selected = "Initial Price",
           multiple = FALSE)
       ),
@@ -47,7 +47,13 @@ Greeks_UI_x <- function() {
           multiple = TRUE)
       )
     ),
+
+    ############################################################################
+    ### first row of slider panels with 'Initial Price' and 'Exercise Price' ###
+    ############################################################################
+
     fluidRow(
+
       # Initial Price
       conditionalPanel(
         condition = ("input.x_axis != 'Initial Price'"),
@@ -76,17 +82,45 @@ Greeks_UI_x <- function() {
           )
         )
       ), # condionalPanel
-      column(
-        width = 6,
-        sliderInput(
-          inputId = "exercise_price",
-          label = "Exercise Price",
-          min = 0,
-          max = 200,
-          value = 100)
-      )
-    ),
+
+      # Exercise Price
+      conditionalPanel(
+        condition = ("input.x_axis != 'Exercise Price'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "exercise_price_1",
+            label = "Exercise Price",
+            min = 0,
+            max = 200,
+            value = 100
+          )
+        )
+      ), # condionalPanel
+      # Exercise Price
+      conditionalPanel(
+        condition = ("input.x_axis == 'Exercise Price'"),
+        column(
+          width = 6,
+          sliderInput(
+            inputId = "exercise_price_2",
+            label = "Exercise Price",
+            min = 0,
+            max = 200,
+            value = c(0, 200)
+          )
+        )
+      ), # condionalPanel
+    ), # fluidRow
+
+    ############################################################################
+    ######### second row of slider panels with 'Riskless Interest Rate' ########
+    ########################## and 'Time to Maturity' ##########################
+    ############################################################################
+
     fluidRow(
+
+      # Riskless Intereset Rate
       column(
         width = 6,
         sliderInput(
@@ -112,7 +146,7 @@ Greeks_UI_x <- function() {
           )
         )
       ), # condionalPanel
-      # Initial Price
+      # Time to Maturity
       conditionalPanel(
         condition = ("input.x_axis == 'Time to Maturity'"),
         column(
@@ -127,8 +161,15 @@ Greeks_UI_x <- function() {
           )
         )
       ) # conditionalPanel
-    ),
+    ), # fluidRow
+
+    ############################################################################
+    ###### third row of slider panels with 'Volatility' and 'Divided Yield #####
+    ########################## and 'Time to Maturity' ##########################
+
     fluidRow(
+
+      # Volatility
       column(
         width = 6,
         sliderInput(
@@ -138,6 +179,8 @@ Greeks_UI_x <- function() {
           max = 1,
           value = 0.3)
       ),
+
+      # Dividend Yield
       column(
         width = 6,
         sliderInput(
@@ -146,7 +189,8 @@ Greeks_UI_x <- function() {
           min = 0,
           max = 1,
           value = 0.02)
-      )),
+      )
+      ), # fluidRow
 
     plotlyOutput(outputId = "plot")
     #plotOutput("plot")
@@ -166,6 +210,15 @@ Greeks_UI_x <- function() {
           initial_price <- input$initial_price_1
         }
 
+        if(input$x_axis == "Exercise Price") {
+          exercise_price <- seq(
+            input$exercise_price_2[1],
+            input$exercise_price_2[2],
+            by = round(max(0.01, (input$exercise_price_2[2] - input$exercise_price_2[1])/100), 2))
+        } else {
+          exercise_price <- input$exercise_price_1
+        }
+
         if(input$x_axis == "Time to Maturity") {
           time_to_maturity <- seq(
             input$time_to_maturity_2[1],
@@ -178,7 +231,7 @@ Greeks_UI_x <- function() {
         FUN = function(x) {
           Greeks(
             initial_price = initial_price,
-            exercise_price = input$exercise_price,
+            exercise_price = exercise_price,
             r = input$r,
             time_to_maturity = time_to_maturity,
             volatility = input$volatility,
@@ -191,12 +244,15 @@ Greeks_UI_x <- function() {
         FUN = function(x) {
           if (input$x_axis == "Initial Price") {
             initial_price <- x
+          } else if (input$x_axis == "Exercise Price") {
+            exercise_price <- x
           } else if (input$x_axis == "Time to Maturity") {
             time_to_maturity <- x
           }
+
           Greeks(
             initial_price = initial_price,
-            exercise_price = input$exercise_price,
+            exercise_price = exercise_price,
             r = input$r,
             time_to_maturity = time_to_maturity,
             volatility = input$volatility,
@@ -208,6 +264,8 @@ Greeks_UI_x <- function() {
 
         if (input$x_axis == "Initial Price") {
           x <- initial_price
+        } else if (input$x_axis == "Exercise Price") {
+          x <- exercise_price
         } else if (input$x_axis == "Time to Maturity") {
           x <- time_to_maturity
         }
