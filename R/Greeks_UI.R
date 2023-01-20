@@ -27,6 +27,15 @@ Greeks_UI <- function() {
       "Veta" = "veta",
       "Speed" = "speed")
 
+  params_list <-
+    list(
+      "Initial Price" = "initial_price",
+      "Exercise Price" = "exercise_price",
+      "Riskless Interest Rate" = "r",
+      "Time to Maturity" = "time_to_maturity",
+      "Volatility" = "volatility",
+      "Dividend Yield" = "dividend_yield")
+
   ui <- fluidPage(
     fluidRow(
       # x-axis
@@ -35,13 +44,7 @@ Greeks_UI <- function() {
         selectInput(
           inputId = "x_axis",
           label = "X-axis",
-          choices = list(
-            "Initial Price" = "initial_price",
-            "Exercise Price" = "exercise_price",
-            "Riskless Interest Rate" = "r",
-            "Time to Maturity" = "time_to_maturity",
-            "Volatility" = "volatility",
-            "Dividend Yield" = "dividend_yield"),
+          choices = names(params_list),
           selected = "initial_price",
           multiple = FALSE)
       ),
@@ -83,7 +86,7 @@ Greeks_UI <- function() {
 
       # Initial Price
       conditionalPanel(
-        condition = ("input.x_axis != 'initial_price'"),
+        condition = ("input.x_axis != 'Initial Price'"),
         column(
           width = 6,
           sliderInput(
@@ -97,7 +100,7 @@ Greeks_UI <- function() {
       ), # condionalPanel
       # Initial Price
       conditionalPanel(
-        condition = ("input.x_axis == 'initial_price'"),
+        condition = ("input.x_axis == 'Initial Price'"),
         column(
           width = 6,
           sliderInput(
@@ -288,7 +291,7 @@ Greeks_UI <- function() {
         volatility <- input$volatility
         dividend_yield <- input$dividend_yield
 
-        x_bounds <- input[[eval(paste(input$x_axis, "_2", sep = ""))]]
+        x_bounds <- input[[eval(paste(params_list[[input$x_axis]], "_2", sep = ""))]]
 
         x_from <- x_bounds[1]
         x_to <- x_bounds[2]
@@ -302,7 +305,7 @@ Greeks_UI <- function() {
         x <- seq(x_from, x_to, by = step_size)
 
         FUN = function(x) {
-          assign(input$x_axis, x)
+          assign(params_list[[input$x_axis]], x)
 
           Greeks(
             initial_price = initial_price,
