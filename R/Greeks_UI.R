@@ -341,16 +341,19 @@ Greeks_UI <- function() {
 
           Option_price <-
             Option_price %>%
-            add_column(x) %>%
+            add_column(x, .before = 1) %>%
             pivot_longer(cols = -x,
                          names_to = "Greek",
                          values_to = "Value")
+
+          colnames(Option_price)[1] <- input$x_axis
+
         }
 
         plot <-
           Option_price %>%
           ggplot() +
-          geom_line(mapping = aes(x = .data$x,
+          geom_line(mapping = aes(x = .data[[input$x_axis]],
                                   y = .data$Value,
                                   color = .data$Greek)) +
           theme_minimal() +
