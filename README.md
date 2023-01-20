@@ -43,7 +43,7 @@ the interactive shiny app by calling
 or online on
 [anselmhudde.shinyapps.io/greeks/](https://anselmhudde.shinyapps.io/greeks/)
 
-![Greeks_UI](https://user-images.githubusercontent.com/60978072/212536904-562e4e3d-402d-484e-af3c-352901c319f8.png)
+![Greeks_UI](https://user-images.githubusercontent.com/60978072/213740981-c66ad01b-0833-4986-bc59-e9d61c94eb27.png)
 
 ## The function Greeks
 
