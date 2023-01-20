@@ -15,10 +15,10 @@ Greeks_UI <- function() {
     fluidRow(
       # x-axis
       column(
-        width = 3,
+        width = 6,
         selectInput(
           inputId = "x_axis",
-          label = "x_axis",
+          label = "X-axis",
           choices = list(
             "Initial Price" = "initial_price",
             "Exercise Price" = "exercise_price",
@@ -31,7 +31,7 @@ Greeks_UI <- function() {
       ),
       # payoff
       column(
-        width = 3,
+        width = 6,
         selectInput(
           inputId = "payoff",
           label = "Payoff",
@@ -44,10 +44,12 @@ Greeks_UI <- function() {
             "Asset or nothing Put" =  "asset_or_nothing_put"),
           selected = "call",
           multiple = FALSE)
-      ),
-      # greek
+      )
+    ), # fluidRow
+    # greek
+    fluidRow(
       column(
-        width = 9,
+        width = 6,
         selectInput(
           inputId = "greek",
           label = "Greek",
@@ -68,7 +70,7 @@ Greeks_UI <- function() {
           selected = c("fair_value", "delta"),
           multiple = TRUE)
       )
-    ),
+    ), # fluidRow
 
     ############################################################################
     ### first row of slider panels with 'Initial Price' and 'Exercise Price' ###
