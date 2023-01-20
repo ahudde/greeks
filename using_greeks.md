@@ -3,12 +3,7 @@ title: "greeks: Sensitivities of Prices of Financial Options and Implied Volatil
 output: rmarkdown::pdf_document
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
+
 
 The package `greeks` provides functions to compute financial option prices and
 sensitivities of financial option prices for European, American, Asian, and
@@ -35,7 +30,8 @@ by the user.
 The option prices and volatilities for European options can be displayed with
 the interactive shiny app by calling `Greeks_UI`
 
-```{r eval = FALSE}
+
+```r
 # Load package
 library(greeks)
 # Start GUI
@@ -49,11 +45,10 @@ Greeks_UI()
 Most of the options prices and Greeks can easily be calculated with the function
 Greeks.
 
-```{r echo = FALSE}
-library(greeks)
-```
 
-```{r}
+
+
+```r
 # Option price and most common Greeks of a European call option on a share with
 # price 100 and volatility of 30%, where the exercise price is 120, the time to
 # maturity of 5 years, and the riskless interest rate of 1%.
@@ -64,9 +59,12 @@ Greeks(initial_price = 100,
        time_to_maturity = 5,
        volatility = 0.30,
        payoff = "call")
+#>    fair_value         delta          vega         theta           rho         gamma 
+#>  21.577149923   0.554941778  88.358901748  -2.989937331 169.585139380   0.005890593
 ```
 
-```{r}
+
+```r
 # Option price and most common Greeks of an American put option on a share with
 # price 100 and volatility of 25%, where the exercise price is 100, the time to
 # maturity of 1 year, and the riskless interest rate of -0.5%.
@@ -78,6 +76,8 @@ Greeks(initial_price = 100,
        volatility = 0.30,
        payoff = "put",
        option_type = "American")
+#>  fair_value       delta        vega       theta         rho       gamma 
+#>  12.2027075  -0.4469782  39.5313017  -6.2141979 -56.9005269  -0.1275472
 ```
     
 ## Computing implied volatilities
