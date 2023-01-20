@@ -1,10 +1,6 @@
 ---
 title: "greeks: Sensitivities of Prices of Financial Options and Implied Volatilites"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{greeks: Sensitivities of Prices of Financial Options and Implied Volatilites}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+output: rmarkdown::pdf_document
 ---
 
 ```{r, include = FALSE}
@@ -39,6 +35,13 @@ by the user.
 The option prices and volatilities for European options can be displayed with
 the interactive shiny app by calling `Greeks_UI`
 
+```{r eval = FALSE}
+# Load package
+library(greeks)
+# Start GUI
+Greeks_UI()
+```
+
 ![Greeks_UI](Greeks_UI.png)
 
 ## The function Greeks
@@ -46,40 +49,36 @@ the interactive shiny app by calling `Greeks_UI`
 Most of the options prices and Greeks can easily be calculated with the function
 Greeks.
 
-    # Load package
+```{r echo = FALSE}
+library(greeks)
+```
 
-    library(greeks)
+```{r}
+# Option price and most common Greeks of a European call option on a share with
+# price 100 and volatility of 30%, where the exercise price is 120, the time to
+# maturity of 5 years, and the riskless interest rate of 1%.
 
-    # Option price and most common Greeks of a European call option on a share with
-    # price 100 and volatility of 30%, where the exercise price is 120, the time to
-    # maturity of 5 years, and the riskless interest rate of 1%.
+Greeks(initial_price = 100,
+       exercise_price = 120,
+       r = 0.01,
+       time_to_maturity = 5,
+       volatility = 0.30,
+       payoff = "call")
+```
 
-    Greeks(initial_price = 100,
-           exercise_price = 120,
-           r = 0.01,
-           time_to_maturity = 5,
-           volatility = 0.30,
-           payoff = "call")
+```{r}
+# Option price and most common Greeks of an American put option on a share with
+# price 100 and volatility of 25%, where the exercise price is 100, the time to
+# maturity of 1 year, and the riskless interest rate of -0.5%.
 
-    ##    fair_value         delta          vega         theta           rho 
-    ##  21.577149923   0.554941778  88.358901748  -2.989937331 169.585139380 
-    ##         gamma 
-    ##   0.005890593
-
-    # Option price and most common Greeks of an American put option on a share with
-    # price 100 and volatility of 25%, where the exercise price is 100, the time to
-    # maturity of 1 year, and the riskless interest rate of -0.5%.
-
-    Greeks(initial_price = 100,
-           exercise_price = 100,
-           r = -0.005,
-           time_to_maturity = 1,
-           volatility = 0.30,
-           payoff = "put",
-           option_type = "American")
-
-    ##  fair_value       delta        vega       theta         rho       gamma 
-    ##  12.2027075  -0.4469782  39.5313017  -6.2141979 -56.9005269  -0.1275472
+Greeks(initial_price = 100,
+       exercise_price = 100,
+       r = -0.005,
+       time_to_maturity = 1,
+       volatility = 0.30,
+       payoff = "put",
+       option_type = "American")
+```
     
 ## Computing implied volatilities
 
