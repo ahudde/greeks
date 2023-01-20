@@ -11,6 +11,22 @@
 
 Greeks_UI <- function() {
 
+  greeks_list <-
+    list(
+      "Fair Value" = "fair_value",
+      "Delta" = "delta",
+      "Vega" = "vega",
+      "Theta" = "theta",
+      "Rho" = "rho",
+      "Epsilon" = "epsilon",
+      "Lambda" = "lambda",
+      "Gamma" = "gamma",
+      "Vanna" = "vanna",
+      "Charm" = "charm",
+      "Vomma" = "vomma",
+      "Veta" = "veta",
+      "Speed" = "speed")
+
   ui <- fluidPage(
     fluidRow(
       # x-axis
@@ -40,7 +56,7 @@ Greeks_UI <- function() {
             "Put" = "put",
             "Cash or nothing Call" = "cash_or_nothing_call",
             "Cash or nothing Put" = "cash_or_nothing_put",
-            "Asset or nothin Call" = "asset_or_nothing_call",
+            "Asset or nothing Call" = "asset_or_nothing_call",
             "Asset or nothing Put" =  "asset_or_nothing_put"),
           selected = "call",
           multiple = FALSE)
@@ -53,21 +69,8 @@ Greeks_UI <- function() {
         selectInput(
           inputId = "greek",
           label = "Greek",
-          choices = list(
-            "Fair Value" = "fair_value",
-            "Delta" = "delta",
-            "Vega" = "vega",
-            "Theta" = "theta",
-            "Rho" = "rho",
-            "Epsilon" = "epsilon",
-            "Lambda" = "lambda",
-            "Gamma" = "gamma",
-            "Vanna" = "vanna",
-            "Charm" = "charm",
-            "Vomma" = "vomma",
-            "Veta" = "veta",
-            "Speed" = "speed"),
-          selected = c("fair_value", "delta"),
+          choices = names(greeks_list),
+          selected = c("Fair Value", "Delta"),
           multiple = TRUE)
       )
     ), # fluidRow
@@ -271,7 +274,6 @@ Greeks_UI <- function() {
     ), # fluidRow
 
     plotlyOutput(outputId = "plot")
-    #plotOutput("plot")
   )
 
   server <- function(input, output) {
@@ -310,7 +312,7 @@ Greeks_UI <- function() {
             volatility = volatility,
             dividend_yield = dividend_yield,
             payoff = input$payoff,
-            greek = input$greek) %>%
+            greek = greeks_list[input$greek]) %>%
             round(4)
         }
 
@@ -323,13 +325,19 @@ Greeks_UI <- function() {
               x,
               Greek = input$greek)
         } else {
+
           Option_price <-
             sapply(
               X = matrix(x),
               FUN = FUN
             ) %>%
             t() %>%
-            as_tibble() %>%
+            as_tibble()
+
+          colnames(Option_price) <- input$greek
+
+          Option_price <-
+            Option_price %>%
             add_column(x) %>%
             pivot_longer(cols = -x,
                          names_to = "Greek",
