@@ -74,8 +74,10 @@ NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
     }
   }
 
-  result("fair_value") = max(p_*value(0) + q_*value(1),
-         price(steps + 1) - exercise_price);
+  result("fair_value") = payoff_function(
+    p_*value(0) + q_*value(1),
+         price(steps + 1),
+         exercise_price);
   result("delta") = (value(0) - value(1)) / (initial_price * (up - down));
   result("gamma") = (value(0) - 2*result("fair_value") + value(1)) /
     (initial_price * (up - down) * (up - down));
