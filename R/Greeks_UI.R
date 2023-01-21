@@ -48,23 +48,17 @@ Greeks_UI <- function() {
           selected = "initial_price",
           multiple = FALSE)
       ),
-      # payoff
+      # option type
       column(
         width = 6,
         selectInput(
-          inputId = "payoff",
-          label = "Payoff",
-          choices = list(
-            "Call" = "call",
-            "Put" = "put",
-            "Cash or nothing Call" = "cash_or_nothing_call",
-            "Cash or nothing Put" = "cash_or_nothing_put",
-            "Asset or nothing Call" = "asset_or_nothing_call",
-            "Asset or nothing Put" =  "asset_or_nothing_put"),
-          selected = "call",
+          inputId = "option_type",
+          label = "Option Type",
+          choices = list("European", "American"),
+          selected = "European",
           multiple = FALSE)
       )
-    ), # fluidRow
+      ), # fluidRow
     fluidRow(
       # greek
       column(
@@ -76,16 +70,40 @@ Greeks_UI <- function() {
           selected = c("Fair Value", "Delta"),
           multiple = TRUE)
       ),
-      # option type
-      column(
-        width = 6,
-        selectInput(
-          inputId = "option_type",
-          label = "Option Type",
-          choices = list("European", "American"),
-          selected = "European",
-          multiple = FALSE)
-      )
+      # payoff
+      conditionalPanel(
+        condition = ("input.option_type == 'European'"),
+        column(
+          width = 6,
+          selectInput(
+            inputId = "payoff_european",
+            label = "Payoff",
+            choices = list(
+              "Call" = "call",
+              "Put" = "put",
+              "Cash or nothing Call" = "cash_or_nothing_call",
+              "Cash or nothing Put" = "cash_or_nothing_put",
+              "Asset or nothing Call" = "asset_or_nothing_call",
+              "Asset or nothing Put" =  "asset_or_nothing_put"),
+            selected = "call",
+            multiple = FALSE)
+        )
+      ), # contionalPanel
+      # payoff
+      conditionalPanel(
+        condition = ("input.option_type != 'European'"),
+        column(
+          width = 6,
+          selectInput(
+            inputId = "payoff",
+            label = "Payoff",
+            choices = list(
+              "Call" = "call",
+              "Put" = "put"),
+            selected = "call",
+            multiple = FALSE)
+        )
+      ) # conditionalPanel
     ), # fluidRow
 
     ############################################################################
@@ -301,6 +319,11 @@ Greeks_UI <- function() {
         volatility <- input$volatility
         dividend_yield <- input$dividend_yield
 
+        payoff <-
+          ifelse(input$option_type == "European",
+                 payoff <- input$payoff_european,
+                 payoff <- input$payoff)
+
         x_bounds <- input[[eval(paste(params_list[[input$x_axis]], "_2", sep = ""))]]
 
         x_from <- x_bounds[1]
@@ -325,7 +348,7 @@ Greeks_UI <- function() {
             volatility = volatility,
             dividend_yield = dividend_yield,
             option_type = input$option_type,
-            payoff = input$payoff,
+            payoff = payoff,
             greek = greeks_list[input$greek],
             steps = 30) %>%
             round(4)
