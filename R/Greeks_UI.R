@@ -350,7 +350,7 @@ Greeks_UI <- function() {
             option_type = input$option_type,
             payoff = payoff,
             greek = greeks_list[input$greek],
-            steps = 30) %>%
+            steps = 100) %>%
             round(4)
         }
 
