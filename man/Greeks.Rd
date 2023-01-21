@@ -61,6 +61,10 @@ type of option to be considered}
 "theta", "rho", "epsilon", "lambda", "gamma", "vanna", "charm", "vomma",
 "veta", "vera", "speed", "zomma", "color", "ultima")
 }}
+
+\item{...}{\itemize{
+\item ...    Other arguments passed on to methods
+}}
 }
 \value{
 Named vector containing the values of the Greeks specified in the

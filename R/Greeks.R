@@ -17,6 +17,7 @@
 #' @param greek - Greeks to be calculated in c("fair_value", "delta", "vega",
 #' "theta", "rho", "epsilon", "lambda", "gamma", "vanna", "charm", "vomma",
 #' "veta", "vera", "speed", "zomma", "color", "ultima")
+#' @param ... - ...	Other arguments passed on to methods
 #'
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
