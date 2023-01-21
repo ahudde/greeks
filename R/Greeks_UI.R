@@ -65,8 +65,8 @@ Greeks_UI <- function() {
           multiple = FALSE)
       )
     ), # fluidRow
-    # greek
     fluidRow(
+      # greek
       column(
         width = 6,
         selectInput(
@@ -75,6 +75,16 @@ Greeks_UI <- function() {
           choices = names(greeks_list),
           selected = c("Fair Value", "Delta"),
           multiple = TRUE)
+      ),
+      # option type
+      column(
+        width = 6,
+        selectInput(
+          inputId = "option_type",
+          label = "Option Type",
+          choices = list("European", "American"),
+          selected = "European",
+          multiple = FALSE)
       )
     ), # fluidRow
 
@@ -314,8 +324,10 @@ Greeks_UI <- function() {
             time_to_maturity = time_to_maturity,
             volatility = volatility,
             dividend_yield = dividend_yield,
+            option_type = input$option_type,
             payoff = input$payoff,
-            greek = greeks_list[input$greek]) %>%
+            greek = greeks_list[input$greek],
+            steps = 30) %>%
             round(4)
         }
 

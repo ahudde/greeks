@@ -32,7 +32,8 @@ Greeks <-
            model = "Black_Scholes",
            option_type = "European",
            payoff = "call",
-           greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma")){
+           greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma"),
+           ...){
 
     if (tolower(option_type) == "european" && tolower(model) == "black_scholes") {
       return(BS_European_Greeks(payoff = payoff,
@@ -53,7 +54,8 @@ Greeks <-
                                       r = r,
                                       time_to_maturity = time_to_maturity,
                                       volatility = volatility,
-                                      dividend_yield = dividend_yield))
+                                      dividend_yield = dividend_yield,
+                                      ...))
     }
 
     else if (tolower(option_type) == "asian" && tolower(model) == "black_scholes") {
