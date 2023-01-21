@@ -14,7 +14,8 @@ Greeks(
   model = "Black_Scholes",
   option_type = "European",
   payoff = "call",
-  greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma")
+  greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma"),
+  ...
 )
 }
 \arguments{
