@@ -312,6 +312,9 @@ Greeks_UI <- function() {
     output$plot <- renderPlotly(
       {
 
+        ## The parameters for the computation of the Greeks are extracted from
+        ## input
+
         initial_price <- input$initial_price
         exercise_price <- input$exercise_price
         r <- input$r
@@ -337,7 +340,9 @@ Greeks_UI <- function() {
 
         x <- seq(x_from, x_to, by = step_size)
 
-        FUN = function(x) {
+        ## FUN is the function applied to sapply that compute the Greeks
+
+        FUN <- function(x) {
           assign(params_list[[input$x_axis]], x)
 
           Greeks(
