@@ -398,7 +398,7 @@ Greeks_UI <- function() {
                                   color = .data$Greek)) +
           theme_minimal() +
           xlab(input$x_axis) +
-          ggtitle("Prices and Sensitivites of European Options")
+          ggtitle(paste("Prices and Sensitivites of", input$option_type, "Options"))
 
         ggplotly(plot)
 
