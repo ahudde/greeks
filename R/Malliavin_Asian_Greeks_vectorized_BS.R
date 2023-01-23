@@ -45,10 +45,6 @@ Malliavin_Asian_Greeks <- function(
     payoff = "call",
     greek = c("fair_value", "delta", "rho", "vega",
               "theta", "gamma"),
-    model = "black_scholes",
-    lambda = 0.2,
-    alpha = 0.3,
-    jump_distribution = function(n) stats::rt(n, df = 3),
     steps = round(time_to_maturity*252),
     paths = 10000,
     seed = 1,
@@ -89,18 +85,6 @@ Malliavin_Asian_Greeks <- function(
   W <- make_BM(dqrnorm(n = paths*steps, sd = sqrt(dt)), paths = paths, steps = steps)
 
   X <- calc_X(W, dt, initial_price, volatility, r)
-
-  if (model == "jump_diffusion") {
-
-    Jumps <- c(numeric(paths), rpois(n = steps * paths, lambda = lambda *
-                                       dt))
-    for (i in which(Jumps != 0)) {
-      Jumps[i] <- alpha * sum(jump_distribution(Jumps[i]))
-    }
-    Jumps <- Jumps %>% matrix(nrow = paths) %>% rowCumsums()
-    X <- X * exp(Jumps)
-
-  } # model == "jump_diffusion"
 
   W_T <- W[, steps + 1]
 
