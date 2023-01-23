@@ -55,11 +55,25 @@ Malliavin_Asian_Greeks_2 <- function(
     seed = 1,
     antithetic = FALSE) {
 
+  params <- c("initial_price", "exercise_price", "r", "time_to_maturity",
+              "volatility", "dividend_yield")
+
+  param <- params[1]
+  vectorized_param <- get(param)
+
+  for (p in params) {
+    if ( length(get(p)) >= 2) {
+      vectorized_param <- get(p)
+      param <- p
+      break
+    }
+  }
+
   dt <- time_to_maturity/steps
 
   result <-
     matrix(ncol = length(greek),
-           nrow = length(initial_price),
+           nrow = length(vectorized_param),
            dimnames = list(NULL, greek))
 
   ## the payoff function ##
@@ -67,18 +81,18 @@ Malliavin_Asian_Greeks_2 <- function(
   if (inherits(payoff, "function")) {
     print("custom payoff")
   } else if (payoff == "call") {
-    payoff <- function(x) {
+    payoff <- function(x, exercise_price) {
       return(pmax(0, x - exercise_price))
     }
   } else if (payoff == "put") {
-    payoff <- function(x) {
+    payoff <- function(x, exercise_price) {
       return(pmax(0, exercise_price - x))
     }
   } else if (payoff == "digital_call") {
-    payoff <- function(x) {ifelse(x >= exercise_price, 1, 0)
+    payoff <- function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)
     }
   } else if (payoff == "digital_put") {
-    payoff <- function(x) {ifelse(x <= exercise_price, 1, 0)
+    payoff <- function(x, exercise_price) {ifelse(x <= exercise_price, 1, 0)
     }
   }
 
@@ -128,11 +142,13 @@ Malliavin_Asian_Greeks_2 <- function(
     I_3 <- calc_I_3(X, steps, dt)
   }
 
-  for(i in 1:length(initial_price)) {
+  for(i in 1:length(vectorized_param)) {
+
+    assign(param, vectorized_param[i])
 
     E <- function(weight) {
       return(exp(-r*time_to_maturity) *
-               mean(payoff(initial_price[i] * I_0/time_to_maturity) * weight))
+               mean(payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
     }
 
     if ("fair_value" %in% greek) {
@@ -142,7 +158,7 @@ Malliavin_Asian_Greeks_2 <- function(
 
     if ("delta" %in% greek) {
       result[i, "delta"] <-
-        (1/(volatility * initial_price[i]) *
+        (1/(volatility * initial_price) *
            (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
         E()
     }
@@ -173,7 +189,7 @@ Malliavin_Asian_Greeks_2 <- function(
 
     if ("gamma" %in% greek) {
       result[i, "gamma"] <-
-        ((1/(volatility^2*initial_price[i]^2)) *
+        ((1/(volatility^2*initial_price^2)) *
            (2*volatility^2
             - 4*volatility*W_T*I_0/I_1
             + ((W_T^2 - time_to_maturity)*I_0 - 4*volatility^2*I_2)*I_0/I_1^2
