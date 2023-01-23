@@ -35,7 +35,7 @@
 #' greek = c("fair_value", "delta", "rho"), payoff = "put")
 #'
 
-Malliavin_Asian_Greeks <- function(
+Malliavin_Asian_Greeks_vectorized_BS <- function(
     initial_price = 100,
     exercise_price = 100,
     r = 0,

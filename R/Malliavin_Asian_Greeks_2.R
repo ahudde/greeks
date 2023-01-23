@@ -56,9 +56,10 @@ Malliavin_Asian_Greeks_2 <- function(
 
   dt <- time_to_maturity/steps
 
-  result <- vector(mode = "numeric", length = length(greek))
-
-  names(result) <- greek
+  result <-
+    matrix(ncol = length(greek),
+           nrow = length(initial_price),
+           dimnames = list(NULL, greek))
 
   ## the payoff function ##
 
@@ -126,55 +127,60 @@ Malliavin_Asian_Greeks_2 <- function(
     I_3 <- calc_I_3(X, steps, dt)
   }
 
-  E <- function(weight) {
-    return(exp(-r*time_to_maturity) * mean(payoff(initial_price * I_0/time_to_maturity) * weight))
-  }
+  for(i in 1:length(initial_price)) {
 
-  if ("fair_value" %in% greek) {
-    result["fair_value"] <-
-      E(1)
-  }
+    E <- function(weight) {
+      return(exp(-r*time_to_maturity) *
+               mean(payoff(initial_price[i] * I_0/time_to_maturity) * weight))
+    }
 
-  if ("delta" %in% greek) {
-    result["delta"] <-
-      (1/(volatility * initial_price) *
-         (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
-      E()
-  }
+    if ("fair_value" %in% greek) {
+      result[i, "fair_value"] <-
+        E(1)
+    }
 
-  if ("rho" %in% greek) {
-    result["rho"] <-
-      (W_T/volatility - time_to_maturity) %>%
-      E()
-  }
+    if ("delta" %in% greek) {
+      result[i, "delta"] <-
+        (1/(volatility * initial_price[i]) *
+           (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
+        E()
+    }
 
-  if ("theta" %in% greek) {
-    result["theta"] <-
-      (r - 1/time_to_maturity +
-         (1/(volatility * time_to_maturity) * I_0 * W_T -
-            1/volatility * X_T * W_T + time_to_maturity * X_T) / I_1 +
-         (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
-      E()
-  }
+    if ("rho" %in% greek) {
+      result[i, "rho"] <-
+        (W_T/volatility - time_to_maturity) %>%
+        E()
+    }
 
-  if ("vega" %in% greek) {
-    result["vega"] <-
-      ((1 / volatility) *
-         ( -(1 + volatility * W_T) +
-             (W_T * XW - volatility * tXW) / I_1 +
-             (volatility * XW * I_2) / I_1^2)) %>%
-      E()
-  }
+    if ("theta" %in% greek) {
+      result[i, "theta"] <-
+        (r - 1/time_to_maturity +
+           ((1/(volatility * time_to_maturity)) * I_0 * W_T -
+              (1/volatility) * X_T * W_T + time_to_maturity * X_T) / I_1 +
+           (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
+        E()
+    }
 
-  if ("gamma" %in% greek) {
-    result["gamma"] <-
-      ((1/(volatility^2*initial_price^2)) *
-         (2*volatility^2
-          - 4*volatility*W_T*I_0/I_1
-          + ((W_T^2 - time_to_maturity)*I_0 - 4*volatility^2*I_2)*I_0/I_1^2
-          + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
-          + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
-      E()
+    if ("vega" %in% greek) {
+      result[i, "vega"] <-
+        ((1 / volatility) *
+           ( -(1 + volatility * W_T) +
+               (W_T * XW - volatility * tXW) / I_1 +
+               (volatility * XW * I_2) / I_1^2)) %>%
+        E()
+    }
+
+    if ("gamma" %in% greek) {
+      result[i, "gamma"] <-
+        ((1/(volatility^2*initial_price[i]^2)) *
+           (2*volatility^2
+            - 4*volatility*W_T*I_0/I_1
+            + ((W_T^2 - time_to_maturity)*I_0 - 4*volatility^2*I_2)*I_0/I_1^2
+            + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
+            + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
+        E()
+    }
+
   }
 
   return(result)
