@@ -7,7 +7,8 @@
 #' @import "Rcpp"
 #' @importFrom "dqrng" "dqrnorm" "dqset.seed"
 #'
-#' @param initial_price - initial price of the underlying asset
+#' @param initial_price - initial price of the underlying asset, can also be a
+#' vector
 #' @param exercise_price - strike price of the option
 #' @param r - risk-free interest rate
 #' @param time_to_maturity - time to maturity in years
