@@ -143,7 +143,7 @@ Greeks_UI <- function() {
 
       # Exercise Price
       conditionalPanel(
-        condition = ("input.x_axis != 'exercise_price'"),
+        condition = ("input.x_axis != 'Exercise Price'"),
         column(
           width = 6,
           sliderInput(
@@ -157,7 +157,7 @@ Greeks_UI <- function() {
       ), # condionalPanel
       # Exercise Price
       conditionalPanel(
-        condition = ("input.x_axis == 'exercise_price'"),
+        condition = ("input.x_axis == 'Exercise Price'"),
         column(
           width = 6,
           sliderInput(
@@ -180,7 +180,7 @@ Greeks_UI <- function() {
 
       # Riskless Interest Rate
       conditionalPanel(
-        condition = ("input.x_axis != 'r'"),
+        condition = ("input.x_axis != 'Riskless Interest Rate'"),
         column(
           width = 6,
           sliderInput(
@@ -194,7 +194,7 @@ Greeks_UI <- function() {
       ), # conditionalPanel
       # Riskless Interest Rate
       conditionalPanel(
-        condition = ("input.x_axis == 'r'"),
+        condition = ("input.x_axis == 'Riskless Interest Rate'"),
         column(
           width = 6,
           sliderInput(
@@ -209,7 +209,7 @@ Greeks_UI <- function() {
 
       # Time to Maturity
       conditionalPanel(
-        condition = ("input.x_axis != 'time_to_maturity'"),
+        condition = ("input.x_axis != 'Time to Maturity'"),
         column(
           width = 6,
           sliderInput(
@@ -224,7 +224,7 @@ Greeks_UI <- function() {
       ), # condionalPanel
       # Time to Maturity
       conditionalPanel(
-        condition = ("input.x_axis == 'time_to_maturity'"),
+        condition = ("input.x_axis == 'Time to Maturity'"),
         column(
           width = 6,
           sliderInput(
@@ -247,7 +247,7 @@ Greeks_UI <- function() {
 
       # Volatility
       conditionalPanel(
-        condition = ("input.x_axis != 'volatility'"),
+        condition = ("input.x_axis != 'Volatility'"),
         column(
           width = 6,
           sliderInput(
@@ -261,7 +261,7 @@ Greeks_UI <- function() {
       ), # condionalPanel
       # Volatility
       conditionalPanel(
-        condition = ("input.x_axis == 'volatility'"),
+        condition = ("input.x_axis == 'Volatility'"),
         column(
           width = 6,
           sliderInput(
@@ -276,7 +276,7 @@ Greeks_UI <- function() {
 
       # Dividend Yield
       conditionalPanel(
-        condition = ("input.x_axis != 'dividend_yield'"),
+        condition = ("input.x_axis != 'Dividend Yield'"),
         column(
           width = 6,
           sliderInput(
@@ -290,7 +290,7 @@ Greeks_UI <- function() {
       ), # condionalPanel
       # Dividend Yield
       conditionalPanel(
-        condition = ("input.x_axis == 'dividend_yield'"),
+        condition = ("input.x_axis == 'Dividend Yield'"),
         column(
           width = 6,
           sliderInput(
