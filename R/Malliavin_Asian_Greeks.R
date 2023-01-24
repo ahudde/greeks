@@ -200,6 +200,6 @@ Malliavin_Asian_Greeks <- function(
 
   }
 
-  return(result)
+  return(drop(result))
 
 }
