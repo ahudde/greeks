@@ -393,8 +393,6 @@ Greeks_UI <- function() {
 
         }
 
-        View(Option_price)
-
         plot <-
           Option_price %>%
           ggplot() +
