@@ -362,11 +362,14 @@ Greeks_UI <- function() {
         if (length(input$greek) == 1) {
           Option_price <-
             tibble(
+              x,
               Value = sapply(
                 X = x,
                 FUN = FUN),
-              eval(input$x_axis) = x,
               Greek = input$greek)
+
+          colnames(Option_price)[1] <- input$x_axis
+
         } else {
 
           Option_price <-
@@ -389,6 +392,8 @@ Greeks_UI <- function() {
           colnames(Option_price)[1] <- input$x_axis
 
         }
+
+        View(Option_price)
 
         plot <-
           Option_price %>%
