@@ -365,7 +365,7 @@ Greeks_UI <- function() {
               Value = sapply(
                 X = x,
                 FUN = FUN),
-              x,
+              eval(input$x_axis) = x,
               Greek = input$greek)
         } else {
 
