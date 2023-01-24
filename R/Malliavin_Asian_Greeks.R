@@ -104,7 +104,7 @@ Malliavin_Asian_Greeks <- function(
 
   W <- make_BM(dqrnorm(n = paths*steps, sd = sqrt(dt)), paths = paths, steps = steps)
 
-  X <- calc_X(W, dt, 1, volatility, r)
+  X <- calc_X(W, dt, volatility, r)
 
   if (model == "jump_diffusion") {
 
