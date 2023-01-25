@@ -48,25 +48,19 @@ Greeks_UI <- function() {
           selected = "initial_price",
           multiple = FALSE)
       ),
-      # payoff
+      # option type
       column(
         width = 6,
         selectInput(
-          inputId = "payoff",
-          label = "Payoff",
-          choices = list(
-            "Call" = "call",
-            "Put" = "put",
-            "Cash or nothing Call" = "cash_or_nothing_call",
-            "Cash or nothing Put" = "cash_or_nothing_put",
-            "Asset or nothing Call" = "asset_or_nothing_call",
-            "Asset or nothing Put" =  "asset_or_nothing_put"),
-          selected = "call",
+          inputId = "option_type",
+          label = "Option Type",
+          choices = list("European", "American"),
+          selected = "European",
           multiple = FALSE)
       )
-    ), # fluidRow
-    # greek
+      ), # fluidRow
     fluidRow(
+      # greek
       column(
         width = 6,
         selectInput(
@@ -75,7 +69,41 @@ Greeks_UI <- function() {
           choices = names(greeks_list),
           selected = c("Fair Value", "Delta"),
           multiple = TRUE)
-      )
+      ),
+      # payoff
+      conditionalPanel(
+        condition = ("input.option_type == 'European'"),
+        column(
+          width = 6,
+          selectInput(
+            inputId = "payoff_european",
+            label = "Payoff",
+            choices = list(
+              "Call" = "call",
+              "Put" = "put",
+              "Cash or nothing Call" = "cash_or_nothing_call",
+              "Cash or nothing Put" = "cash_or_nothing_put",
+              "Asset or nothing Call" = "asset_or_nothing_call",
+              "Asset or nothing Put" =  "asset_or_nothing_put"),
+            selected = "call",
+            multiple = FALSE)
+        )
+      ), # contionalPanel
+      # payoff
+      conditionalPanel(
+        condition = ("input.option_type != 'European'"),
+        column(
+          width = 6,
+          selectInput(
+            inputId = "payoff",
+            label = "Payoff",
+            choices = list(
+              "Call" = "call",
+              "Put" = "put"),
+            selected = "call",
+            multiple = FALSE)
+        )
+      ) # conditionalPanel
     ), # fluidRow
 
     ############################################################################
@@ -284,12 +312,20 @@ Greeks_UI <- function() {
     output$plot <- renderPlotly(
       {
 
+        ## The parameters for the computation of the Greeks are extracted from
+        ## input
+
         initial_price <- input$initial_price
         exercise_price <- input$exercise_price
         r <- input$r
         time_to_maturity <- input$time_to_maturity
         volatility <- input$volatility
         dividend_yield <- input$dividend_yield
+
+        payoff <-
+          ifelse(input$option_type == "European",
+                 payoff <- input$payoff_european,
+                 payoff <- input$payoff)
 
         x_bounds <- input[[eval(paste(params_list[[input$x_axis]], "_2", sep = ""))]]
 
@@ -304,7 +340,9 @@ Greeks_UI <- function() {
 
         x <- seq(x_from, x_to, by = step_size)
 
-        FUN = function(x) {
+        ## FUN is the function applied to sapply that compute the Greeks
+
+        FUN <- function(x) {
           assign(params_list[[input$x_axis]], x)
 
           Greeks(
@@ -314,8 +352,10 @@ Greeks_UI <- function() {
             time_to_maturity = time_to_maturity,
             volatility = volatility,
             dividend_yield = dividend_yield,
-            payoff = input$payoff,
-            greek = greeks_list[input$greek]) %>%
+            option_type = input$option_type,
+            payoff = payoff,
+            greek = greeks_list[input$greek],
+            steps = 100) %>%
             round(4)
         }
 
@@ -358,7 +398,7 @@ Greeks_UI <- function() {
                                   color = .data$Greek)) +
           theme_minimal() +
           xlab(input$x_axis) +
-          ggtitle("Prices and Sensitivites of European Options")
+          ggtitle(paste("Prices and Sensitivites of", input$option_type, "Options"))
 
         ggplotly(plot)
 
