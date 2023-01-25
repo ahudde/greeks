@@ -172,6 +172,9 @@ Malliavin_Asian_Greeks <- function(
         (1/(volatility * initial_price) *
            (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
         E()
+    }
+
+    if ("delta_2" %in% greeks) {
       result[i, "delta_2"] <- dE(I_0)
     }
 
