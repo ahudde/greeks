@@ -1,4 +1,4 @@
-#' Computes the implied volatility for European-, American- and Asian options.
+#' Computes the implied volatility for European options via Halley's method.
 #'
 #' @export
 #'
@@ -69,9 +69,13 @@ BS_Implied_Volatility <-
         initial_price*exp(-dividend_yield*time_to_maturity) * dnorm(d1) *
         sqrt(time_to_maturity)
 
+      vomma <-
+        initial_price * exp(-dividend_yield * time_to_maturity) *
+        dnorm(d1) * sqrt(time_to_maturity) * d1 * d2 / volatility
+
       volatility <-
         volatility -
-        ((fair_value - option_price) / vega)
+        (2 * (fair_value - option_price) * vega) / (2 * vega^2 - (fair_value - option_price) * vomma)
 
       if (abs(fair_value - option_price) < precision) {
         return(volatility)
