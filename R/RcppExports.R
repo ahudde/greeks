@@ -21,8 +21,8 @@ calc_I_3 <- function(X, steps, dt) {
     .Call(`_greeks_calc_I_3`, X, steps, dt)
 }
 
-calc_X <- function(W, dt, initial_price, volatility, r) {
-    .Call(`_greeks_calc_X`, W, dt, initial_price, volatility, r)
+calc_X <- function(W, dt, volatility, r) {
+    .Call(`_greeks_calc_X`, W, dt, volatility, r)
 }
 
 calc_XW <- function(X, W, steps, paths, dt) {
