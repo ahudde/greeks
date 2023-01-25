@@ -84,9 +84,15 @@ Malliavin_Asian_Greeks <- function(
     payoff <- function(x, exercise_price) {
       return(pmax(0, x - exercise_price))
     }
+    dpayoff <- function(x, exercise_price) {
+      return((x > exercise_price) + 0)
+    }
   } else if (payoff == "put") {
     payoff <- function(x, exercise_price) {
       return(pmax(0, exercise_price - x))
+    }
+    dpayoff <- function(x, exercise_price) {
+      return((x < exercise_price) + 0)
     }
   } else if (payoff == "digital_call") {
     payoff <- function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)
@@ -104,7 +110,7 @@ Malliavin_Asian_Greeks <- function(
 
   W <- make_BM(dqrnorm(n = paths*steps, sd = sqrt(dt)), paths = paths, steps = steps)
 
-  X <- calc_X(W, dt, 1, volatility, r)
+  X <- calc_X(W, dt, volatility, r)
 
   if (model == "jump_diffusion") {
 
@@ -151,6 +157,11 @@ Malliavin_Asian_Greeks <- function(
                mean(payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
     }
 
+    dE <- function(weight) {
+      return(exp(-r*time_to_maturity) *
+               mean(dpayoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
+    }
+
     if ("fair_value" %in% greek) {
       result[i, "fair_value"] <-
         E(1)
@@ -161,6 +172,7 @@ Malliavin_Asian_Greeks <- function(
         (1/(volatility * initial_price) *
            (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
         E()
+      result[i, "delta_2"] <- dE(I_0)
     }
 
     if ("rho" %in% greek) {
@@ -200,6 +212,6 @@ Malliavin_Asian_Greeks <- function(
 
   }
 
-  return(result)
+  return(drop(result))
 
 }
