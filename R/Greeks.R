@@ -17,6 +17,7 @@
 #' @param greek - Greeks to be calculated in c("fair_value", "delta", "vega",
 #' "theta", "rho", "epsilon", "lambda", "gamma", "vanna", "charm", "vomma",
 #' "veta", "vera", "speed", "zomma", "color", "ultima")
+#' @param ... - ...	Other arguments passed on to methods
 #'
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
@@ -32,7 +33,8 @@ Greeks <-
            model = "Black_Scholes",
            option_type = "European",
            payoff = "call",
-           greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma")){
+           greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma"),
+           ...){
 
     if (tolower(option_type) == "european" && tolower(model) == "black_scholes") {
       return(BS_European_Greeks(payoff = payoff,
@@ -53,7 +55,8 @@ Greeks <-
                                       r = r,
                                       time_to_maturity = time_to_maturity,
                                       volatility = volatility,
-                                      dividend_yield = dividend_yield))
+                                      dividend_yield = dividend_yield,
+                                      ...))
     }
 
     else if (tolower(option_type) == "asian" && tolower(model) == "black_scholes") {
