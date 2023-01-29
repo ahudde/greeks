@@ -174,7 +174,7 @@ Malliavin_Asian_Greeks <- function(
         E()
     }
 
-    if ("delta_2" %in% greeks) {
+    if ("delta_2" %in% greek) {
       result[i, "delta_2"] <- dE(I_0)
     }
 
