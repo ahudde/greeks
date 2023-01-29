@@ -368,8 +368,6 @@ Greeks_UI <- function() {
                 FUN = FUN),
               Greek = input$greek)
 
-          colnames(Option_price)[1] <- input$x_axis
-
         } else {
 
           Option_price <-
@@ -384,14 +382,15 @@ Greeks_UI <- function() {
 
           Option_price <-
             Option_price %>%
-            add_column(x, .before = 1) %>%
+            add_column(x) %>%
             pivot_longer(cols = -x,
                          names_to = "Greek",
                          values_to = "Value")
 
-          colnames(Option_price)[1] <- input$x_axis
-
         }
+
+        colnames(Option_price) <-
+          replace(colnames(Option_price), colnames(Option_price) == "x", input$x_axis)
 
         plot <-
           Option_price %>%
