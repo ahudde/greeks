@@ -2,7 +2,7 @@
 % Please edit documentation in R/BS_Implied_Volatility.R
 \name{BS_Implied_Volatility}
 \alias{BS_Implied_Volatility}
-\title{Computes the implied volatility for European-, American- and Asian options.}
+\title{Computes the implied volatility for European options via Halley's method.}
 \usage{
 BS_Implied_Volatility(
   option_price,
@@ -58,7 +58,7 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the implied volatility for European-, American- and Asian options.
+Computes the implied volatility for European options via Halley's method.
 }
 \examples{
 BS_Implied_Volatility(option_price = 27, initial_price = 100,

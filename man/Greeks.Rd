@@ -14,7 +14,8 @@ Greeks(
   model = "Black_Scholes",
   option_type = "European",
   payoff = "call",
-  greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma")
+  greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma"),
+  ...
 )
 }
 \arguments{
@@ -59,6 +60,10 @@ type of option to be considered}
 \item Greeks to be calculated in c("fair_value", "delta", "vega",
 "theta", "rho", "epsilon", "lambda", "gamma", "vanna", "charm", "vomma",
 "veta", "vera", "speed", "zomma", "color", "ultima")
+}}
+
+\item{...}{\itemize{
+\item ...    Other arguments passed on to methods
 }}
 }
 \value{
