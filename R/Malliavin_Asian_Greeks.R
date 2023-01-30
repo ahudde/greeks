@@ -92,7 +92,7 @@ Malliavin_Asian_Greeks <- function(
       return(pmax(0, exercise_price - x))
     }
     dpayoff <- function(x, exercise_price) {
-      return((x < exercise_price) + 0)
+      return(-(x < exercise_price) + 0)
     }
   } else if (payoff == "digital_call") {
     payoff <- function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)
@@ -128,7 +128,7 @@ Malliavin_Asian_Greeks <- function(
 
   X_T <- X[, steps + 1]
 
-  if ("vega" %in% greek) {
+  if (length(intersect(greek, c("vega", "vega_d")))) {
     XW <- calc_XW(X, W, steps, paths, dt)
     tXW <- calc_tXW(X, W, steps, paths, dt)
   }
@@ -139,7 +139,9 @@ Malliavin_Asian_Greeks <- function(
 
   I_0 <- calc_I(X, steps, dt)
 
-  if (length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
+  if (length(intersect(
+    greek,
+    c("delta", "delta_d", "theta", "vega", "vega_d", "gamma")))) {
     I_1 <- calc_I_1(X, steps, dt)
     I_2 <- calc_I_2(X, steps, dt)
   }
@@ -174,6 +176,9 @@ Malliavin_Asian_Greeks <- function(
         E()
     }
 
+    if ("delta_d" %in% greek) {
+      result[i, "delta_d"] <- dE(I_0 / time_to_maturity)
+      }
     if ("delta_2" %in% greek) {
       result[i, "delta_2"] <- dE(I_0)
     }
@@ -200,6 +205,12 @@ Malliavin_Asian_Greeks <- function(
                (W_T * XW - volatility * tXW) / I_1 +
                (volatility * XW * I_2) / I_1^2)) %>%
         E()
+    }
+
+    if("vega_d" %in% greek) {
+      result[i, "vega_d"] <-
+        ((initial_price / time_to_maturity) * (XW - volatility * I_1)) %>%
+        dE()
     }
 
     if ("gamma" %in% greek) {
