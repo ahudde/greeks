@@ -5,6 +5,7 @@ using namespace Rcpp;
 NumericVector calc_XW(NumericMatrix X, NumericMatrix W, int steps, int paths,
                        float dt) {
   int i;
+  paths = X.nrow();
   NumericVector XW(paths);
   XW = X(_, steps)*W(_, steps)/2;
   for(i = 1; i < steps; i++) {

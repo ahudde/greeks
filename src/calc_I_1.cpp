@@ -7,9 +7,10 @@ NumericVector calc_I_1(NumericMatrix X, int steps, float dt) {
   int paths = X.nrow();
 
   NumericVector I(paths);
-  I = X(_, steps)/2 * steps * dt * dt;
+  I = X(_, steps)/2 * (steps * dt);
   for(i = 1; i < steps; i++) {
-    I = I + X(_, i) * (i * dt) * dt;
+    I = I + X(_, i) * (i * dt);
   }
+  I = I * dt;
   return I;
 }
