@@ -93,7 +93,7 @@ Malliavin_Asian_Greeks <- function(
     }
     dpayoff <- function(x, exercise_price) {
       return(-(x < exercise_price) + 0)
-    }
+      }
   } else if (payoff == "digital_call") {
     payoff <- function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)
     }
@@ -110,7 +110,7 @@ Malliavin_Asian_Greeks <- function(
 
   W <- make_BM(dqrnorm(n = paths*steps, sd = sqrt(dt)), paths = paths, steps = steps)
 
-  X <- calc_X(W, dt, volatility, r)
+  X <- calc_X(W, dt, volatility, r - dividend_yield)
 
   if (model == "jump_diffusion") {
 
@@ -141,7 +141,8 @@ Malliavin_Asian_Greeks <- function(
 
   if (length(intersect(
     greek,
-    c("delta", "delta_d", "theta", "vega", "vega_d", "gamma")))) {
+    c("delta", "delta_d", "theta", "vega", "vega_d", "gamma", "gamma_kombi",
+      "rho_d")))) {
     I_1 <- calc_I_1(X, steps, dt)
     I_2 <- calc_I_2(X, steps, dt)
   }
@@ -150,17 +151,17 @@ Malliavin_Asian_Greeks <- function(
     I_3 <- calc_I_3(X, steps, dt)
   }
 
-  for(i in 1:length(vectorized_param)) {
+  for (i in 1:length(vectorized_param)) {
 
     assign(param, vectorized_param[i])
 
     E <- function(weight) {
-      return(exp(-r*time_to_maturity) *
+      return(exp(-(r - dividend_yield)*time_to_maturity) *
                mean(payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
     }
 
     dE <- function(weight) {
-      return(exp(-r*time_to_maturity) *
+      return(exp(-(r-dividend_yield)*time_to_maturity) *
                mean(dpayoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
     }
 
@@ -178,9 +179,6 @@ Malliavin_Asian_Greeks <- function(
 
     if ("delta_d" %in% greek) {
       result[i, "delta_d"] <- dE(I_0 / time_to_maturity)
-      }
-    if ("delta_2" %in% greek) {
-      result[i, "delta_2"] <- dE(I_0)
     }
 
     if ("rho" %in% greek) {
@@ -189,13 +187,24 @@ Malliavin_Asian_Greeks <- function(
         E()
     }
 
+    if ("rho_d" %in% greek) {
+      result[i, "rho_d"] <-
+        -time_to_maturity *  E(1) + dE(initial_price * I_1/time_to_maturity)
+    }
+
     if ("theta" %in% greek) {
       result[i, "theta"] <-
-        (r - 1/time_to_maturity +
+        ((r - dividend_yield) - 1/time_to_maturity +
            ((1/(volatility * time_to_maturity)) * I_0 * W_T -
               (1/volatility) * X_T * W_T + time_to_maturity * X_T) / I_1 +
            (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
         E()
+    }
+
+    if ("theta_d" %in% greek) {
+      result[i, "theta_d"] <-
+        (r - dividend_yield) * E(1) +
+        dE(initial_price * (I_0/time_to_maturity^2 - X_T/time_to_maturity))
     }
 
     if ("vega" %in% greek) {
@@ -207,7 +216,7 @@ Malliavin_Asian_Greeks <- function(
         E()
     }
 
-    if("vega_d" %in% greek) {
+    if ("vega_d" %in% greek) {
       result[i, "vega_d"] <-
         ((initial_price / time_to_maturity) * (XW - volatility * I_1)) %>%
         dE()
@@ -222,6 +231,13 @@ Malliavin_Asian_Greeks <- function(
             + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
             + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
         E()
+    }
+
+    if ("gamma_kombi" %in% greek) {
+      result[i, "gamma_kombi"] <-
+        (1/(volatility * initial_price) *
+           (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
+        dE()
     }
 
   }
