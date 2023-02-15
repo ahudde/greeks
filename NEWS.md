@@ -8,8 +8,11 @@ output:
 
 `Greeks_UI()`: Added American Options and Greeks.
 
-`Implied_Volatility()`: Improved performance for European Options by implementing
-Halley's Method.
+`Implied_Volatility()`: Improved performance for European Options by
+implementing Halley's Method.
+
+`Malliavin_Asian_Greeks()`: initial_price and exercise_price now accept vectors
+as input
 
 # Greeks 0.8.1
 
