@@ -8,7 +8,6 @@ src/*.so
 src/*.dll
 inst/doc
 README.md
-*.png
 /doc/
 /Meta/
 greeks*.tgz
