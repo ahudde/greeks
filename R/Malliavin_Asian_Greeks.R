@@ -108,7 +108,16 @@ Malliavin_Asian_Greeks <- function(
     dqset.seed(seed)
   }
 
-  W <- make_BM(dqrnorm(n = paths*steps, sd = sqrt(dt)), paths = paths, steps = steps)
+  if (antithetic) {
+    gaussian_random_numbers <- dqrnorm(n = (paths*steps/2), sd = sqrt(dt))
+    W <- make_BM(gaussian_random_numbers, paths = paths/2, steps = steps)
+    W <- rbind(
+      W,
+      -W)
+  } else {
+    gaussian_random_numbers <- dqrnorm(n = paths*steps, sd = sqrt(dt))
+    W <- make_BM(gaussian_random_numbers, paths = paths, steps = steps)
+  }
 
   X <- calc_X(W, dt, volatility, r - dividend_yield)
 
@@ -161,7 +170,7 @@ Malliavin_Asian_Greeks <- function(
     }
 
     dE <- function(weight) {
-      return(exp(-(r-dividend_yield)*time_to_maturity) *
+      return(exp(-(r - dividend_yield)*time_to_maturity) *
                mean(dpayoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
     }
 
@@ -189,7 +198,7 @@ Malliavin_Asian_Greeks <- function(
 
     if ("rho_d" %in% greek) {
       result[i, "rho_d"] <-
-        -time_to_maturity *  E(1) + dE(initial_price * I_1/time_to_maturity)
+        -time_to_maturity * E(1) + dE(initial_price * I_1/time_to_maturity)
     }
 
     if ("theta" %in% greek) {
