@@ -4,6 +4,11 @@ output:
   html_document: default
   word_document: default
 ---
+# Greeks 1.1.0
+
+`BS_Geometric_Asian_Greeks()` now computes prices and sensitivities of geometric Asian
+options.
+
 # Greeks 1.0.0
 
 `Greeks_UI()`: Added American Options and Greeks.
