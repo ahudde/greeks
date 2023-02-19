@@ -59,6 +59,17 @@ Greeks <-
                                       ...))
     }
 
+    else if (tolower(option_type) == "geometric asian" && tolower(model) == "black_scholes") {
+      return(BS_Geometric_Asian_Greeks(payoff = payoff,
+                                       greek = greek,
+                                       initial_price = initial_price,
+                                       exercise_price = exercise_price,
+                                       r = r,
+                                       time_to_maturity = time_to_maturity,
+                                       volatility = volatility,
+                                       dividend_yield = dividend_yield))
+    }
+
     else if (tolower(option_type) == "asian" && tolower(model) == "black_scholes") {
       return(Malliavin_Asian_Greeks(payoff = payoff,
                                     greek = greek,

@@ -6,8 +6,10 @@ output:
 ---
 # Greeks 1.1.0
 
-`BS_Geometric_Asian_Greeks()` now computes prices and sensitivities of geometric Asian
-options.
+`BS_Geometric_Asian_Greeks()` now computes prices and sensitivities of geometric
+Asian options.
+
+`Greeks_UI()` also displays Geometric Asian Options.
 
 # Greeks 1.0.0
 

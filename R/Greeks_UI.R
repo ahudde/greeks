@@ -36,6 +36,10 @@ Greeks_UI <- function() {
       "Volatility" = "volatility",
       "Dividend Yield" = "dividend_yield")
 
+  ############################################################################
+  ####### first row of selection panels with 'X-Axis' and 'Option Type' ######
+  ############################################################################
+
   ui <- fluidPage(
     fluidRow(
       # x-axis
@@ -54,21 +58,57 @@ Greeks_UI <- function() {
         selectInput(
           inputId = "option_type",
           label = "Option Type",
-          choices = list("European", "American"),
+          choices = list("European", "American", "Geometric Asian"),
           selected = "European",
           multiple = FALSE)
       )
-      ), # fluidRow
+    ), # fluidRow
+
+    ############################################################################
+    ######### second row of selection panels with 'Greek' and 'Payoff' #########
+    ############################################################################
+
     fluidRow(
-      # greek
-      column(
-        width = 6,
-        selectInput(
-          inputId = "greek",
-          label = "Greek",
-          choices = names(greeks_list),
-          selected = c("Fair Value", "Delta"),
-          multiple = TRUE)
+      # greek for European Options
+      conditionalPanel(
+        condition = ("input.option_type == 'European'"),
+        column(
+          width = 6,
+          selectInput(
+            inputId = "greek_european",
+            label = "Greek",
+            choices = names(greeks_list),
+            selected = c("Fair Value", "Delta"),
+            multiple = TRUE)
+        )
+      ),
+      # greek for American Options
+      conditionalPanel(
+        condition = ("input.option_type == 'American'"),
+        column(
+          width = 6,
+          selectInput(
+            inputId = "greek_american",
+            label = "Greek",
+            choices = c("Fair Value", "Delta", "Vega", "Theta", "Rho",
+                        "Epsilon", "Gamma"),
+            selected = c("Fair Value", "Delta"),
+            multiple = TRUE)
+        )
+      ),
+      # greek for Geometric Asian Options
+      conditionalPanel(
+        condition = ("input.option_type == 'Geometric Asian'"),
+        column(
+          width = 6,
+          selectInput(
+            inputId = "greek_geometric_asian",
+            label = "Greek",
+            choices = c("Fair Value", "Delta", "Vega", "Theta", "Rho",
+                        "Epsilon", "Gamma"),
+            selected = c("Fair Value", "Delta"),
+            multiple = TRUE)
+        )
       ),
       # payoff
       conditionalPanel(
@@ -88,7 +128,7 @@ Greeks_UI <- function() {
             selected = "call",
             multiple = FALSE)
         )
-      ), # contionalPanel
+      ), # conditionalPanel
       # payoff
       conditionalPanel(
         condition = ("input.option_type != 'European'"),
@@ -125,7 +165,7 @@ Greeks_UI <- function() {
             value = 100
           )
         )
-      ), # condionalPanel
+      ), # conditionalPanel
       # Initial Price
       conditionalPanel(
         condition = ("input.x_axis == 'Initial Price'"),
@@ -154,7 +194,7 @@ Greeks_UI <- function() {
             value = 100
           )
         )
-      ), # condionalPanel
+      ), # conditionalPanel
       # Exercise Price
       conditionalPanel(
         condition = ("input.x_axis == 'Exercise Price'"),
@@ -168,7 +208,7 @@ Greeks_UI <- function() {
             value = c(0, 200)
           )
         )
-      ), # condionalPanel
+      ), # conditionalPanel
     ), # fluidRow
 
     ############################################################################
@@ -205,7 +245,7 @@ Greeks_UI <- function() {
             value = c(-0.1, 1)
           )
         )
-      ), # condionalPanel
+      ), # conditionalPanel
 
       # Time to Maturity
       conditionalPanel(
@@ -221,7 +261,7 @@ Greeks_UI <- function() {
             step = 0.1
           )
         )
-      ), # condionalPanel
+      ), # conditionalPanel
       # Time to Maturity
       conditionalPanel(
         condition = ("input.x_axis == 'Time to Maturity'"),
@@ -258,7 +298,7 @@ Greeks_UI <- function() {
             value = 0.3
           )
         )
-      ), # condionalPanel
+      ), # conditionalPanel
       # Volatility
       conditionalPanel(
         condition = ("input.x_axis == 'Volatility'"),
@@ -287,7 +327,7 @@ Greeks_UI <- function() {
             value = 0
           )
         )
-      ), # condionalPanel
+      ), # conditionalPanel
       # Dividend Yield
       conditionalPanel(
         condition = ("input.x_axis == 'Dividend Yield'"),
@@ -327,6 +367,18 @@ Greeks_UI <- function() {
                  payoff <- input$payoff_european,
                  payoff <- input$payoff)
 
+        if (input$option_type == "European") {
+          greek <- input$greek_european
+        } else if (input$option_type == "American") {
+          greek <- input$greek_american
+        } else if (input$option_type == "Geometric Asian") {
+          greek <- input$greek_geometric_asian
+        }
+
+        greek <- greeks_list[greek] %>%
+          unlist() %>%
+          unname()
+
         x_bounds <- input[[eval(paste(params_list[[input$x_axis]], "_2", sep = ""))]]
 
         x_from <- x_bounds[1]
@@ -354,7 +406,7 @@ Greeks_UI <- function() {
             dividend_yield = dividend_yield,
             option_type = input$option_type,
             payoff = payoff,
-            greek = greeks_list[input$greek],
+            greek = greek,
             steps = 100) %>%
             round(4)
         }
@@ -378,7 +430,7 @@ Greeks_UI <- function() {
             t() %>%
             as_tibble()
 
-          colnames(Option_price) <- input$greek
+          colnames(Option_price) <- greek
 
           Option_price <-
             Option_price %>%

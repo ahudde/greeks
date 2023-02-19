@@ -21,7 +21,7 @@
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
 #'
-#' @examples Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,
+#' @examples BS_Geometric_Asian_Greeks(initial_price = 110, exercise_price = 100,
 #' r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 #' greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma"),
 #' payoff = "put")

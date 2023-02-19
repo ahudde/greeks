@@ -2,6 +2,7 @@
 
 export("%>%")
 export(BS_European_Greeks)
+export(BS_Geometric_Asian_Greeks)
 export(BS_Implied_Volatility)
 export(Binomial_American_Greeks)
 export(Greeks)
