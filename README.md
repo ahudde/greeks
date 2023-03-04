@@ -16,7 +16,7 @@ Model.
 Furthermore, functions to calculate Malliavin Monte Carlo Greeks are given, as
 presented e.g., in Hudde, A. & Rüschendorf, L. (2016). 
 European and Asian Greeks for exponential Lévy processes
-(https://arxiv.org/abs/1603.00920).
+(https://link.springer.com/article/10.1007/s11009-023-10014-5).
 These functions work for classical payoff functions, as well as for any custom
 square integrable function provided by the user.
 Additionally, these calculations are not restricted to the Black Scholes model,
@@ -87,7 +87,8 @@ Greeks.
     
 ## Computing implied volatilities
 
-The package `greeks` also provides a function to compute implied volatilities for a wide range of option types and payoff functions:
+The package `greeks` also provides a function to compute implied volatilities
+for a wide range of option types and payoff functions:
 
     # Implied volatility of an Asian call option with on an option price of 15, a
     # share price of 100, an exercise_price of 100, a risk-free interest rate of
