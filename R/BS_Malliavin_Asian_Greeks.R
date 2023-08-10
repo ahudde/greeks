@@ -118,10 +118,16 @@ BS_Malliavin_Asian_Greeks <- function(
 
   if (length(intersect(
     greek,
-    c("delta", "delta_d", "theta", "vega", "vega_d", "gamma", "gamma_kombi",
+    c("delta", "theta", "vega", "gamma", "gamma_kombi",
       "rho_d")))) {
     I_1 <- calc_I_1(X, steps, dt)
     I_2 <- calc_I_2(X, steps, dt)
+  }
+
+  if("delta" %in% greek) {
+    delta_malliavin_times_initial_price <-
+      (1/(volatility) *
+         (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2)))
   }
 
   if ("gamma" %in% greek) {
@@ -190,8 +196,7 @@ BS_Malliavin_Asian_Greeks <- function(
     if ("delta" %in% greek) {
 
       delta_malliavin <-
-        (1/(volatility * initial_price) *
-           (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
+        delta_malliavin_times_initial_price / initial_price %>%
         E_paths()
 
       delta_geom_malliavin <-
