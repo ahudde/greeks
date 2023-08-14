@@ -411,35 +411,28 @@ Greeks_UI <- function() {
             round(4)
         }
 
-        if (length(input$greek) == 1) {
-          Option_price <-
-            tibble(
-              x,
-              Value = sapply(
-                X = x,
-                FUN = FUN),
-              Greek = input$greek)
+        Option_price_list <-
+          lapply(
+            X = matrix(x),
+            FUN = FUN
+          )
 
-        } else {
+        Option_price <-
+          matrix(nrow = length(x), ncol = length(greek))
 
-          Option_price <-
-            sapply(
-              X = matrix(x),
-              FUN = FUN
-            ) %>%
-            t() %>%
-            as_tibble()
-
-          colnames(Option_price) <- greek
-
-          Option_price <-
-            Option_price %>%
-            add_column(x) %>%
-            pivot_longer(cols = -x,
-                         names_to = "Greek",
-                         values_to = "Value")
-
+        for(row in 1:length(x)) {
+          Option_price[row, ] <- round(Option_price_list[[row]], 4)
         }
+
+        colnames(Option_price) <- greek
+
+        Option_price <-
+          Option_price %>%
+          as_tibble() %>%
+          add_column(x) %>%
+          pivot_longer(cols = -x,
+                       names_to = "Greek",
+                       values_to = "Value")
 
         colnames(Option_price) <-
           replace(colnames(Option_price), colnames(Option_price) == "x", input$x_axis)
