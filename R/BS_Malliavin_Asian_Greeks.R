@@ -37,11 +37,13 @@ BS_Malliavin_Asian_Greeks <- function(
     volatility = 0.3,
     dividend_yield = 0,
     payoff = "call",
-    greek = c("fair_value", "delta", "rho", "vega",
-              "theta", "gamma"),
+    greek = c("fair_value", "delta", "rho"),
     steps = round(time_to_maturity*252),
-    paths = 10000,
+    paths = 1000,
     seed = 1) {
+
+  ## ?? comment
+  cache <- list()
 
   params <- c("initial_price", "exercise_price", "r", "time_to_maturity",
               "volatility", "dividend_yield")
@@ -124,8 +126,11 @@ BS_Malliavin_Asian_Greeks <- function(
     I_2 <- calc_I_2(X, steps, dt)
   }
 
+  cache$`exp(calc_I(log_X, steps, dt) / time_to_maturity)` <-
+    exp(calc_I(log_X, steps, dt) / time_to_maturity)
+
   if("delta" %in% greek) {
-    delta_malliavin_times_initial_price <-
+    cache$`(1/(volatility) * (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2)))` <-
       (1/(volatility) *
          (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2)))
   }
@@ -138,10 +143,9 @@ BS_Malliavin_Asian_Greeks <- function(
 
     assign(param, vectorized_param[i])
 
-    I_0_geom <- initial_price * exp(calc_I(log_X, steps, dt) / time_to_maturity)
+    I_0_geom <- initial_price * cache$`exp(calc_I(log_X, steps, dt) / time_to_maturity)`
 
-    #I_0_geom <-
-    #  exp(calc_I(log(initial_price * X), steps, dt) / time_to_maturity)
+    cache$`payoff(I_0_geom, exercise_price)` <- payoff(I_0_geom, exercise_price)
 
     geom_asian_greeks_exact <-
       BS_Geometric_Asian_Greeks(
@@ -155,21 +159,9 @@ BS_Malliavin_Asian_Greeks <- function(
         greek = greek
       )
 
-    ## brauche ich E und dE noch??
-
-    E <- function(weight) {
-      return(exp(-(r - dividend_yield)*time_to_maturity) *
-               mean(payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
-    }
-
     E_paths <- function(weight) {
       return(exp(-(r - dividend_yield) * time_to_maturity) *
                payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight)
-    }
-
-    dE <- function(weight) {
-      return(exp(-(r - dividend_yield) * time_to_maturity) *
-               mean(dpayoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
     }
 
     dE_paths <- function(weight) {
@@ -177,13 +169,17 @@ BS_Malliavin_Asian_Greeks <- function(
                dpayoff(initial_price * I_0/time_to_maturity, exercise_price) * weight)
     }
 
-    if ("fair_value" %in% greek) {
-
-      fair_value <- E_paths(1)
+    if("fair_value" %in% greek || "rho" %in% greek) {
 
       geom_fair_value <-
         exp(-(r - dividend_yield)*time_to_maturity) *
-        payoff(I_0_geom, exercise_price)
+        cache$`payoff(I_0_geom, exercise_price)`
+
+    }
+
+    if ("fair_value" %in% greek) {
+
+      fair_value <- E_paths(1)
 
       cont_fair_value <- geom_fair_value - geom_asian_greeks_exact["fair_value"]
 
@@ -193,95 +189,97 @@ BS_Malliavin_Asian_Greeks <- function(
 
     }
 
-    if ("delta" %in% greek) {
-
-      delta_malliavin <-
-        delta_malliavin_times_initial_price / initial_price %>%
-        E_paths()
+    if("delta" %in% greek || "rho" %in% greek) {
 
       delta_geom_malliavin <-
         2*exp(-r*time_to_maturity)/(initial_price*volatility*time_to_maturity) *
-        (payoff(I_0_geom, exercise_price) * W_T)
+        (cache$`payoff(I_0_geom, exercise_price)` * W_T)
 
-      delta_d <- dE_paths(I_0 / time_to_maturity)
+    }
+
+    if ("delta" %in% greek) {
+
+      delta_malliavin <-
+        (cache$`(1/(volatility) * (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2)))` /
+           initial_price) %>%
+        E_paths()
 
       cont_delta_malliavin <-
         delta_geom_malliavin - geom_asian_greeks_exact["delta"]
 
-      delta_geom_d <- (1/initial_price) * exp(-(r - dividend_yield) * time_to_maturity) *
-        dpayoff(I_0_geom, exercise_price) * I_0_geom
-
-      cont_delta_d <-
-        delta_geom_d - geom_asian_greeks_exact["delta"]
-
-      linear_model <- lm(delta_d ~ cont_delta_malliavin + cont_delta_d)
+      linear_model <- lm(delta_malliavin ~ cont_delta_malliavin)
 
       result[i, "delta"] <- linear_model$coefficients["(Intercept)"]
 
     }
 
-    if ("delta_d" %in% greek) {
-      result[i, "delta_d"] <- dE(I_0 / time_to_maturity)
-    }
-
     if ("rho" %in% greek) {
-      result[i, "rho"] <-
+      rho_malliavin <-
         (W_T/volatility - time_to_maturity) %>%
-        E()
+        E_paths()
+
+      rho_geom_malliavin <-
+        -time_to_maturity * geom_fair_value +
+        (initial_price * time_to_maturity)/2 * delta_geom_malliavin
+
+      cont_rho_malliavin <-
+        rho_geom_malliavin - geom_asian_greeks_exact["rho"]
+
+      linear_model <- lm(rho_malliavin ~ cont_rho_malliavin)
+
+      result[i, "rho"] <- linear_model$coefficients["(Intercept)"]
+
     }
 
-    if ("rho_d" %in% greek) {
-      result[i, "rho_d"] <-
-        -time_to_maturity * E(1) + dE(initial_price * I_1/time_to_maturity)
-    }
+    # if ("theta" %in% greek) {
+    #
+    #   theta_malliavin <-
+    #     ((r - dividend_yield) - 1/time_to_maturity +
+    #        ((1/(volatility * time_to_maturity)) * I_0 * W_T -
+    #           (1/volatility) * X_T * W_T + time_to_maturity * X_T) / I_1 +
+    #        (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
+    #     E_paths()
+    #
+    #   linear_model <- lm(theta_malliavin ~ cont_theta_d)
+    #
+    #   result[i, "theta"] <- linear_model$coefficients["(Intercept)"]
+    #
+    # }
 
-    if ("theta" %in% greek) {
-      result[i, "theta"] <-
-        ((r - dividend_yield) - 1/time_to_maturity +
-           ((1/(volatility * time_to_maturity)) * I_0 * W_T -
-              (1/volatility) * X_T * W_T + time_to_maturity * X_T) / I_1 +
-           (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
-        E()
-    }
+    # if ("vega" %in% greek) {
+    #   cont_vega_malliavin <-
+    #     vega_geom_malliavin - geom_asian_greeks_exact["vega"]
+    #
+    #   vega_malliavin <-
+    #     ((1 / volatility) *
+    #        ( -(1 + volatility * W_T) +
+    #            (W_T * XW - volatility * tXW) / I_1 +
+    #            (volatility * XW * I_2) / I_1^2)) %>%
+    #     E_paths()
+    #
+    #   linear_model <- lm(vega_malliavin ~ cont_vega_malliavin)
+    #
+    #   result[i, "vega"] <- linear_model$coefficients["(Intercept)"]
+    #
+    # }
 
-    if ("theta_d" %in% greek) {
-      result[i, "theta_d"] <-
-        (r - dividend_yield) * E(1) +
-        dE(initial_price * (I_0/time_to_maturity^2 - X_T/time_to_maturity))
-    }
-
-    if ("vega" %in% greek) {
-      result[i, "vega"] <-
-        ((1 / volatility) *
-           ( -(1 + volatility * W_T) +
-               (W_T * XW - volatility * tXW) / I_1 +
-               (volatility * XW * I_2) / I_1^2)) %>%
-        E()
-    }
-
-    if ("vega_d" %in% greek) {
-      result[i, "vega_d"] <-
-        ((initial_price / time_to_maturity) * (XW - volatility * I_1)) %>%
-        dE()
-    }
-
-    if ("gamma" %in% greek) {
-      result[i, "gamma"] <-
-        ((1/(volatility^2*initial_price^2)) *
-           (2*volatility^2
-            - 4*volatility*W_T*I_0/I_1
-            + ((W_T^2 - time_to_maturity)*I_0 - 4*volatility^2*I_2)*I_0/I_1^2
-            + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
-            + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
-        E()
-    }
-
-    if ("gamma_kombi" %in% greek) {
-      result[i, "gamma_kombi"] <-
-        (1/(volatility * initial_price) *
-           (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
-        dE()
-    }
+    # if ("gamma" %in% greek) {
+    #   result[i, "gamma"] <-
+    #     ((1/(volatility^2*initial_price^2)) *
+    #        (2*volatility^2
+    #         - 4*volatility*W_T*I_0/I_1
+    #         + ((W_T^2 - time_to_maturity)*I_0 - 4*volatility^2*I_2)*I_0/I_1^2
+    #         + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
+    #         + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
+    #     E()
+    # }
+    #
+    # if ("gamma_kombi" %in% greek) {
+    #   result[i, "gamma_kombi"] <-
+    #     (1/(volatility * initial_price) *
+    #        (-volatility + I_0/I_1*W_T + volatility*I_0*I_2/(I_1^2))) %>%
+    #     dE()
+    # }
 
   }
 
