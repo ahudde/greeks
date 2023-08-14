@@ -43,14 +43,29 @@ Greeks_UI <- function() {
   ui <- fluidPage(
     fluidRow(
       # x-axis
-      column(
-        width = 6,
-        selectInput(
-          inputId = "x_axis",
-          label = "X-axis",
-          choices = names(params_list),
-          selected = "initial_price",
-          multiple = FALSE)
+      conditionalPanel(
+        condition = ("input.option_type == 'Asian'"),
+        column(
+          width = 6,
+          selectInput(
+            inputId = "x_axis",
+            label = "X-axis",
+            choices = c("Initial Price", "Exercise Price"),
+            selected = "initial_price",
+            multiple = FALSE)
+        )
+      ),
+      conditionalPanel(
+        condition = ("input.option_type != 'Asian'"),
+        column(
+          width = 6,
+          selectInput(
+            inputId = "x_axis",
+            label = "X-axis",
+            choices = names(params_list),
+            selected = "initial_price",
+            multiple = FALSE)
+        )
       ),
       # option type
       column(
@@ -58,7 +73,7 @@ Greeks_UI <- function() {
         selectInput(
           inputId = "option_type",
           label = "Option Type",
-          choices = list("European", "American", "Geometric Asian"),
+          choices = list("European", "American", "Geometric Asian", "Asian"),
           selected = "European",
           multiple = FALSE)
       )
@@ -106,6 +121,19 @@ Greeks_UI <- function() {
             label = "Greek",
             choices = c("Fair Value", "Delta", "Vega", "Theta", "Rho",
                         "Epsilon", "Gamma"),
+            selected = c("Fair Value", "Delta"),
+            multiple = TRUE)
+        )
+      ),
+      # greek for Geometric Asian Options
+      conditionalPanel(
+        condition = ("input.option_type == 'Asian'"),
+        column(
+          width = 6,
+          selectInput(
+            inputId = "greek_asian",
+            label = "Greek",
+            choices = c("Fair Value", "Delta", "Rho"),
             selected = c("Fair Value", "Delta"),
             multiple = TRUE)
         )
@@ -176,7 +204,7 @@ Greeks_UI <- function() {
             label = "Initial Price",
             min = 0,
             max = 200,
-            value = c(0, 200)
+            value = c(1, 200)
           )
         )
       ), # condionalPanel
@@ -203,9 +231,9 @@ Greeks_UI <- function() {
           sliderInput(
             inputId = "exercise_price_2",
             label = "Exercise Price",
-            min = 0,
+            min = 1,
             max = 200,
-            value = c(0, 200)
+            value = c(1, 200)
           )
         )
       ), # conditionalPanel
@@ -373,11 +401,14 @@ Greeks_UI <- function() {
           greek <- input$greek_american
         } else if (input$option_type == "Geometric Asian") {
           greek <- input$greek_geometric_asian
+        } else if (input$option_type == "Asian") {
+          greek <- input$greek_asian
         }
 
         greek <- greeks_list[greek] %>%
           unlist() %>%
           unname()
+
 
         x_bounds <- input[[eval(paste(params_list[[input$x_axis]], "_2", sep = ""))]]
 
@@ -392,47 +423,70 @@ Greeks_UI <- function() {
 
         x <- seq(x_from, x_to, by = step_size)
 
-        ## FUN is the function applied to sapply that compute the Greeks
+        assign(params_list[[input$x_axis]], x)
 
-        FUN <- function(x) {
-          assign(params_list[[input$x_axis]], x)
+        if(input$option_type == "Asian") {
 
-          Greeks(
-            initial_price = initial_price,
-            exercise_price = exercise_price,
-            r = r,
-            time_to_maturity = time_to_maturity,
-            volatility = volatility,
-            dividend_yield = dividend_yield,
-            option_type = input$option_type,
-            payoff = payoff,
-            greek = greek,
-            steps = 100) %>%
-            round(4)
+          Option_price <-
+            BS_Malliavin_Asian_Greeks(
+              initial_price = initial_price,
+              exercise_price = exercise_price,
+              r = r,
+              time_to_maturity = time_to_maturity,
+              volatility = volatility,
+              dividend_yield = dividend_yield,
+              payoff = payoff,
+              greek = greek
+            ) |> as_tibble() |>
+            add_column(x = x) |>
+            pivot_longer(cols = -x,
+                         names_to = "Greek",
+                         values_to = "Value")
+        } else {
+
+          ## FUN is the function applied to sapply that compute the Greeks
+
+          FUN <- function(x) {
+            assign(params_list[[input$x_axis]], x)
+
+            Greeks(
+              initial_price = initial_price,
+              exercise_price = exercise_price,
+              r = r,
+              time_to_maturity = time_to_maturity,
+              volatility = volatility,
+              dividend_yield = dividend_yield,
+              option_type = input$option_type,
+              payoff = payoff,
+              greek = greek,
+              steps = 100) %>%
+              round(4)
+          }
+
+          Option_price_list <-
+            lapply(
+              X = matrix(x),
+              FUN = FUN
+            )
+
+          Option_price <-
+            matrix(nrow = length(x), ncol = length(greek))
+
+          for(row in 1:length(x)) {
+            Option_price[row, ] <- round(Option_price_list[[row]], 4)
+          }
+
+          colnames(Option_price) <- greek
+
+          Option_price <-
+            Option_price %>%
+            as_tibble() %>%
+            add_column(x) %>%
+            pivot_longer(cols = -x,
+                         names_to = "Greek",
+                         values_to = "Value")
+
         }
-
-        Option_price_list <-
-          lapply(
-            X = matrix(x),
-            FUN = FUN
-          )
-
-        Option_price <-
-          matrix(nrow = length(x), ncol = length(greek))
-
-        for(row in 1:length(x)) {
-          Option_price[row, ] <- round(Option_price_list[[row]], 4)
-        }
-
-        colnames(Option_price) <- greek
-
-        Option_price <-
-          Option_price %>%
-          as_tibble() %>%
-          add_column(x) %>%
-          pivot_longer(cols = -x,
-                       names_to = "Greek",
-                       values_to = "Value")
 
         colnames(Option_price) <-
           replace(colnames(Option_price), colnames(Option_price) == "x", input$x_axis)
