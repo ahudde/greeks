@@ -17,7 +17,7 @@ Description: Methods to calculate sensitivities of financial option prices for
  (2017), Options, Futures, and Other Derivatives.
  In the case of Asian options, Malliavin Monte Carlo Greeks are implemented, see
  Hudde, A. & Rüschendorf, L. (2023). European and Asian Greeks for exponential
- Lévy processes. <https://doi.org/10.1007/s11009-023-10014-5>. For American
+ Lévy processes. <doi:10.1007/s11009-023-10014-5>. For American
  options, the Binomial Tree  Method is implemented, as is presented in Hull,
  J. C. (2017). 
 License: MIT + file LICENSE
