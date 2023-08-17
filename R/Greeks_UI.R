@@ -133,7 +133,7 @@ Greeks_UI <- function() {
           selectInput(
             inputId = "greek_asian",
             label = "Greek",
-            choices = c("Fair Value", "Delta", "Rho"),
+            choices = c("Fair Value", "Delta", "Rho", "Vega"),
             selected = c("Fair Value", "Delta"),
             multiple = TRUE)
         )
