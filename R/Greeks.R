@@ -70,8 +70,10 @@ Greeks <-
                                        dividend_yield = dividend_yield))
     }
 
-    else if (tolower(option_type) == "asian" && tolower(model) == "black_scholes") {
-      return(Malliavin_Asian_Greeks(payoff = payoff,
+    else if (tolower(option_type) == "asian" && tolower(model) == "black_scholes" &&
+             unique(greek)[1] == "fair_value" && unique(greek)[2] == "delta" &&
+             unique(greek)[3] == "rho" && length(greek) == 3) {
+      return(BS_Malliavin_Asian_Greeks(payoff = payoff,
                                     greek = greek,
                                     initial_price = initial_price,
                                     exercise_price = exercise_price,

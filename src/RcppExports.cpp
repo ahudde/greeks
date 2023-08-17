@@ -109,6 +109,20 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// calc_log_X
+NumericVector calc_log_X(NumericMatrix W, float dt, float volatility, float r);
+RcppExport SEXP _greeks_calc_log_X(SEXP WSEXP, SEXP dtSEXP, SEXP volatilitySEXP, SEXP rSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< NumericMatrix >::type W(WSEXP);
+    Rcpp::traits::input_parameter< float >::type dt(dtSEXP);
+    Rcpp::traits::input_parameter< float >::type volatility(volatilitySEXP);
+    Rcpp::traits::input_parameter< float >::type r(rSEXP);
+    rcpp_result_gen = Rcpp::wrap(calc_log_X(W, dt, volatility, r));
+    return rcpp_result_gen;
+END_RCPP
+}
 // calc_tXW
 NumericVector calc_tXW(NumericMatrix X, NumericMatrix W, int steps, int paths, float dt);
 RcppExport SEXP _greeks_calc_tXW(SEXP XSEXP, SEXP WSEXP, SEXP stepsSEXP, SEXP pathsSEXP, SEXP dtSEXP) {
@@ -157,6 +171,7 @@ static const R_CallMethodDef CallEntries[] = {
     {"_greeks_calc_I_3", (DL_FUNC) &_greeks_calc_I_3, 3},
     {"_greeks_calc_X", (DL_FUNC) &_greeks_calc_X, 4},
     {"_greeks_calc_XW", (DL_FUNC) &_greeks_calc_XW, 5},
+    {"_greeks_calc_log_X", (DL_FUNC) &_greeks_calc_log_X, 4},
     {"_greeks_calc_tXW", (DL_FUNC) &_greeks_calc_tXW, 5},
     {"_greeks_make_BM", (DL_FUNC) &_greeks_make_BM, 3},
     {"_greeks_rowCumsums", (DL_FUNC) &_greeks_rowCumsums, 1},

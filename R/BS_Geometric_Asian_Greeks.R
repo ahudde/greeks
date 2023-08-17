@@ -14,8 +14,7 @@
 #' @param time_to_maturity - time to maturity in years
 #' @param volatility - volatility of the underlying asset
 #' @param dividend_yield - dividend yield
-#' @param payoff - the payoff function, either a string in ("call", "put",
-#' "digital_call", "digital_put"), or a function
+#' @param payoff - the payoff function, either a string in ("call", "put")
 #' @param greek - the Greek to be calculated
 #'
 #' @return Named vector containing the values of the Greeks specified in the

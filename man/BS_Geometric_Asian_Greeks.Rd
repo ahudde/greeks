@@ -43,8 +43,7 @@ vector
 }}
 
 \item{payoff}{\itemize{
-\item the payoff function, either a string in ("call", "put",
-"digital_call", "digital_put"), or a function
+\item the payoff function, either a string in ("call", "put")
 }}
 
 \item{greek}{\itemize{

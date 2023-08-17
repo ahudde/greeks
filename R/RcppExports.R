@@ -29,6 +29,10 @@ calc_XW <- function(X, W, steps, paths, dt) {
     .Call(`_greeks_calc_XW`, X, W, steps, paths, dt)
 }
 
+calc_log_X <- function(W, dt, volatility, r) {
+    .Call(`_greeks_calc_log_X`, W, dt, volatility, r)
+}
+
 calc_tXW <- function(X, W, steps, paths, dt) {
     .Call(`_greeks_calc_tXW`, X, W, steps, paths, dt)
 }

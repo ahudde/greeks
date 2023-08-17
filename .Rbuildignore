@@ -7,3 +7,6 @@
 ^greeks.*\.tar\.gz$
 ^greeks.*\.tgz$
 ^README\.Rmd$
+^doc$
+^Meta$
+^CRAN-SUBMISSION$
