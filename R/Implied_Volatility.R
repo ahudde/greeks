@@ -10,7 +10,7 @@
 #' @param dividend_yield - dividend yield
 #' @param model - the model to be chosen
 #' @param option_type in c("European", "American", "Asian", "Digital") - the
-#' type of option to be considered
+#' type of option to be considered TODO: Is this complete?
 #' @param payoff - in c("call", "put")
 #' @param max_iter maximal number of iterations of the approximation
 #' @param start_volatility initial guess
@@ -55,6 +55,25 @@ Implied_Volatility <-
 
     # Start volatility given by the European case
 
+    # We compute the option price with zero volatility to check, if the
+    # BS_Implied_Volatility can deliver a viable starting value
+
+    # TODO: Use BS_Geometric_Asian_Greeks in the arithmetic Asian case
+
+    option_price_zero_vol <-
+      BS_European_Greeks(
+        initial_price = initial_price,
+        exercise_price = exercise_price,
+        r = r,
+        time_to_maturity = time_to_maturity,
+        volatility = 0,
+        dividend_yield = dividend_yield,
+        payoff = payoff,
+        greek = "fair_value"
+      )
+
+    if(option_price > option_price_zero_vol) {
+
     start_volatility <-
       BS_Implied_Volatility(
         option_price = option_price,
@@ -65,6 +84,10 @@ Implied_Volatility <-
         dividend_yield = dividend_yield,
         payoff = payoff,
         start_volatility = start_volatility)
+
+    } else {
+      start_volatility = 0.3
+    }
 
     fair_value_and_vega_function <-
       function(volatility) {
@@ -83,19 +106,34 @@ Implied_Volatility <-
 
     volatility <- start_volatility
 
-    ## check if option price can be obtained
+    ## check if option price can be obtained, we check for two volatility
+    ## values, since volatility = 1e-9 gives NA for some option types
 
     option_price_0 <-
-      Greeks(initial_price = initial_price,
-             exercise_price = exercise_price,
-             r = r,
-             time_to_maturity = time_to_maturity,
-             volatility = 1e-9,
-             dividend_yield = dividend_yield,
-             model = model,
-             option_type = option_type,
-             payoff = payoff,
-             greek = "fair_value")
+      min(
+        Greeks(initial_price = initial_price,
+               exercise_price = exercise_price,
+               r = r,
+               time_to_maturity = time_to_maturity,
+               volatility = 1e-9,
+               dividend_yield = dividend_yield,
+               model = model,
+               option_type = option_type,
+               payoff = payoff,
+               greek = "fair_value"),
+        Greeks(initial_price = initial_price,
+               exercise_price = exercise_price,
+               r = r,
+               time_to_maturity = time_to_maturity,
+               volatility = 0.003,
+               dividend_yield = dividend_yield,
+               model = model,
+               option_type = option_type,
+               payoff = payoff,
+               greek = "fair_value"),
+        na.rm = TRUE
+      )
+
 
     if (option_price_0 > option_price) {
       stop("Option price is too low. Implied volatility is not defined.")
