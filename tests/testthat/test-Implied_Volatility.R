@@ -4,7 +4,7 @@ test_that("implied volatility is correct", {
   # being `option_price`. The resulting `implied_volatility` is the used to
   # compute the `option_price_test`. Both values should be very close.
 
-  number_of_runs <- 2
+  number_of_runs <- 4
 
   # the parameters are chosen at random
   set.seed(42)
@@ -14,8 +14,8 @@ test_that("implied volatility is correct", {
   time_to_maturity <- runif(number_of_runs, 0.2, 6)
   dividend_yield <- runif(number_of_runs, 0, 0.1)
   model <- "Black_Scholes"
-  option_type <- c("European", "European")
-  payoff <- c("call", "put")
+  option_type <- c("European", "European", "Geometric Asian", "Geometric Asian")
+  payoff <- rep(c("call", "put"), 2)
   volatility_to_compute_initial_price <- runif(number_of_runs, 0.01, 1)
 
   option_price <- numeric(number_of_runs)
