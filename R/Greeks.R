@@ -9,9 +9,8 @@
 #' @param dividend_yield - dividend yield
 #' @param volatility - volatility of the underlying asset
 #' @param model - the model to be chosen
-#' @param option_type in c("European", "American", "Asian", "Digital",
-#' "Binomial) - the
-#' type of option to be considered
+#' @param option_type in c("European", "American", "Asian", "Geometric Asian",
+#' "Digital", "Binomial) - the type of option to be considered
 #' @param payoff - in c("call", "put", "cash_or_nothing_call",
 #' "cash_or_nothing_put", "asset_or_nothing_call", "asset_or_nothing_put")
 #' @param greek - Greeks to be calculated in c("fair_value", "delta", "vega",
