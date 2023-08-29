@@ -37,6 +37,24 @@ BS_Implied_Volatility <-
 
     ## check if option price can be obtained
 
+    option_price_zero_vol <-
+      BS_European_Greeks(
+        initial_price = initial_price,
+        exercise_price = exercise_price,
+        r = r,
+        time_to_maturity = time_to_maturity,
+        volatility = 0,
+        dividend_yield = dividend_yield,
+        payoff = payoff,
+        greek = "fair_value"
+      )
+
+    if (option_price <= option_price_zero_vol) {
+      stop("Option price is too low. Implied volatility is not defined.")
+    }
+
+    ## Start computation
+
     volatility <- start_volatility
 
     d1 <- (log(initial_price/exercise_price) +
@@ -57,10 +75,6 @@ BS_Implied_Volatility <-
         exp(-r*time_to_maturity) * exercise_price * pnorm(-d2) -
         initial_price * exp(-dividend_yield * time_to_maturity) * pnorm(-d1)
 
-    }
-
-    if (option_price < fair_value) {
-      stop("Option price is too low. Implied volatility is not defined.")
     }
 
     while (TRUE) {
