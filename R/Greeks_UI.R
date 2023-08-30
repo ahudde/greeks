@@ -48,13 +48,13 @@ Greeks_UI <- function() {
         column(
           width = 6,
           selectInput(
-            inputId = "x_axis",
+            inputId = "x_axis_asian",
             label = "X-axis",
             choices = c("Initial Price", "Exercise Price"),
             selected = "initial_price",
             multiple = FALSE)
         )
-      ),
+      ), # conditionalPanel
       conditionalPanel(
         condition = ("input.option_type != 'Asian'"),
         column(
@@ -66,7 +66,7 @@ Greeks_UI <- function() {
             selected = "initial_price",
             multiple = FALSE)
         )
-      ),
+      ), # conditionalPanel
       # option type
       column(
         width = 6,
@@ -96,7 +96,7 @@ Greeks_UI <- function() {
             selected = c("Fair Value", "Delta"),
             multiple = TRUE)
         )
-      ),
+      ), # conditionalPanel
       # greek for American Options
       conditionalPanel(
         condition = ("input.option_type == 'American'"),
@@ -110,7 +110,7 @@ Greeks_UI <- function() {
             selected = c("Fair Value", "Delta"),
             multiple = TRUE)
         )
-      ),
+      ), # conditionalPanel
       # greek for Geometric Asian Options
       conditionalPanel(
         condition = ("input.option_type == 'Geometric Asian'"),
@@ -124,7 +124,7 @@ Greeks_UI <- function() {
             selected = c("Fair Value", "Delta"),
             multiple = TRUE)
         )
-      ),
+      ), # conditionalPanel
       # greek for Geometric Asian Options
       conditionalPanel(
         condition = ("input.option_type == 'Asian'"),
@@ -137,7 +137,7 @@ Greeks_UI <- function() {
             selected = c("Fair Value", "Delta"),
             multiple = TRUE)
         )
-      ),
+      ), # conditionalPanel
       # payoff
       conditionalPanel(
         condition = ("input.option_type == 'European'"),
@@ -182,7 +182,7 @@ Greeks_UI <- function() {
 
       # Initial Price
       conditionalPanel(
-        condition = ("input.x_axis != 'Initial Price'"),
+        condition = ("((input.option_type != 'Asian') && (input.x_axis != 'Initial Price'))"),
         column(
           width = 6,
           sliderInput(
@@ -409,7 +409,6 @@ Greeks_UI <- function() {
           unlist() %>%
           unname()
 
-
         x_bounds <- input[[eval(paste(params_list[[input$x_axis]], "_2", sep = ""))]]
 
         x_from <- x_bounds[1]
@@ -423,7 +422,11 @@ Greeks_UI <- function() {
 
         x <- seq(x_from, x_to, by = step_size)
 
-        assign(params_list[[input$x_axis]], x)
+        if (input$option_type == "Asian") {
+          assign(params_list[[input$x_axis_asian]], x)
+        } else {
+          assign(params_list[[input$x_axis]], x)
+        }
 
         if(input$option_type == "Asian") {
 
