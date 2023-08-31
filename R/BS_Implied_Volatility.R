@@ -43,7 +43,7 @@ BS_Implied_Volatility <-
         exercise_price = exercise_price,
         r = r,
         time_to_maturity = time_to_maturity,
-        volatility = 0,
+        volatility = 1e-12,
         dividend_yield = dividend_yield,
         payoff = payoff,
         greek = "fair_value"
