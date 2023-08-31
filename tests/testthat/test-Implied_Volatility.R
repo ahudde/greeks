@@ -46,6 +46,7 @@ test_that("implied volatility is correct", {
         time_to_maturity = time_to_maturity[i],
         volatility = 0,
         dividend_yield = dividend_yield[i],
+        option_type = option_type[i],
         payoff = payoff[i],
         greek = "fair_value"
       )
