@@ -47,9 +47,8 @@ Greeks(
 \item the model to be chosen
 }}
 
-\item{option_type}{in c("European", "American", "Asian", "Digital",
-"Binomial) - the
-type of option to be considered}
+\item{option_type}{in c("European", "American", "Asian", "Geometric Asian",
+"Digital", "Binomial) - the type of option to be considered}
 
 \item{payoff}{\itemize{
 \item in c("call", "put", "cash_or_nothing_call",

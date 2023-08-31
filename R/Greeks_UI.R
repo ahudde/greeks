@@ -409,7 +409,13 @@ Greeks_UI <- function() {
           unlist() %>%
           unname()
 
-        x_bounds <- input[[eval(paste(params_list[[input$x_axis]], "_2", sep = ""))]]
+        if (input$option_type == "Asian") {
+          x_bounds <-
+            input[[eval(paste(params_list[[input$x_axis_asian]], "_2", sep = ""))]]
+        } else {
+          x_bounds <-
+            input[[eval(paste(params_list[[input$x_axis]], "_2", sep = ""))]]
+        }
 
         x_from <- x_bounds[1]
         x_to <- x_bounds[2]
