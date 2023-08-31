@@ -1,8 +1,8 @@
 # greeks
+![](https://www.r-pkg.org/badges/version/greeks)
 [![R-CMD-check](https://github.com/ahudde/greeks/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ahudde/greeks/actions/workflows/R-CMD-check.yaml)
-![](https://cranlogs.r-pkg.org/badges/greeks?color=brightgreen)
-![](https://cranlogs.r-pkg.org/badges/grand-total/greeks?color=brightgreen)
-![](https://www.r-pkg.org/badges/version-ago/greeks)
+[![status](https://joss.theoj.org/papers/61ae139acab91fdb0664b33a23e43c93/status.svg)](https://joss.theoj.org/papers/61ae139acab91fdb0664b33a23e43c93)
+![](https://cranlogs.r-pkg.org/badges/greeks)
 
 The package `greeks` provides functions to compute financial option prices and
 sensitivities of financial option prices for European, American, Asian, and
