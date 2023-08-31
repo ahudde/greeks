@@ -55,7 +55,7 @@ Implied_Volatility <-
 
     # Start volatility given by the European case
 
-    # We compute the option price with zero volatility to check, if the
+    # We compute the option price with zero volatility to check if
     # BS_Implied_Volatility can deliver a viable starting value
 
     # TODO: Use BS_Geometric_Asian_Greeks in the arithmetic Asian case
