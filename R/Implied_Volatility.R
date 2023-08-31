@@ -9,8 +9,8 @@
 #' @param time_to_maturity - time to maturity in years
 #' @param dividend_yield - dividend yield
 #' @param model - the model to be chosen
-#' @param option_type in c("European", "American", "Asian", "Digital") - the
-#' type of option to be considered TODO: Is this complete?
+#' @param option_type in c("European", "American", "Geometric Asian", "Asian",
+#' "Digital") - the type of option to be considered
 #' @param payoff - in c("call", "put")
 #' @param max_iter maximal number of iterations of the approximation
 #' @param start_volatility initial guess
@@ -58,16 +58,21 @@ Implied_Volatility <-
     # We compute the option price with zero volatility to check if
     # BS_Implied_Volatility can deliver a viable starting value
 
-    # TODO: Use BS_Geometric_Asian_Greeks in the arithmetic Asian case
+    if(option_type == "Asian") {
+      option_type_start_price <- "Geometric Asian"
+    } else {
+      option_type_start_price <- "European"
+    }
 
     option_price_zero_vol <-
-      BS_European_Greeks(
+      Greeks(
         initial_price = initial_price,
         exercise_price = exercise_price,
         r = r,
         time_to_maturity = time_to_maturity,
-        volatility = 0,
+        volatility = 1e-12,
         dividend_yield = dividend_yield,
+        option_type = option_type_start_price,
         payoff = payoff,
         greek = "fair_value"
       )
@@ -75,13 +80,14 @@ Implied_Volatility <-
     if(option_price > option_price_zero_vol) {
 
     start_volatility <-
-      BS_Implied_Volatility(
+      Implied_Volatility(
         option_price = option_price,
         initial_price = initial_price,
         exercise_price = exercise_price,
         r = r,
         time_to_maturity = time_to_maturity,
         dividend_yield = dividend_yield,
+        option_type = option_type_start_price,
         payoff = payoff,
         start_volatility = start_volatility)
 
@@ -158,8 +164,6 @@ Implied_Volatility <-
       fair_value <- fair_value_and_vega["fair_value"]
 
       vega <- fair_value_and_vega["vega"]
-
-      # print(c(volatility = volatility, diff = fair_value - option_price))
 
       if (abs(fair_value - option_price) < precision) {
         return(volatility)
