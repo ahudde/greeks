@@ -70,8 +70,7 @@ Greeks <-
     }
 
     else if (tolower(option_type) == "asian" && tolower(model) == "black_scholes" &&
-             unique(greek)[1] == "fair_value" && unique(greek)[2] == "delta" &&
-             unique(greek)[3] == "rho" && length(greek) == 3) {
+             ("fair_value" %in% greek || "delta" %in% greek || "rho" %in% greek)) {
       return(BS_Malliavin_Asian_Greeks(payoff = payoff,
                                     greek = greek,
                                     initial_price = initial_price,
