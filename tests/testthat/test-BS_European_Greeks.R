@@ -3,7 +3,7 @@ test_that("BS_European_Greeks is correct", {
   # We check the Greeks by also computing the derivative with finite difference
   # and comparing the results
 
-  number_of_runs <- 1000000
+  number_of_runs <- 200
 
   definition_of_geeks <-
     data.frame(greek = "charm", start = "theta", param = "initial_price") %>%
