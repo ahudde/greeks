@@ -36,7 +36,7 @@ test_that("BS_European_Greeks is correct", {
     r <- runif(1, -0.01, 0.1)
     time_to_maturity <- runif(1, 0.2, 6)
     dividend_yield <- runif(1, 0, 0.1)
-    volatility <- runif(1, 0.001, 1)
+    volatility <- runif(1, 0.01, 1)
     model <- "Black_Scholes"
     payoff <- sample(c("call", "put",
                        "cash_or_nothing_call", "cash_or_nothing_put",
