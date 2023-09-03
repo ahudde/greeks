@@ -3,7 +3,7 @@ test_that("BS_European_Greeks is correct", {
   # We check the Greeks by also computing the derivative with finite difference
   # and comparing the results
 
-  number_of_runs <- 200
+  number_of_runs <- 300
 
   definition_of_geeks <-
     data.frame(greek = "charm", start = "theta", param = "initial_price") %>%
@@ -15,11 +15,11 @@ test_that("BS_European_Greeks is correct", {
     add_row(greek = "vanna", start = "delta", param = "volatility") %>%
     add_row(greek = "vega", start = "fair_value", param = "volatility") %>%
     add_row(greek = "vera", start = "rho", param = "volatility") %>%
-    #add_row(greek = "veta", start = "vega", param = "time_to_maturity") %>%
+    add_row(greek = "veta", start = "vega", param = "time_to_maturity") %>%
     add_row(greek = "vomma", start = "vega", param = "volatility") %>%
     add_row(greek = "speed", start = "gamma", param = "initial_price") %>%
     add_row(greek = "zomma", start = "vanna", param = "initial_price") %>%
-    #add_row(greek = "color", start = "gamma", param = "time_to_maturity") %>%
+    add_row(greek = "color", start = "gamma", param = "time_to_maturity") %>%
     add_row(greek = "ultima", start = "vomma", param = "volatility")
 
   error <- numeric(number_of_runs)
@@ -61,7 +61,8 @@ test_that("BS_European_Greeks is correct", {
         greek = greek
       )
 
-    if (param == "time_to_maturity") {
+    ## Theta is minus the derivative of fair_value w.r.t. time_to_maturity
+    if (greek == "theta") {
       Vals = -Vals
     }
 
