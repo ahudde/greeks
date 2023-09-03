@@ -18,9 +18,9 @@ test_that("BS_European_Greeks is correct", {
     #add_row(greek = "veta", start = "vega", param = "time_to_maturity") %>%
     add_row(greek = "vomma", start = "vega", param = "volatility") %>%
     add_row(greek = "speed", start = "gamma", param = "initial_price") %>%
-    add_row(greek = "zomma", start = "vanna", param = "initial_price") #%>%
+    add_row(greek = "zomma", start = "vanna", param = "initial_price") %>%
     #add_row(greek = "color", start = "gamma", param = "time_to_maturity") %>%
-    #add_row(greek = "ultima", start = "vomma", param = "volatility")
+    add_row(greek = "ultima", start = "vomma", param = "volatility")
 
   error <- numeric(number_of_runs)
 
