@@ -57,9 +57,9 @@ BS_European_Greeks <-
 
     dnorm_d1 <- dnorm(d1)
 
-    if (payoff == "call") {
+    pnorm_d2 <- pnorm(d2)
 
-      pnorm_d2 <- pnorm(d2)
+    if (payoff == "call") {
 
       ## option-value
 
@@ -75,11 +75,6 @@ BS_European_Greeks <-
       if ("delta" %in% greek) {
         result['delta'] <- exp_minus_dividend_yield_times_time_to_maturity *
           pnorm_d1
-      }
-      if ("vega" %in% greek) {
-        result['vega'] <-
-          initial_price * exp_minus_dividend_yield_times_time_to_maturity *
-          dnorm_d1 * sqrt_time_to_maturity
       }
       if ("theta" %in% greek) {
         result['theta'] <-
@@ -98,6 +93,87 @@ BS_European_Greeks <-
         result['epsilon'] <-
           -initial_price * time_to_maturity *
           exp_minus_dividend_yield_times_time_to_maturity * pnorm_d1
+      }
+
+      ## second-order Greeks
+
+      if ("charm" %in% greek) {
+        result["charm"] <-
+          (dividend_yield * exp_minus_dividend_yield_times_time_to_maturity *
+             pnorm_d1) -
+          (exp_minus_dividend_yield_times_time_to_maturity * dnorm_d1 *
+             (2 * (r - dividend_yield) * time_to_maturity -
+                d2 * volatility * sqrt_time_to_maturity) /
+             (2 * time_to_maturity * volatility * sqrt_time_to_maturity))
+      }
+    }
+
+    if (payoff == "put") {
+
+      pnorm_minus_d2 <- pnorm(-d2)
+
+      dnorm_minus_d2 <- dnorm(-d2)
+
+      pnorm_minus_d1 <- pnorm(-d1)
+
+      ## option-value
+
+      if ("fair_value" %in% greek) {
+        result['fair_value'] <-
+          exp_minus_r_times_time_to_maturity * exercise_price * pnorm_minus_d2 -
+          initial_price * exp_minus_dividend_yield_times_time_to_maturity *
+          pnorm_minus_d1
+      }
+
+      ## first-order Greeks
+
+      if ("delta" %in% greek) {
+        result['delta'] <-
+          -exp_minus_dividend_yield_times_time_to_maturity * pnorm_minus_d1
+      }
+      if ("theta" %in% greek) {
+        result['theta'] <-
+          -initial_price * dnorm_d1 * volatility *
+          exp_minus_dividend_yield_times_time_to_maturity /
+          (2 * sqrt_time_to_maturity) - dividend_yield * initial_price *
+          pnorm_minus_d1 * exp_minus_dividend_yield_times_time_to_maturity +
+          r * exercise_price * exp_minus_r_times_time_to_maturity *
+          pnorm_minus_d2
+      }
+      if ("rho" %in% greek) {
+        result['rho'] <-
+          -exercise_price * time_to_maturity *
+          exp_minus_r_times_time_to_maturity * pnorm_minus_d2
+      }
+      if ("epsilon" %in% greek) {
+        result['epsilon'] <-
+          initial_price * time_to_maturity *
+          exp_minus_dividend_yield_times_time_to_maturity * pnorm_minus_d1
+      }
+
+      # second-order Greeks
+
+      if ("charm" %in% greek) {
+        result["charm"] <-
+          (-dividend_yield * exp_minus_dividend_yield_times_time_to_maturity *
+             pnorm_minus_d1) -
+          (exp_minus_dividend_yield_times_time_to_maturity * dnorm_d1 *
+             (2 * (r - dividend_yield) * time_to_maturity -
+                d2 * volatility * sqrt_time_to_maturity) /
+             (2 * time_to_maturity * volatility * sqrt_time_to_maturity))
+      }
+    }
+
+    ## The case, where call- and put Greeks have the same values
+
+    if (payoff %in% c("call", "put")) {
+
+      ## first-order Greeks
+
+      if ("vega" %in% greek) {
+        result['vega'] <-
+          initial_price * exp_minus_dividend_yield_times_time_to_maturity *
+          dnorm_d1 * sqrt_time_to_maturity
       }
       if ("lambda" %in% greek) {
         result['lambda'] <-
@@ -119,15 +195,6 @@ BS_European_Greeks <-
         result['vanna'] <-
           -exp_minus_dividend_yield_times_time_to_maturity * dnorm_d1 * d2 /
           volatility
-      }
-      if ("charm" %in% greek) {
-        result["charm"] <-
-          (dividend_yield * exp_minus_dividend_yield_times_time_to_maturity *
-             pnorm_d1) -
-          (exp_minus_dividend_yield_times_time_to_maturity * dnorm_d1 *
-             (2 * (r - dividend_yield) * time_to_maturity -
-                d2 * volatility * sqrt_time_to_maturity) /
-             (2 * time_to_maturity * volatility * sqrt_time_to_maturity))
       }
       if ("vomma" %in% greek) {
         result["vomma"] <-
@@ -167,137 +234,8 @@ BS_European_Greeks <-
           -exp_minus_dividend_yield_times_time_to_maturity * dnorm_d1 /
           (2 * initial_price * time_to_maturity^1.5 * volatility) *
           (2 * dividend_yield * time_to_maturity + 1 +
-             (2 * (r - dividend_yield) * time_to_maturity - d2 * volatility * sqrt_time_to_maturity) /
-             (volatility * sqrt_time_to_maturity) * d1)
-      }
-      if ("ultima" %in% greek) {
-        result["ultima"] <-
-          (-initial_price * exp_minus_dividend_yield_times_time_to_maturity *
-               dnorm_d1 * sqrt_time_to_maturity) / volatility^2 *
-          (d1 * d2 * (1 - d1 * d2) + d1^2 + d2^2)
-      }
-
-      return(result)
-
-    }
-
-    if (payoff == "put") {
-
-      pnorm_minus_d2 <- pnorm(-d2)
-
-      dnorm_minus_d2 <- dnorm(-d2)
-
-      pnorm_minus_d1 <- pnorm(-d1)
-
-      ## option-value
-
-      if ("fair_value" %in% greek) {
-        result['fair_value'] <-
-          exp_minus_r_times_time_to_maturity * exercise_price * pnorm_minus_d2 -
-          initial_price * exp_minus_dividend_yield_times_time_to_maturity *
-          pnorm_minus_d1
-      }
-
-      ## first-order Greeks
-
-      if ("delta" %in% greek) {
-        result['delta'] <-
-          -exp_minus_dividend_yield_times_time_to_maturity * pnorm_minus_d1
-      }
-
-      if ("vega" %in% greek) {
-        result['vega'] <-
-          initial_price * exp_minus_dividend_yield_times_time_to_maturity *
-          dnorm_d1 * sqrt_time_to_maturity
-      }
-      if ("theta" %in% greek) {
-        result['theta'] <-
-          -initial_price * dnorm_d1 * volatility *
-          exp_minus_dividend_yield_times_time_to_maturity /
-          (2 * sqrt_time_to_maturity) - dividend_yield * initial_price *
-          pnorm_minus_d1 * exp_minus_dividend_yield_times_time_to_maturity +
-          r * exercise_price * exp_minus_r_times_time_to_maturity *
-          pnorm_minus_d2
-      }
-      if ("rho" %in% greek) {
-        result['rho'] <-
-          -exercise_price * time_to_maturity *
-          exp_minus_r_times_time_to_maturity * pnorm_minus_d2
-      }
-      if ("epsilon" %in% greek) {
-        result['epsilon'] <-
-          initial_price * time_to_maturity *
-          exp_minus_dividend_yield_times_time_to_maturity * pnorm_minus_d1
-      }
-      if ("lambda" %in% greek) {
-        result['lambda'] <-
-          -initial_price *
-          (exp_minus_dividend_yield_times_time_to_maturity * pnorm_minus_d1) /
-          (exp_minus_r_times_time_to_maturity * exercise_price *
-             pnorm_minus_d2 - initial_price *
-             exp_minus_dividend_yield_times_time_to_maturity * pnorm_minus_d1)
-      }
-
-      # second-order Greeks
-
-      if ("gamma" %in% greek) {
-        result['gamma'] <-
-          dnorm_d1 * exp_minus_dividend_yield_times_time_to_maturity /
-          (initial_price * volatility * sqrt_time_to_maturity)
-      }
-      if ("vanna" %in% greek) {
-        result['vanna'] <-
-          -exp_minus_dividend_yield_times_time_to_maturity * dnorm_d1 * d2 /
-          volatility
-      }
-      if ("charm" %in% greek) {
-        result["charm"] <-
-          (-dividend_yield * exp_minus_dividend_yield_times_time_to_maturity *
-             pnorm_minus_d1) -
-          (exp_minus_dividend_yield_times_time_to_maturity * dnorm_d1 *
              (2 * (r - dividend_yield) * time_to_maturity -
                 d2 * volatility * sqrt_time_to_maturity) /
-             (2 * time_to_maturity * volatility * sqrt_time_to_maturity))
-      }
-      if ("vomma" %in% greek) {
-        result["vomma"] <-
-          initial_price * exp_minus_dividend_yield_times_time_to_maturity *
-          dnorm_d1 * sqrt_time_to_maturity * d1 * d2 / volatility
-      }
-      if ("veta" %in% greek) {
-        result["veta"] <-
-          -initial_price * exp_minus_dividend_yield_times_time_to_maturity *
-          dnorm_d1 * sqrt_time_to_maturity *
-          (dividend_yield + ((r - dividend_yield) * d1) /
-             (volatility * sqrt_time_to_maturity)
-           - ((1 + d1 * d2) / (2 * time_to_maturity)))
-      }
-      if ("vera" %in% greek) {
-        result["vera"] <-
-          -exercise_price * time_to_maturity *
-          exp_minus_r_times_time_to_maturity * dnorm_minus_d2 *
-          (sqrt_time_to_maturity + d2 / volatility)
-      }
-
-      # third-order Greeks
-
-      if ("speed" %in% greek) {
-        result["speed"] <-
-          -exp_minus_dividend_yield_times_time_to_maturity * dnorm_d1 /
-          (initial_price^2  * volatility * sqrt_time_to_maturity) *
-          (d1 / (volatility * sqrt_time_to_maturity) + 1)
-      }
-      if ("zomma" %in% greek) {
-        result["zomma"] <-
-          exp_minus_dividend_yield_times_time_to_maturity * dnorm_d1 *
-          (d1 * d2 - 1) / (initial_price * volatility^2 * sqrt_time_to_maturity)
-      }
-      if ("color" %in% greek) {
-        result["color"] <-
-          -exp_minus_dividend_yield_times_time_to_maturity * dnorm_d1 /
-          (2 * initial_price * time_to_maturity^1.5 * volatility) *
-          (2 * dividend_yield * time_to_maturity + 1 +
-             (2 * (r - dividend_yield) * time_to_maturity - d2 * volatility * sqrt_time_to_maturity) /
              (volatility * sqrt_time_to_maturity) * d1)
       }
       if ("ultima" %in% greek) {
