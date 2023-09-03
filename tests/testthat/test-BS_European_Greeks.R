@@ -14,7 +14,7 @@ test_that("BS_European_Greeks is correct", {
     add_row(greek = "theta", start = "fair_value", param = "time_to_maturity") %>%
     add_row(greek = "vanna", start = "delta", param = "volatility") %>%
     add_row(greek = "vega", start = "fair_value", param = "volatility") %>%
-    #add_row(greek = "vera", start = "rho", param = "volatility") %>%
+    add_row(greek = "vera", start = "rho", param = "volatility") %>%
     #add_row(greek = "veta", start = "vega", param = "time_to_maturity") %>%
     #add_row(greek = "vomma", start = "vega", param = "volatility") %>%
     add_row(greek = "speed", start = "gamma", param = "initial_price") %>%
