@@ -1,5 +1,8 @@
 name: Example workflow for Codecov
 on: [push]
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
 steps:
 - uses: actions/checkout@greeks_1.3.0
 - uses: codecov/codecov-action@v3
