@@ -8,6 +8,7 @@ name: codecov
 
 jobs:
   codecov:
+    runs-on: ${{ matrix.config.os }}
 
     steps:
       - uses: actions/checkout@main
