@@ -43,7 +43,7 @@ Malliavin_European_Greeks <-
            seed = 1,
            antithetic = FALSE) {
 
-  result <- vector(mode = "numeric", length = length(greek))
+  result <- vector(mode = "numeric", length = length(greek)) * NA
 
   names(result) <- greek
 

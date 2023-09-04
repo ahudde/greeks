@@ -1,6 +1,8 @@
 #' Computes the Greeks of an Geometric Asian Option with classical Call- and
 #' Put-Payoff
 #'
+#' TODO: epsilon
+#'
 #' @export
 #'
 #' @import "stats"
@@ -15,7 +17,8 @@
 #' @param volatility - volatility of the underlying asset
 #' @param dividend_yield - dividend yield
 #' @param payoff - the payoff function, either a string in ("call", "put")
-#' @param greek - the Greek to be calculated
+#' @param greek - the Greeks to be calculated in c("fair_value", "delta",
+#' "vega", "theta", "rho", "gamma", "vomma")
 #'
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
@@ -36,7 +39,7 @@ BS_Geometric_Asian_Greeks <- function(
     payoff = "call",
     greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma")) {
 
-  result <- numeric(length(greek))
+  result <- numeric(length(greek)) * NA
 
   names(result) = greek
 
@@ -155,21 +158,15 @@ BS_Geometric_Asian_Greeks <- function(
     }
 
     if("vomma" %in% greek) {
-      d_vega <-
-        -sqrt(3 * time_to_maturity) *
-        (0.25 +
-           (log(initial_price/exercise_price) / (volatility^2 * time_to_maturity)) +
-           ((r - dividend_yield) / (2 * volatility^2)))
-
       result["vomma"] <-
         eval(D(expression(initial_price * exp(-(time_to_maturity/2) *
-                                           ((r - dividend_yield) + (volatility**2)/6)) *
-                       ((-volatility * time_to_maturity/6) *
-                          pnorm(d_geom + volatility * sqrt(time_to_maturity/3)) +
-                          dnorm(d_geom + volatility * sqrt(time_to_maturity/3)) *
-                          (d_vega + sqrt(time_to_maturity/3))) -
-                       exp(-(r - dividend_yield)*time_to_maturity) * exercise_price *
-                       dnorm(d_geom) * d_vega), "volatility"))
+                                                ((r - dividend_yield) + (volatility**2)/6)) *
+                            ((-volatility * time_to_maturity/6) *
+                               pnorm(d_geom + volatility * sqrt(time_to_maturity/3)) +
+                               dnorm(d_geom + volatility * sqrt(time_to_maturity/3)) *
+                               (d_vega + sqrt(time_to_maturity/3))) -
+                            exp(-(r - dividend_yield)*time_to_maturity) * exercise_price *
+                            dnorm(d_geom) * d_vega), "volatility"))
     }
 
   } #payoff=="call"
@@ -231,7 +228,7 @@ BS_Geometric_Asian_Greeks <- function(
 
       result["theta"] <-
         initial_price * exp(-time_to_maturity/2 *
-                               ((r - dividend_yield) + (volatility**2)/6)) *
+                              ((r - dividend_yield) + (volatility**2)/6)) *
         (-0.5 * ((r - dividend_yield) + (volatility**2)/6) *
            pnorm(-d_geom - volatility * sqrt(time_to_maturity/3)) -
            dnorm(-d_geom - volatility * sqrt(time_to_maturity/3)) *
@@ -252,6 +249,19 @@ BS_Geometric_Asian_Greeks <- function(
            initial_price * d_gamma) -
         (exp(-(r - dividend_yield)*time_to_maturity) * exercise_price *
            dnorm(-d_geom) * (d_geom * d_delta**2 - d_gamma))
+    }
+
+    if("vomma" %in% greek) {
+      result["vomma"] <-
+        eval(D(expression(
+          -initial_price * exp(-(time_to_maturity/2) *
+                                 ((r - dividend_yield) + (volatility**2)/6)) *
+            ((-volatility * time_to_maturity/6) *
+               pnorm(-d_geom - volatility * sqrt(time_to_maturity/3)) -
+               dnorm(-d_geom - volatility * sqrt(time_to_maturity/3)) *
+               (d_vega + sqrt(time_to_maturity/3))) -
+            exp(-(r - dividend_yield)*time_to_maturity) * exercise_price *
+            dnorm(-d_geom) * d_vega), "volatility"))
     }
 
   } #payoff=="put"
