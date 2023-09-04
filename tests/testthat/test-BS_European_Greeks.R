@@ -5,7 +5,7 @@ test_that("BS_European_Greeks is correct", {
 
   number_of_runs <- 300
 
-  definition_of_geeks <-
+  definition_of_greeks <-
     data.frame(greek = "charm", start = "theta", param = "initial_price") %>%
     add_row(greek = "delta", start = "fair_value", param = "initial_price") %>%
     add_row(greek = "epsilon", start = "fair_value", param = "dividend_yield") %>%
@@ -20,7 +20,8 @@ test_that("BS_European_Greeks is correct", {
     add_row(greek = "speed", start = "gamma", param = "initial_price") %>%
     add_row(greek = "zomma", start = "vanna", param = "initial_price") %>%
     add_row(greek = "color", start = "gamma", param = "time_to_maturity") %>%
-    add_row(greek = "ultima", start = "vomma", param = "volatility")
+    add_row(greek = "ultima", start = "vomma", param = "volatility") %>%
+    add_row(greek = "lambda", start = "fair_value", param = "initial_price")
 
   error <- numeric(number_of_runs)
 
@@ -41,12 +42,12 @@ test_that("BS_European_Greeks is correct", {
     payoff <- sample(c("call", "put",
                        "cash_or_nothing_call", "cash_or_nothing_put",
                        "asset_or_nothing_call", "asset_or_nothing_put"), 1)
-    greek <- sample(definition_of_geeks$greek, 1)
+    greek <- sample(definition_of_greeks$greek, 1)
     param <-
-      definition_of_geeks[definition_of_geeks$greek == greek, "param"] %>%
+      definition_of_greeks[definition_of_greeks$greek == greek, "param"] %>%
       as.character()
     start <-
-      definition_of_geeks[definition_of_geeks$greek == greek, "start"] %>%
+      definition_of_greeks[definition_of_greeks$greek == greek, "start"] %>%
       as.character()
 
     Vals <-
@@ -61,7 +62,7 @@ test_that("BS_European_Greeks is correct", {
         greek = greek
       )
 
-    ## Theta is minus the derivative of fair_value w.r.t. time_to_maturity
+    ## theta is minus the derivative of fair_value w.r.t. time_to_maturity
     if (greek == "theta") {
       Vals = -Vals
     }
@@ -78,20 +79,29 @@ test_that("BS_European_Greeks is correct", {
         payoff = payoff,
         greek = start
       )
-
     }
 
-    Vals_fd <- (F(epsilon) - F(-epsilon)) / (2 * epsilon)
+  }
+
+  Vals_fd <- (F(epsilon) - F(-epsilon)) / (2 * epsilon)
+
+  ## lambda is delta * initial_price / fair_value
+  if(greek == "lambda") {
+    Vals_fd <- Vals_fd *  initial_price /
+      BS_European_Greeks(
+        initial_price = initial_price,
+        exercise_price = exercise_price,
+        r = r,
+        time_to_maturity = time_to_maturity,
+        volatility = volatility,
+        dividend_yield = dividend_yield,
+        payoff = payoff,
+        greek = "fair_value"
+      )
     error[i] <-
       error[i] <-
       min(abs(Vals - Vals_fd)/(abs(Vals + epsilon)),
           abs(Vals - Vals_fd))
-    # TODO: diesen Teil löschen
-    if(error[i] > sqrt(epsilon)){
-      print(greek)
-      print(param)
-      print(error[i])
-    }
   }
 
   expect(max(error) < sqrt(epsilon))
