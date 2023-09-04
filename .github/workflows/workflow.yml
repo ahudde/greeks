@@ -1,3 +1,5 @@
+name: Example workflow for Codecov
+on: [push]
 steps:
 - uses: actions/checkout@greeks_1.3.0
 - uses: codecov/codecov-action@v3
