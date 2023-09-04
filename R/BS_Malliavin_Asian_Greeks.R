@@ -69,7 +69,7 @@ BS_Malliavin_Asian_Greeks <- function(
   result <-
     matrix(ncol = length(greek),
            nrow = length(vectorized_param),
-           dimnames = list(NULL, greek))
+           dimnames = list(NULL, greek)) * NA
 
   ## the payoff function ##
 

@@ -36,7 +36,7 @@ BS_European_Greeks <-
                      "lambda", "gamma", "vanna", "charm", "vomma", "veta",
                      "speed")) {
 
-    result <- vector(mode = "numeric", length = length(greek))
+    result <- vector(mode = "numeric", length = length(greek)) * NA
 
     names(result) <- greek
 

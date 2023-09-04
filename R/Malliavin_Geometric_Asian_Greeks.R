@@ -74,11 +74,11 @@ Malliavin_Geometric_Asian_Greeks <- function(
   result <-
     matrix(ncol = length(greek),
            nrow = length(vectorized_param),
-           dimnames = list(NULL, greek))
+           dimnames = list(NULL, greek)) * NA
 
   ## the payoff function ##
 
-  ## kommentieren??
+  ## TODO: comment
   payoff_name <- payoff
 
   if (inherits(payoff, "function")) {
@@ -136,8 +136,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
     tXW <- calc_tXW(X, W, steps, paths, dt)
   }
 
-  #rm(W)
-  #?????? kommentieren
+  # TODO: comment
   I_W <- calc_I(W, steps, dt)
 
   ### the calculation of I_{(n)}, the integral \int_0^T t^n X_t dt ###
@@ -180,7 +179,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
                dpayoff(initial_price * I_0/time_to_maturity, exercise_price) * weight)
     }
 
-    # hier was erklären ??
+    # TODO: comment
     I_0_geom <-
       exp(calc_I(log(initial_price * X), steps, dt) / time_to_maturity)
 
@@ -226,7 +225,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
       model <- lm(rho ~ cont)
 
       result[i, "rho"] <- model$coefficients["(Intercept)"]
-    }
+    } #rho
 
     if ("theta" %in% greek) {
       result[i, "theta"] <-
@@ -235,7 +234,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
               (1/volatility) * X_T * W_T + time_to_maturity * X_T) / I_1 +
            (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
         E()
-    }
+    } #theta
 
     if ("vega" %in% greek) {
       result[i, "vega"] <-
@@ -259,7 +258,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
             + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
             + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
         E()
-    }# gamma
+    } #gamma
 
   }
 

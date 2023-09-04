@@ -39,7 +39,7 @@ BS_Geometric_Asian_Greeks <- function(
     payoff = "call",
     greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma")) {
 
-  result <- numeric(length(greek))
+  result <- numeric(length(greek)) * NA
 
   names(result) = greek
 
