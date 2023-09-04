@@ -43,7 +43,7 @@ Binomial_American_Greeks <-
            steps = 1000,
            eps = 1/10000) {
 
-  result <- numeric(length(greek))
+  result <- numeric(length(greek)) * NA
 
   names(result) <- greek
 
