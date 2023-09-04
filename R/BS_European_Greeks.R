@@ -94,6 +94,14 @@ BS_European_Greeks <-
           -initial_price * time_to_maturity *
           exp_minus_dividend_yield_times_time_to_maturity * pnorm_d1
       }
+      if ("lambda" %in% greek) {
+        result['lambda'] <-
+          initial_price *
+          (exp_minus_dividend_yield_times_time_to_maturity * pnorm_d1) /
+          (initial_price * exp_minus_dividend_yield_times_time_to_maturity
+           * pnorm_d1 - exp_minus_r_times_time_to_maturity * exercise_price *
+             pnorm_d2)
+      }
 
       ## second-order Greeks
 
@@ -150,6 +158,14 @@ BS_European_Greeks <-
           initial_price * time_to_maturity *
           exp_minus_dividend_yield_times_time_to_maturity * pnorm_minus_d1
       }
+      if ("lambda" %in% greek) {
+        result['lambda'] <-
+          -initial_price *
+          (exp_minus_dividend_yield_times_time_to_maturity * pnorm_minus_d1) /
+          (exp_minus_r_times_time_to_maturity * exercise_price *
+             pnorm_minus_d2 - initial_price *
+             exp_minus_dividend_yield_times_time_to_maturity * pnorm_minus_d1)
+      }
 
       # second-order Greeks
 
@@ -174,14 +190,6 @@ BS_European_Greeks <-
         result['vega'] <-
           initial_price * exp_minus_dividend_yield_times_time_to_maturity *
           dnorm_d1 * sqrt_time_to_maturity
-      }
-      if ("lambda" %in% greek) {
-        result['lambda'] <-
-          initial_price *
-          (exp_minus_dividend_yield_times_time_to_maturity * pnorm_d1) /
-          (initial_price * exp_minus_dividend_yield_times_time_to_maturity
-           * pnorm_d1 - exp_minus_r_times_time_to_maturity * exercise_price *
-             pnorm_d2)
       }
 
       ## second-order Greeks
