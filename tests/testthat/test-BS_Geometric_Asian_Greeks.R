@@ -74,7 +74,6 @@ test_that("BS_Geometric_Asian_Greeks is correct", {
 
     Vals_fd <- (F(epsilon) - F(-epsilon)) / (2 * epsilon)
     error[i] <-
-      error[i] <-
       min(abs(Vals - Vals_fd)/(abs(Vals + epsilon)),
           abs(Vals - Vals_fd))
   }

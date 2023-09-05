@@ -1,27 +1,17 @@
-test_that("BS_European_Greeks is correct", {
+test_that("Binomial_American_Greeks is correct", {
 
   # We check the Greeks by also computing the derivative with finite difference
   # and comparing the results
 
-  number_of_runs <- 300
+  number_of_runs <- 50
 
   definition_of_greeks <-
-    data.frame(greek = "charm", start = "theta", param = "initial_price") %>%
-    add_row(greek = "delta", start = "fair_value", param = "initial_price") %>%
+    data.frame(greek = "delta", start = "fair_value", param = "initial_price") %>%
     add_row(greek = "epsilon", start = "fair_value", param = "dividend_yield") %>%
-    add_row(greek = "gamma", start = "delta", param = "initial_price") %>%
+    # add_row(greek = "gamma", start = "delta", param = "initial_price") %>%
     add_row(greek = "rho", start = "fair_value", param = "r") %>%
     add_row(greek = "theta", start = "fair_value", param = "time_to_maturity") %>%
-    add_row(greek = "vanna", start = "delta", param = "volatility") %>%
-    add_row(greek = "vega", start = "fair_value", param = "volatility") %>%
-    add_row(greek = "vera", start = "rho", param = "volatility") %>%
-    add_row(greek = "veta", start = "vega", param = "time_to_maturity") %>%
-    add_row(greek = "vomma", start = "vega", param = "volatility") %>%
-    add_row(greek = "speed", start = "gamma", param = "initial_price") %>%
-    add_row(greek = "zomma", start = "vanna", param = "initial_price") %>%
-    add_row(greek = "color", start = "gamma", param = "time_to_maturity") %>%
-    add_row(greek = "ultima", start = "vomma", param = "volatility") %>%
-    add_row(greek = "lambda", start = "fair_value", param = "initial_price")
+    add_row(greek = "vega", start = "fair_value", param = "volatility")
 
   error <- numeric(number_of_runs)
 
@@ -39,9 +29,7 @@ test_that("BS_European_Greeks is correct", {
     dividend_yield <- runif(1, 0, 0.1)
     volatility <- runif(1, 0.01, 1)
     model <- "Black_Scholes"
-    payoff <- sample(c("call", "put",
-                       "cash_or_nothing_call", "cash_or_nothing_put",
-                       "asset_or_nothing_call", "asset_or_nothing_put"), 1)
+    payoff <- sample(c("call", "put"), 1)
     greek <- sample(definition_of_greeks$greek, 1)
     param <-
       definition_of_greeks[definition_of_greeks$greek == greek, "param"] %>%
@@ -51,7 +39,8 @@ test_that("BS_European_Greeks is correct", {
       as.character()
 
     Vals <-
-      BS_European_Greeks(
+      Greeks(
+        option_type = "American",
         initial_price = initial_price,
         exercise_price = exercise_price,
         r = r,
@@ -69,7 +58,8 @@ test_that("BS_European_Greeks is correct", {
 
     F <- function(epsilon) {
       assign(param, get(param) + epsilon)
-      BS_European_Greeks(
+      Greeks(
+        option_type = "American",
         initial_price = initial_price,
         exercise_price = exercise_price,
         r = r,
@@ -86,7 +76,8 @@ test_that("BS_European_Greeks is correct", {
     ## lambda is delta * initial_price / fair_value
     if(greek == "lambda") {
       Vals_fd <- Vals_fd *  initial_price /
-        BS_European_Greeks(
+        Greeks(
+          option_type = "American",
           initial_price = initial_price,
           exercise_price = exercise_price,
           r = r,
@@ -104,6 +95,6 @@ test_that("BS_European_Greeks is correct", {
 
   }
 
-  expect(max(error) < sqrt(epsilon))
+  expect(max(error) < 0.1)
 
 })
