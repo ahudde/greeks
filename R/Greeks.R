@@ -35,7 +35,17 @@ Greeks <-
            greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma"),
            ...){
 
-    if (tolower(option_type) == "european" && tolower(model) == "black_scholes") {
+    if (tolower(option_type) %in% c("digital", "european") &&
+        tolower(model) == "black_scholes") {
+      if (tolower(option_type) == "digital" &&
+          tolower(payoff) %in% c("call", "put")) {
+        stop("Please choose one of the following:
+                'cash_or_nothing_call',
+                'cash_or_nothing_put',
+                'asset_or_nothing_call',
+                'asset_or_nothing_put'.")
+        return()
+      }
       return(BS_European_Greeks(payoff = payoff,
                                 greek = greek,
                                 initial_price = initial_price,
@@ -90,25 +100,6 @@ Greeks <-
                                     time_to_maturity = time_to_maturity,
                                     volatility = volatility,
                                     dividend_yield = dividend_yield))
-    }
-
-    else if (tolower(option_type) == "digital" && tolower(model) == "black_scholes") {
-      if (tolower(payoff) %in% c("call", "put")) {
-        stop("Please choose one of the following:
-                'cash_or_nothing_call',
-                'cash_or_nothing_put',
-                'asset_or_nothing_call',
-                'asset_or_nothing_put'.")
-        return()
-      }
-      return(BS_European_Greeks(payoff = payoff,
-                                greek = greek,
-                                initial_price = initial_price,
-                                exercise_price = exercise_price,
-                                r = r,
-                                time_to_maturity = time_to_maturity,
-                                volatility = volatility,
-                                dividend_yield = dividend_yield))
     }
 
     else {
