@@ -48,8 +48,8 @@ Implied_Volatility(
 \item the model to be chosen
 }}
 
-\item{option_type}{in c("European", "American", "Asian", "Digital") - the
-type of option to be considered TODO: Is this complete?}
+\item{option_type}{in c("European", "American", "Geometric Asian", "Asian",
+"Digital") - the type of option to be considered}
 
 \item{payoff}{\itemize{
 \item in c("call", "put")
