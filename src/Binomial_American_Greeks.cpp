@@ -9,7 +9,7 @@ using std::max;
 
 double american_call(double x, double price, double exercise_price) {
   return max(x, price - exercise_price);
-  }
+}
 
 double american_put(double x, double price, double exercise_price) {
   return max(x, exercise_price - price);
@@ -42,8 +42,6 @@ NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
   double up = exp(volatility * sqrt(dt));
   double down = exp(-volatility * sqrt(dt));
   double p = (exp((r-dividend_yield)*dt) - down)/(up-down);
-  double p_ = exp(-r*dt)*p;
-  double q_ = exp(-r*dt)*(1-p);
 
   // generate the price vector
 
@@ -61,23 +59,23 @@ NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
     payoff_function = &american_call;
   } else if (payoff == "put") {
     payoff_function = &american_put;
-    }
+  }
 
   for(i = 0; i <= steps; i++) {
-      value(i) = payoff_function(0.0, price(2*steps - 2*i), exercise_price);
-    }
+    value(i) = payoff_function(0.0, price(2*steps - 2*i), exercise_price);
+  }
 
   for(j = steps-1; j >= 1; j--) {
     for(i = 0; i <= j; i++) {
-      value(i) = payoff_function(p_*value(i) + q_*value(i+1),
+      value(i) = payoff_function(exp(-r*dt)* (p*value(i) + (1-p)*value(i+1)),
             price(2*steps - 2*i + j - steps), exercise_price);
     }
   }
 
   result("fair_value") = payoff_function(
-    p_*value(0) + q_*value(1),
-         price(steps + 1),
-         exercise_price);
+    exp(-r*dt)*p*value(0) + exp(-r*dt)*(1-p)*value(1),
+    price(steps + 1),
+    exercise_price);
   result("delta") = (value(0) - value(1)) / (initial_price * (up - down));
   result("gamma") = (value(0) - 2*result("fair_value") + value(1)) /
     (initial_price * (up - down) * (up - down));
