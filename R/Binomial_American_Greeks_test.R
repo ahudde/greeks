@@ -42,9 +42,6 @@ Binomial_American_Greeks_test <-
     down <- exp(-volatility * sqrt(dt))
     # p is the probability of going one step up
     p <- (exp((r-dividend_yield)*dt) - down) / (up - down)
-
-    print(p)
-
     # the tree is generated
     underlying[1, 1] <- initial_price
 
@@ -76,15 +73,15 @@ Binomial_American_Greeks_test <-
       return(american_option_value[1, 1])
     } else {
       return(
-      american_option_value[1, 1] - european_option_value[1, 1] +
-        BS_European_Greeks(initial_price = initial_price,
-                           exercise_price = exercise_price,
-                           r = r,
-                           time_to_maturity = time_to_maturity,
-                           volatility = volatility,
-                           dividend_yield = dividend_yield,
-                           payoff = payoff_name,
-                           greek = "fair_value"))
+        american_option_value[1, 1] - european_option_value[1, 1] +
+          BS_European_Greeks(initial_price = initial_price,
+                             exercise_price = exercise_price,
+                             r = r,
+                             time_to_maturity = time_to_maturity,
+                             volatility = volatility,
+                             dividend_yield = dividend_yield,
+                             payoff = payoff_name,
+                             greek = "fair_value"))
     }
 
   }
