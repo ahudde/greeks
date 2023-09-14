@@ -102,13 +102,14 @@ Binomial_American_Greeks <-
 
     if ("gamma" %in% greek) {
 
-      v_up <- compute_fair_value(initial_price = initial_price + sqrt(eps))
+      eps_gamma <- initial_price/50
 
+      v_up <- compute_fair_value(initial_price = initial_price + eps_gamma)
       v <- compute_fair_value(initial_price = initial_price)
+      v_down <- compute_fair_value(initial_price = initial_price - eps_gamma)
 
-      v_down <- compute_fair_value(initial_price = initial_price - sqrt(eps))
-
-      result["gamma"] <- (v_up - 2*v + v_down) / (eps)
+      result["gamma"] <-
+        (v_up - 2*v + v_down) / (eps_gamma**2)
 
     }
 
