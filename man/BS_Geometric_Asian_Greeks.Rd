@@ -47,7 +47,8 @@ vector
 }}
 
 \item{greek}{\itemize{
-\item the Greek to be calculated
+\item the Greeks to be calculated in c("fair_value", "delta",
+"vega", "theta", "rho", "gamma", "vomma")
 }}
 }
 \value{
@@ -55,8 +56,7 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the Greeks of an Geometric Asian Option with classical Call- and
-Put-Payoff
+TODO: epsilon
 }
 \examples{
 BS_Geometric_Asian_Greeks(initial_price = 110, exercise_price = 100,

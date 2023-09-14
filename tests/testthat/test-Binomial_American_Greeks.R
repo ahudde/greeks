@@ -8,7 +8,7 @@ test_that("Binomial_American_Greeks is correct", {
   definition_of_greeks <-
     data.frame(greek = "delta", start = "fair_value", param = "initial_price") %>%
     add_row(greek = "epsilon", start = "fair_value", param = "dividend_yield") %>%
-    # add_row(greek = "gamma", start = "delta", param = "initial_price") %>%
+    add_row(greek = "gamma", start = "delta", param = "initial_price") %>%
     add_row(greek = "rho", start = "fair_value", param = "r") %>%
     add_row(greek = "theta", start = "fair_value", param = "time_to_maturity") %>%
     add_row(greek = "vega", start = "fair_value", param = "volatility")
@@ -98,3 +98,58 @@ test_that("Binomial_American_Greeks is correct", {
   expect(max(error) < 0.1)
 
 })
+
+test_that("Binomial_American_Greeks fair_value is correct", {
+
+  # We compare the values of Binomial_Amerian_Greeks.cpp with the values of
+  # Binomial_Americian_Greeks_test.r
+
+  number_of_runs <- 50
+
+  error <- numeric(number_of_runs)
+
+  set.seed(42)
+
+  epsilon <- 1e-9
+
+  for(i in 1:number_of_runs) {
+
+    # the parameters are chosen at random
+    initial_price <- runif(1, 90, 110)
+    exercise_price <- runif(1, 90, 110)
+    r <- runif(1, -0.01, 0.1)
+    time_to_maturity <- runif(1, 0.2, 6)
+    dividend_yield <- runif(1, 0, 0.1)
+    volatility <- runif(1, 0.01, 1)
+    payoff <- sample(c("call", "put"), 1)
+
+    error[i] <- abs(
+      Binomial_American_Greeks_cpp(
+        initial_price = initial_price,
+        exercise_price = exercise_price,
+        r = r,
+        time_to_maturity = time_to_maturity,
+        volatility = volatility,
+        dividend_yield = dividend_yield,
+        payoff = payoff,
+        steps = 5
+      )[1] -
+        Binomial_American_Greeks_test(
+          initial_price = initial_price,
+          exercise_price = exercise_price,
+          r = r,
+          time_to_maturity = time_to_maturity,
+          volatility = volatility,
+          dividend_yield = dividend_yield,
+          payoff = payoff,
+          control_variate = FALSE,
+          steps = 5
+        )
+    )
+
+  }
+
+  expect(max(error) < 0.1)
+
+})
+

@@ -41,124 +41,109 @@ Binomial_American_Greeks <-
            greek = c("fair_value", "delta", "vega", "theta", "rho", "epsilon",
                      "gamma"),
            steps = 1000,
-           eps = 1/10000) {
+           eps = 1/100000) {
 
-  result <- numeric(length(greek)) * NA
+    ## Definition of a helper-function of make better use of
+    ## Binomial_American_Greeks.cpp
 
-  names(result) <- greek
+    compute_fair_value <- function(...) {
 
-  v <- Binomial_American_Greeks_cpp(initial_price = initial_price,
-                                    exercise_price = exercise_price,
-                                    r = r,
-                                    time_to_maturity = time_to_maturity,
-                                    volatility = volatility,
-                                    dividend_yield = dividend_yield,
-                                    payoff = payoff,
-                                    steps = steps)
+      if (length(list(...)) >= 1) {
+        for (i in 1:length(list(...))) {
+          param_name <- names(list(...)[i])
+          param_value <- list(...)[[i]]
+          assign(x = param_name, value = param_value)
+        }
+      }
 
-  if ("fair_value" %in% greek) {
-    result["fair_value"] <- v["fair_value"]
+      v <- Binomial_American_Greeks_cpp(
+        initial_price = initial_price,
+        exercise_price = exercise_price,
+        r = r,
+        time_to_maturity = time_to_maturity,
+        volatility = volatility,
+        dividend_yield = dividend_yield,
+        payoff = payoff,
+        steps = steps)
+
+      return(
+        v["fair_value"] +
+          BS_European_Greeks(
+            initial_price = initial_price,
+            exercise_price = exercise_price,
+            r = r,
+            time_to_maturity = time_to_maturity,
+            volatility = volatility,
+            dividend_yield = dividend_yield,
+            payoff = payoff,
+            greek = "fair_value") -
+          v["european_fair_value"]
+      )
+    }
+
+    ## the actual function definition
+    result <- numeric(length(greek)) * NA
+
+    names(result) <- greek
+
+    if ("fair_value" %in% greek) {
+      result["fair_value"] <- compute_fair_value()
+    }
+
+    if ("delta" %in% greek) {
+
+      v_up <- compute_fair_value(initial_price = initial_price + eps)
+
+      v_down <- compute_fair_value(initial_price = initial_price - eps)
+
+      result["delta"] <- (v_up - v_down) / (2*eps)
+
+    }
+
+    if ("gamma" %in% greek) {
+
+      v_up <- compute_fair_value(initial_price = initial_price + sqrt(eps))
+
+      v <- compute_fair_value(initial_price = initial_price)
+
+      v_down <- compute_fair_value(initial_price = initial_price - sqrt(eps))
+
+      result["gamma"] <- (v_up - 2*v + v_down) / (eps)
+
+    }
+
+    if ("vega" %in% greek) {
+      v_up <- compute_fair_value(volatility = volatility + eps)
+
+      v_down <- compute_fair_value(volatility = volatility - eps)
+
+      result["vega"] <- (v_up - v_down) / (2*eps)
+    }
+
+    if ("theta" %in% greek) {
+      v_up <- compute_fair_value(time_to_maturity = time_to_maturity + eps)
+
+      v_down <- compute_fair_value(time_to_maturity = time_to_maturity - eps)
+
+      result["theta"] <- - (v_up - v_down) / (2*eps)
+    }
+
+    if ("rho" %in% greek) {
+      v_up <- compute_fair_value(r = r + eps)
+
+      v_down <- compute_fair_value(r = r - eps)
+
+      result["rho"] <- (v_up - v_down) / (2*eps)
+    }
+
+    if ("epsilon" %in% greek) {
+      v_up <- compute_fair_value(dividend_yield = dividend_yield + eps)
+
+      v_down <- compute_fair_value(dividend_yield = dividend_yield - eps)
+
+      result["epsilon"] <- (v_up - v_down) / (2*eps)
+    }
+
+    return(result)
+
   }
-
-  if ("delta" %in% greek) {
-    result["delta"] <- v["delta"]
-  }
-
-  if ("gamma" %in% greek) {
-    result["gamma"] <- v["gamma"]
-  }
-
-  if ("vega" %in% greek) {
-    v_up <- Binomial_American_Greeks_cpp(initial_price = initial_price,
-                                 exercise_price = exercise_price,
-                                 r = r,
-                                 time_to_maturity = time_to_maturity,
-                                 volatility = volatility + eps,
-                                 dividend_yield = dividend_yield,
-                                 payoff = payoff,
-                                 steps = steps)["fair_value"]
-    v_down <-
-      Binomial_American_Greeks_cpp(initial_price = initial_price,
-                                        exercise_price = exercise_price,
-                                        r = r,
-                                        time_to_maturity = time_to_maturity,
-                                        volatility = volatility - eps,
-                                        dividend_yield = dividend_yield,
-                                        payoff = payoff,
-                                        steps = steps)["fair_value"]
-
-    result["vega"] <- (v_up - v_down) / (2*eps)
-  }
-
-  if ("theta" %in% greek) {
-    v_up <-
-      Binomial_American_Greeks_cpp(initial_price = initial_price,
-                                   exercise_price = exercise_price,
-                                   r = r,
-                                   time_to_maturity = time_to_maturity + eps,
-                                   volatility = volatility,
-                                   dividend_yield = dividend_yield,
-                                   payoff = payoff,
-                                   steps = steps)["fair_value"]
-    v_down <-
-      Binomial_American_Greeks_cpp(initial_price = initial_price,
-                                   exercise_price = exercise_price,
-                                   r = r,
-                                   time_to_maturity = time_to_maturity - eps,
-                                   volatility = volatility,
-                                   dividend_yield = dividend_yield,
-                                   payoff = payoff,
-                                   steps = steps)["fair_value"]
-
-    result["theta"] <- - (v_up - v_down) / (2*eps)
-  }
-
-  if ("rho" %in% greek) {
-    v_up <-
-      Binomial_American_Greeks_cpp(initial_price = initial_price,
-                                   exercise_price = exercise_price,
-                                   r = r + eps,
-                                   time_to_maturity = time_to_maturity,
-                                   volatility = volatility,
-                                   dividend_yield = dividend_yield,
-                                   payoff = payoff,
-                                   steps = steps)["fair_value"]
-    v_down <-
-      Binomial_American_Greeks_cpp(initial_price = initial_price,
-                                   exercise_price = exercise_price,
-                                   r = r - eps,
-                                   time_to_maturity = time_to_maturity,
-                                   volatility = volatility,
-                                   dividend_yield = dividend_yield,
-                                   payoff = payoff,
-                                   steps = steps)["fair_value"]
-
-    result["rho"] <- (v_up - v_down) / (2*eps)
-  }
-
-  if ("epsilon" %in% greek) {
-    v_up <-
-      Binomial_American_Greeks_cpp(initial_price = initial_price,
-                                   exercise_price = exercise_price,
-                                   r = r,
-                                   time_to_maturity = time_to_maturity,
-                                   volatility = volatility,
-                                   dividend_yield = dividend_yield + eps,
-                                   payoff = payoff,
-                                   steps = steps)["fair_value"]
-    v_down <-
-      Binomial_American_Greeks_cpp(initial_price = initial_price,
-                                   exercise_price = exercise_price,
-                                   r = r,
-                                   time_to_maturity = time_to_maturity,
-                                   volatility = volatility,
-                                   dividend_yield = dividend_yield - eps,
-                                   payoff = payoff,
-                                   steps = steps)["fair_value"]
-
-    result["epsilon"] <- (v_up - v_down) / (2*eps)
-  }
-
-  return(result)
-
-}

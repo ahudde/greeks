@@ -26,25 +26,25 @@ NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
                                            const int steps = 1000) {
 
   // payoff_function
-
   double (*payoff_function)(double x, double price, double exercise_price);
 
   // iterators
   int i;
   int j;
 
-  NumericVector result(3);
+  NumericVector result(2);
 
-  result.names() = StringVector({"fair_value", "delta", "gamma"});
+  result.names() =
+    StringVector({"fair_value", "european_fair_value"});
 
-  double dt = time_to_maturity/steps;
-
-  double up = exp(volatility * sqrt(dt));
-  double down = exp(-volatility * sqrt(dt));
-  double p = (exp((r-dividend_yield)*dt) - down)/(up-down);
+  const double dt = time_to_maturity/steps;
+  const double up = exp(volatility * sqrt(dt));
+  const double down = exp(-volatility * sqrt(dt));
+  const double p = (exp((r-dividend_yield)*dt) - down)/(up-down);
+  const double q = (1 - p);
+  const double exp_min_r_dt = exp(-r*dt);
 
   // generate the price vector
-
   NumericVector price(2*steps+1);
 
   for(j = 0; j <= 2*steps; j++) {
@@ -52,8 +52,8 @@ NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
   }
 
   // generate the value matrix
-
-  NumericVector value(steps+1);
+  NumericVector american_value(steps+1);
+  NumericVector european_value(steps+1);
 
   if (payoff == "call") {
     payoff_function = &american_call;
@@ -62,23 +62,23 @@ NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
   }
 
   for(i = 0; i <= steps; i++) {
-    value(i) = payoff_function(0.0, price(2*steps - 2*i), exercise_price);
+    american_value(i) = payoff_function(0.0, price(2*steps - 2*i), exercise_price);
   }
 
-  for(j = steps-1; j >= 1; j--) {
+  european_value = american_value;
+
+  for(j = steps-1; j >= 0; j--) {
     for(i = 0; i <= j; i++) {
-      value(i) = payoff_function(exp(-r*dt)* (p*value(i) + (1-p)*value(i+1)),
-            price(2*steps - 2*i + j - steps), exercise_price);
+      american_value(i) =
+        payoff_function(
+          exp_min_r_dt * (p*american_value(i) + q*american_value(i+1)),
+          price(2*steps - 2*i + j - steps), exercise_price);
+      european_value(i) = p * european_value(i) + q * european_value(i);
     }
   }
 
-  result("fair_value") = payoff_function(
-    exp(-r*dt)*p*value(0) + exp(-r*dt)*(1-p)*value(1),
-    price(steps + 1),
-    exercise_price);
-  result("delta") = (value(0) - value(1)) / (initial_price * (up - down));
-  result("gamma") = (value(0) - 2*result("fair_value") + value(1)) /
-    (initial_price * (up - down) * (up - down));
+  result("fair_value") = american_value(0);
+  result("european_fair_value") = european_value(0);
 
   return result;
 

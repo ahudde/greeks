@@ -15,7 +15,7 @@ Binomial_American_Greeks(
   payoff = "call",
   greek = c("fair_value", "delta", "vega", "theta", "rho", "epsilon", "gamma"),
   steps = 1000,
-  eps = 1/10000
+  eps = 1/1e+05
 )
 }
 \arguments{
