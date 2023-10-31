@@ -1,7 +1,6 @@
 #' Computes the Greeks of an Geometric Asian Option with classical Call- and
 #' Put-Payoff in the Black Scholes model
 #'
-#'
 #' @export
 #'
 #' @import "stats"
