@@ -39,7 +39,7 @@ by the user.
 The option prices and volatilities for European options can be displayed with
 the interactive shiny app by calling `Greeks_UI`
 
-![Greeks_UI](Greeks_UI.png)
+<img src="Greeks_UI.png" width="600" class="center">
 
 ## The function Greeks
 
