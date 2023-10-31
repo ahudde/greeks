@@ -1,4 +1,4 @@
-# greeks
+# `greeks`
 ![](https://www.r-pkg.org/badges/version/greeks)
 [![R-CMD-check](https://github.com/ahudde/greeks/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ahudde/greeks/actions/workflows/R-CMD-check.yaml)
 [![status](https://joss.theoj.org/papers/61ae139acab91fdb0664b33a23e43c93/status.svg)](https://joss.theoj.org/papers/61ae139acab91fdb0664b33a23e43c93)
@@ -25,6 +25,13 @@ Additionally, these calculations are not restricted to the Black Scholes model,
 but work for more general Lévy Jump diffusion model, which is also customizable
 by the user.
 
+## `greeks` on CRAN
+
+You can view the documentation of this package on
+[cran.r-project.org/web/packages/greeks/greeks.pdf](https://cran.r-project.org/web/packages/greeks/greeks.pdf)
+and the vignette on
+[cran.r-project.org/web/packages/greeks/vignettes/using_greeks.html](https://cran.r-project.org/web/packages/greeks/vignettes/using_greeks.html).
+
 ## Installation
 
     # The cran version can be installed by 
@@ -47,7 +54,7 @@ or online on
 
 ![Greeks_UI](https://user-images.githubusercontent.com/60978072/213740981-c66ad01b-0833-4986-bc59-e9d61c94eb27.png)
 
-## The function Greeks
+## The function `Greeks`
 
 Most of the options prices and Greeks can easily be calculated with the function
 Greeks.
