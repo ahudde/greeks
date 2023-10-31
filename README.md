@@ -3,8 +3,7 @@
 [![R-CMD-check](https://github.com/ahudde/greeks/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ahudde/greeks/actions/workflows/R-CMD-check.yaml)
 [![status](https://joss.theoj.org/papers/61ae139acab91fdb0664b33a23e43c93/status.svg)](https://joss.theoj.org/papers/61ae139acab91fdb0664b33a23e43c93)
 ![](https://cranlogs.r-pkg.org/badges/greeks)
-[![Codecov test
-coverage](https://codecov.io/gh/ahudde/greeks/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ahudde/greeks?branch=main)
+[![Codecov test coverage](https://codecov.io/gh/ahudde/greeks/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ahudde/greeks?branch=main)
 
 The package `greeks` provides functions to compute financial option prices and
 sensitivities of financial option prices for European, American, Asian, and
@@ -33,7 +32,7 @@ by the user.
     # The development version can be installed by
     install.packages("devtools")
     library("devtools")
-    devtools::install_github("anselmhudde/greeks")
+    devtools::install_github("ahudde/greeks")
 
 ## Computing option prices and Greeks in the shiny app
 
@@ -103,3 +102,7 @@ for a wide range of option types and payoff functions:
     
     ## [1] 0.6330451
 
+## Contributions, bug reports or support
+
+Bug reports and contributions are very welcome.
+Also, if you need assistance, please open an issue on [github.com/ahudde/greeks/issues](https://github.com/ahudde/greeks/issues).
