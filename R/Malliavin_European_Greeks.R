@@ -1,4 +1,4 @@
-#' Computes the Greeks of an European option with the Malliavin Monte Carlo
+#' Computes the Greeks of a European option with the Malliavin Monte Carlo
 #' Method in the Black Scholes model
 #'
 #' @export

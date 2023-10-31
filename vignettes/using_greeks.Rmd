@@ -1,8 +1,8 @@
 ---
-title: "greeks: Sensitivities of Prices of Financial Options and Implied Volatilites"
+title: "greeks: Sensitivities of Prices of Financial Options and Implied Volatilities"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{greeks: Sensitivities of Prices of Financial Options and Implied Volatilites}
+  %\VignetteIndexEntry{greeks: Sensitivities of Prices of Financial Options and Implied Volatilities}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

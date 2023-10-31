@@ -2,7 +2,7 @@
 % Please edit documentation in R/Malliavin_European_Greeks.R
 \name{Malliavin_European_Greeks}
 \alias{Malliavin_European_Greeks}
-\title{Computes the Greeks of an European option with the Malliavin Monte Carlo
+\title{Computes the Greeks of a European option with the Malliavin Monte Carlo
 Method in the Black Scholes model}
 \usage{
 Malliavin_European_Greeks(
@@ -76,7 +76,7 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}
 }
 \description{
-Computes the Greeks of an European option with the Malliavin Monte Carlo
+Computes the Greeks of a European option with the Malliavin Monte Carlo
 Method in the Black Scholes model
 }
 \examples{

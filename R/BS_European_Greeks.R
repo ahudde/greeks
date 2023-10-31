@@ -1,4 +1,4 @@
-#' Computes the Greeks of an European call- or put-option, or of digital options
+#' Computes the Greeks of a European call- or put-option, or of digital options
 #' in the Black Scholes model
 #'
 #' @export
