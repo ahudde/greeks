@@ -3,7 +3,8 @@
 \name{Malliavin_Asian_Greeks}
 \alias{Malliavin_Asian_Greeks}
 \title{Computes the Greeks of an Asian option with the Malliavin Monte Carlo
-Method in the Black Scholes model}
+Method in the Black Scholes model, or for Asian options, also in a Jump
+Diffusion model}
 \usage{
 Malliavin_Asian_Greeks(
   initial_price = 100,
@@ -99,7 +100,8 @@ parameter \code{greek}.
 }
 \description{
 Computes the Greeks of an Asian option with the Malliavin Monte Carlo
-Method in the Black Scholes model
+Method in the Black Scholes model, or for Asian options, also in a Jump
+Diffusion model
 }
 \examples{
 Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,

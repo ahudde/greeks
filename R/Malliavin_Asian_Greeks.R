@@ -1,5 +1,6 @@
 #' Computes the Greeks of an Asian option with the Malliavin Monte Carlo
-#' Method in the Black Scholes model
+#' Method in the Black Scholes model, or for Asian options, also in a Jump
+#' Diffusion model
 #'
 #' @export
 #'
