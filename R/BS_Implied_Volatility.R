@@ -1,4 +1,5 @@
-#' Computes the implied volatility for European options via Halley's method.
+#' Computes the implied volatility for European options in the Black Scholes
+#' model via Halley's method.
 #'
 #' @export
 #'
