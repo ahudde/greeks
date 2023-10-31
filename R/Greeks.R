@@ -1,5 +1,6 @@
-#' Computes the Greeks of various options in the Black Scholes model or in a
-#' Jump Diffusion model in the cases of Asian Options
+#' Computes the Greeks of various options in the Black Scholes model or both in
+#' the Black Scholes model or a Jump Diffusion model in the case of Asian
+#' Options, or in the Binomial options pricing model
 #'
 #' @export
 #'
