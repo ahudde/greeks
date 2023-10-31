@@ -72,3 +72,11 @@ parameter \code{greek}.
 \description{
 Computes the Greeks of various options
 }
+\examples{
+Greeks(initial_price = 100, exercise_price = 120, r = 0.01,
+time_to_maturity = 5, volatility = 0.30, payoff = "call")
+
+Greeks(initial_price = 100, exercise_price = 100, r = -0.005,
+time_to_maturity = 1, volatility = 0.30, payoff = "put",
+option_type = "American")
+}
