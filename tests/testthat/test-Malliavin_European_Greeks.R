@@ -26,6 +26,7 @@ test_that("Malliavin_European_Greeks is correct", {
     model <- "Black_Scholes"
     payoff <- sample(
       c("call", "put"), 1)
+    antithetic <- sample(c(TRUE, FALSE), 1)
     greek <- sample(Greeks, 1)
 
     Malliavin_Value <-
@@ -37,7 +38,8 @@ test_that("Malliavin_European_Greeks is correct", {
         volatility = volatility,
         payoff = payoff,
         greek = greek,
-        paths = 1000000
+        paths = 2000000,
+        antithetic = antithetic
       )
 
     Exact_Value <-
