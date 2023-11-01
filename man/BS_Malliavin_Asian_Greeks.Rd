@@ -2,8 +2,8 @@
 % Please edit documentation in R/BS_Malliavin_Asian_Greeks.R
 \name{BS_Malliavin_Asian_Greeks}
 \alias{BS_Malliavin_Asian_Greeks}
-\title{Computes the Greeks of an Asian option with the Malliavin Monte Carlo
-Method in the Black Scholes model}
+\title{Computes the Greeks of an Asian option with the Malliavin Monte Carlo Method
+in the Black Scholes model}
 \usage{
 BS_Malliavin_Asian_Greeks(
   initial_price = 100,
@@ -51,7 +51,8 @@ function
 }}
 
 \item{greek}{\itemize{
-\item the Greek to be calculated
+\item Greeks to be calculated in c("fair_value", "delta", "gamma",
+"gamma_kombi", "rho", "theta", "vega")
 }}
 
 \item{steps}{\itemize{
@@ -71,8 +72,8 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the Greeks of an Asian option with the Malliavin Monte Carlo
-Method in the Black Scholes model
+Computes the Greeks of an Asian option with the Malliavin Monte Carlo Method
+in the Black Scholes model
 }
 \examples{
 BS_Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,

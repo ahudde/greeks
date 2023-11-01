@@ -11,7 +11,6 @@ Malliavin_European_Greeks(
   r = 0,
   time_to_maturity = 1,
   volatility = 0.3,
-  dividend_yield = 0,
   payoff = "call",
   greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma"),
   model = "Black Scholes",
@@ -41,17 +40,14 @@ Malliavin_European_Greeks(
 \item volatility of the underlying asset
 }}
 
-\item{dividend_yield}{\itemize{
-\item dividend yield
-}}
-
 \item{payoff}{\itemize{
 \item the payoff function, either a string in ("call", "put",
 "digital_call", "digital_put"), or a function
 }}
 
 \item{greek}{\itemize{
-\item the greek to be calculated
+\item the Greeks to be calculated in ("fair_value", "delta",
+"vega", "theta", "rho", "gamma")
 }}
 
 \item{model}{\itemize{
@@ -80,8 +76,8 @@ Computes the Greeks of a European option with the Malliavin Monte Carlo
 Method in the Black Scholes model
 }
 \examples{
-Malliavin_European_Greeks(initial_price = 110, exercise_price = 100,
-r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
-greek = c("fair_value", "delta", "rho"), payoff = "put")
+Malliavin_European_Greeks(initial_price = 110,
+exercise_price = 100, r = 0.02, time_to_maturity = 4.5,
+volatility = 0.22, greek = c("fair_value", "delta", "rho"), payoff = "put")
 
 }
