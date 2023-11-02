@@ -86,8 +86,7 @@ Malliavin_European_Greeks <-
       exp((r - (volatility^2)/2)*time_to_maturity +
             (volatility*W_T))
     } else {
-    print("Unknown model")
-    return()
+    error("Unknown model")
   }
 
   E <- function(weight) {

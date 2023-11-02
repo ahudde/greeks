@@ -61,5 +61,6 @@ test_that("Malliavin_European_Greeks is correct", {
   }
 
   expect(max(error) < 0.01)
+  expect_error(Malliavin_European_Greeks(model = "whatever_model"))
 
 })
