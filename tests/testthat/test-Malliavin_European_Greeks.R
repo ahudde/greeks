@@ -2,8 +2,7 @@
 
 test_that("Malliavin_European_Greeks is correct", {
 
-  # We check the Greeks by also computing the derivative with finite difference
-  # and comparing the results
+  # TODO
 
   number_of_runs <- 30
 
@@ -62,5 +61,17 @@ test_that("Malliavin_European_Greeks is correct", {
 
   expect(max(error) < 0.01)
   expect_error(Malliavin_European_Greeks(model = "whatever_model"))
+
+  # Check, whether custom payoff function works
+
+  call_function <- function(x) {
+    return(pmax(0, x-100))
+  }
+
+  diff <-
+    sum(abs(Malliavin_European_Greeks(payoff = call_function) -
+              Malliavin_European_Greeks(payoff = "call")))
+
+  expect(abs(diff) < 1e-7)
 
 })
