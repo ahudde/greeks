@@ -69,10 +69,9 @@ NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
 
   for(j = steps-1; j >= 0; j--) {
     for(i = 0; i <= j; i++) {
-      american_value(i) =
-        payoff_function(
-          exp_min_r_dt * (p*american_value(i) + q*american_value(i+1)),
-          price(2*steps - 2*i + j - steps), exercise_price);
+      american_value(i) = payoff_function(
+        exp_min_r_dt * (p*american_value(i) + q*american_value(i+1)),
+        price(2*steps - 2*i + j - steps), exercise_price);
       european_value(i) = p * european_value(i) + q * european_value(i+1);
     }
   }
