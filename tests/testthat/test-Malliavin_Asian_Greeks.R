@@ -100,7 +100,7 @@ test_that("Malliavin_Asian_Greeks is correct", {
     model <- sample(c("black_scholes", "jump_diffusion"), 1)
 
     Vals <-
-      Malliavin_Asian_Greeks(
+      Greeks(
         initial_price = initial_price,
         exercise_price = exercise_price,
         r = r,
@@ -110,6 +110,7 @@ test_that("Malliavin_Asian_Greeks is correct", {
         payoff = payoff,
         greek = greek,
         model = model,
+        option_type = "Asian",
         antithetic = TRUE
       )
 
@@ -117,7 +118,7 @@ test_that("Malliavin_Asian_Greeks is correct", {
       assign(param,
              c(get(param) + 2*epsilon, get(param) + epsilon,
                get(param) - 2*epsilon, get(param) - epsilon))
-      Malliavin_Asian_Greeks(
+      Greeks(
         initial_price = initial_price,
         exercise_price = exercise_price,
         r = r,
@@ -127,6 +128,7 @@ test_that("Malliavin_Asian_Greeks is correct", {
         payoff = payoff,
         greek = start,
         model = model,
+        option_type = "Asian",
         antithetic = TRUE
       )
     }
