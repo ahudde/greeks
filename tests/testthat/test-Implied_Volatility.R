@@ -89,4 +89,7 @@ test_that("implied volatility is correct", {
 
   expect(max(abs(option_price_test - option_price)) < 1e-06)
 
+  # Checks if error is caught when the option price is infeasible low
+  expect_error(Implied_Volatility(option_price = 10, exercise_price = 90))
+
 })
