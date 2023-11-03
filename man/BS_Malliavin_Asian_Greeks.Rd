@@ -13,7 +13,7 @@ BS_Malliavin_Asian_Greeks(
   volatility = 0.3,
   dividend_yield = 0,
   payoff = "call",
-  greek = c("fair_value", "delta", "rho"),
+  greek = c("fair_value", "delta", "vega", "rho"),
   steps = round(time_to_maturity * 252),
   paths = 1000,
   seed = 1
@@ -52,7 +52,7 @@ function
 
 \item{greek}{\itemize{
 \item Greeks to be calculated in c("fair_value", "delta", "gamma",
-"gamma_kombi", "rho", "theta", "vega")
+"rho", "theta", "vega")
 }}
 
 \item{steps}{\itemize{
