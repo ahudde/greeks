@@ -85,6 +85,7 @@ test_that("Malliavin_Asian_Greeks is correct", {
   for(i in 1:number_of_runs) {
 
     # the parameters are chosen at random
+    model <- sample(c("black_scholes", "jump_diffusion"), 1)
     initial_price <- runif(1, 90, 110)
     exercise_price <- runif(1, 90, 110)
     r <- runif(1, -0.01, 0.1)
@@ -96,6 +97,7 @@ test_that("Malliavin_Asian_Greeks is correct", {
     greek <- "delta"
     param <- "initial_price"
     start <- "fair_value"
+    model <- sample(c("black_scholes", "jump_diffusion"), 1)
 
     Vals <-
       Malliavin_Asian_Greeks(
@@ -107,6 +109,7 @@ test_that("Malliavin_Asian_Greeks is correct", {
         dividend_yield = dividend_yield,
         payoff = payoff,
         greek = greek,
+        model = model,
         antithetic = TRUE
       )
 
@@ -123,6 +126,7 @@ test_that("Malliavin_Asian_Greeks is correct", {
         dividend_yield = dividend_yield,
         payoff = payoff,
         greek = start,
+        model = model,
         antithetic = TRUE
       )
     }
