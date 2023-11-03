@@ -32,13 +32,15 @@ test_that("BS_Malliavin_Asian_Greeks is correct", {
     start <- "fair_value"
 
     Vals <-
-      BS_Malliavin_Asian_Greeks(
+      Greeks(
         initial_price = initial_price,
         exercise_price = exercise_price,
         r = r,
         time_to_maturity = time_to_maturity,
         volatility = volatility,
         dividend_yield = dividend_yield,
+        model = "Black_Scholes",
+        option_type = "Asian",
         payoff = payoff,
         greek = greek
       )
@@ -47,13 +49,15 @@ test_that("BS_Malliavin_Asian_Greeks is correct", {
       assign(param,
              c(get(param) + 2*epsilon, get(param) + epsilon,
                get(param) - 2*epsilon, get(param) - epsilon))
-      BS_Malliavin_Asian_Greeks(
+      Greeks(
         initial_price = initial_price,
         exercise_price = exercise_price,
         r = r,
         time_to_maturity = time_to_maturity,
         volatility = volatility,
         dividend_yield = dividend_yield,
+        model = "Black_Scholes",
+        option_type = "Asian",
         payoff = payoff,
         greek = start
       )
