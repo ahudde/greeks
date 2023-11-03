@@ -54,7 +54,6 @@ Greeks <-
                 'cash_or_nothing_put',
                 'asset_or_nothing_call',
                 'asset_or_nothing_put'.")
-        return()
       }
       return(BS_European_Greeks(payoff = payoff,
                                 greek = greek,
