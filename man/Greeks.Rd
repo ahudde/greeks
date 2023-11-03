@@ -17,6 +17,7 @@ Greeks(
   option_type = "European",
   payoff = "call",
   greek = c("fair_value", "delta", "vega", "theta", "rho", "gamma"),
+  antithetic = TRUE,
   ...
 )
 }
@@ -61,6 +62,12 @@ Greeks(
 \item Greeks to be calculated in c("fair_value", "delta", "vega",
 "theta", "rho", "epsilon", "lambda", "gamma", "vanna", "charm", "vomma",
 "veta", "vera", "speed", "zomma", "color", "ultima")
+}}
+
+\item{antithetic}{\itemize{
+\item if TRUE, antithetic random numbers will be chosen to
+decrease variance
+TODO: auch fuer europ greeks implementieren
 }}
 
 \item{...}{\itemize{
