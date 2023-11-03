@@ -17,7 +17,7 @@
 #' @param payoff - the payoff function, either a string in ("call", "put"), or a
 #' function
 #' @param greek - Greeks to be calculated in c("fair_value", "delta", "gamma",
-#' "gamma_kombi", "rho", "theta", "vega")
+#' "rho", "theta", "vega")
 #' @param steps - the number of integration steps
 #' @param paths - the number of simulated paths
 #' @param seed - the seed of the random number generator
@@ -38,7 +38,7 @@ BS_Malliavin_Asian_Greeks <- function(
     volatility = 0.3,
     dividend_yield = 0,
     payoff = "call",
-    greek = c("fair_value", "delta", "rho"),
+    greek = c("fair_value", "delta", "vega", "rho"),
     steps = round(time_to_maturity*252),
     paths = 1000,
     seed = 1) {
@@ -78,15 +78,9 @@ BS_Malliavin_Asian_Greeks <- function(
     payoff_function <- function(x, exercise_price) {
       return(pmax(0, x - exercise_price))
     }
-    dpayoff_function <- function(x, exercise_price) {
-      return((x > exercise_price) + 0)
-    }
   } else if (payoff == "put") {
     payoff_function <- function(x, exercise_price) {
       return(pmax(0, exercise_price - x))
-    }
-    dpayoff_function <- function(x, exercise_price) {
-      return(-(x < exercise_price) + 0)
     }
   }
 
@@ -125,7 +119,7 @@ BS_Malliavin_Asian_Greeks <- function(
 
   if (length(intersect(
     greek,
-    c("delta", "theta", "vega", "gamma", "gamma_kombi", "rho_d")))) {
+    c("delta", "theta", "vega", "gamma", "rho_d")))) {
     I_1 <- calc_I_1(X, steps, dt)
     I_2 <- calc_I_2(X, steps, dt)
   }
@@ -144,10 +138,6 @@ BS_Malliavin_Asian_Greeks <- function(
       ((1 / volatility) *
          ( -(1 + volatility * W_T) + (W_T * XW - volatility * tXW) / I_1 +
            (volatility * XW * I_2) / I_1^2))
-  }
-
-  if ("gamma" %in% greek) {
-    I_3 <- calc_I_3(X, steps, dt)
   }
 
   for (i in 1:length(vectorized_param)) {
@@ -176,13 +166,6 @@ BS_Malliavin_Asian_Greeks <- function(
         exp(-(r - dividend_yield) * time_to_maturity) *
           payoff_function(initial_price * I_0/time_to_maturity, exercise_price) *
                weight)
-    }
-
-    dE_paths <- function(weight) {
-      return(
-        exp(-(r - dividend_yield) * time_to_maturity) *
-          dpayoff_function(initial_price * I_0/time_to_maturity, exercise_price) *
-          weight)
     }
 
     if("fair_value" %in% greek || "rho" %in% greek) {
