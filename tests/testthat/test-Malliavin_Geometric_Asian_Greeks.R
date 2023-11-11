@@ -3,7 +3,7 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
   # We check the Greeks by also computing the derivative with finite difference
   # and comparing the results
 
-  number_of_runs <- 2
+  number_of_runs <- 4
 
   definition_of_greeks <-
     data.frame(greek = "delta", start = "fair_value", param = "initial_price") %>%
@@ -20,12 +20,13 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
     initial_price <- runif(1, 90, 110)
     exercise_price <- runif(1, 90, 110)
     r <- runif(1, -0.01, 0.1)
-    time_to_maturity <- runif(1, 0.2, 6)
+    time_to_maturity <- runif(1, 0.2, 1.5)
     dividend_yield <- runif(1, 0, 0.1)
     volatility <- runif(1, 0.01, 1)
     model <- "Black_Scholes"
-    payoff <- rep(c("call", "put"), 3)[i]
-    greek <- rep(c("delta"), 2)[i]
+    greeks <- c("fair_value", "delta", "rho", "vega", "theta", "gamma")
+    payoff <- rep(c("put", "call"), 3)[i]
+    greek <- c("fair_value", "fair_value", "delta", "delta", "rho", "rho")[i]
     antithetic <- c(TRUE, FALSE)[i]
     param <-
       definition_of_greeks[definition_of_greeks$greek == greek, "param"] %>%
@@ -34,7 +35,7 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
       definition_of_greeks[definition_of_greeks$greek == greek, "start"] %>%
       as.character()
 
-    Vals <-
+    Value_MC <-
       Malliavin_Geometric_Asian_Greeks(
         initial_price = initial_price,
         exercise_price = exercise_price,
@@ -44,19 +45,13 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
         dividend_yield = dividend_yield,
         payoff = payoff,
         greek = greek,
-        paths = 10000,
+        paths = 100000,
         steps = 12,
         antithetic = antithetic
       )
 
-    ## theta is minus the derivative of fair_value w.r.t. time_to_maturity
-    if (greek == "theta") {
-      Vals = -Vals
-    }
-
-    F <- function(epsilon) {
-      assign(param, get(param) + epsilon)
-      Malliavin_Geometric_Asian_Greeks(
+    Value_exact <-
+      BS_Geometric_Asian_Greeks(
         initial_price = initial_price,
         exercise_price = exercise_price,
         r = r,
@@ -64,21 +59,13 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
         volatility = volatility,
         dividend_yield = dividend_yield,
         payoff = payoff,
-        greek = start,
-        paths = 10000,
-        steps = 12,
-        antithetic = antithetic
+        greek = greek
       )
-    }
-
-    epsilon <- get(param) * 0.1
-
-    Vals_fd <- (F(epsilon) - F(-epsilon)) / (2 * epsilon)
 
 
     error[i] <-
-      min(abs(Vals - Vals_fd)/(abs(Vals + epsilon)),
-          abs(Vals - Vals_fd))
+      min(abs(Value_MC - Value_exact)/(abs(Value_MC) + 1e-5), #TODO: Klammer hier überall richtig machen
+          abs(Value_MC - Value_exact))
 
   }
 
