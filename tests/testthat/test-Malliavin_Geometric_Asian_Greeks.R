@@ -3,7 +3,7 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
   # We check the Greeks by also computing the derivative with finite difference
   # and comparing the results
 
-  number_of_runs <- 4
+  number_of_runs <- 6
 
   definition_of_greeks <-
     data.frame(greek = "delta", start = "fair_value", param = "initial_price") %>%
@@ -26,7 +26,7 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
     model <- "Black_Scholes"
     greeks <- c("fair_value", "delta", "rho", "vega", "theta", "gamma")
     payoff <- rep(c("put", "call"), 3)[i]
-    greek <- c("fair_value", "fair_value", "delta", "delta", "rho", "rho")[i]
+    greek <- c("fair_value", "fair_value", "delta", "delta", "vega", "vega")[i]
     antithetic <- c(TRUE, FALSE)[i]
     param <-
       definition_of_greeks[definition_of_greeks$greek == greek, "param"] %>%
