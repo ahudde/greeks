@@ -1,8 +1,4 @@
-# TODO: Digital options
-
 test_that("Malliavin_European_Greeks is correct", {
-
-  # TODO
 
   number_of_runs <- 30
 
@@ -24,7 +20,7 @@ test_that("Malliavin_European_Greeks is correct", {
     volatility <- runif(1, 0.01, 1)
     model <- "Black_Scholes"
     payoff <- sample(
-      c("call", "put"), 1)
+      c("call", "put", "cash_or_nothing_call", "cash_or_nothing_put"), 1)
     antithetic <- sample(c(TRUE, FALSE), 1)
     greek <- sample(Greeks, 1)
 
