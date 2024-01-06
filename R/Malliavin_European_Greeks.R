@@ -12,7 +12,7 @@
 #' @param time_to_maturity - time to maturity in years
 #' @param volatility - volatility of the underlying asset
 #' @param payoff - the payoff function, either a string in ("call", "put",
-#' "digital_call", "digital_put"), or a function
+#' "cash_or_nothing_call", "cash_or_nothing_call"), or a function
 #' @param greek - the Greeks to be calculated in ("fair_value", "delta",
 #' "vega", "theta", "rho", "gamma")
 #' @param model - the model to be chosen

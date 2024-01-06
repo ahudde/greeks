@@ -67,7 +67,6 @@ Greeks(
 \item{antithetic}{\itemize{
 \item if TRUE, antithetic random numbers will be chosen to
 decrease variance
-TODO: auch fuer europ greeks implementieren
 }}
 
 \item{...}{\itemize{
