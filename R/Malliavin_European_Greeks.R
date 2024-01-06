@@ -73,10 +73,10 @@ Malliavin_European_Greeks <-
     payoff <- function(x) {
       return(pmax(0, exercise_price-x))
     }
-  } else if (payoff == "digital_call") {
+  } else if (payoff %in% c("digital_call", "cash_or_nothing_call")) {
     payoff <- function(x) {ifelse(x >= exercise_price, 1, 0)
     }
-  } else if (payoff == "digital_put") {
+  } else if (payoff %in% c("digital_put", "cash_or_nothing_put")) {
     payoff <- function(x) {ifelse(x <= exercise_price, 1, 0)
     }
   }
