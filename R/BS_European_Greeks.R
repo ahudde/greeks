@@ -267,19 +267,19 @@ BS_European_Greeks <-
               pnorm((
                 log(initial_price / exercise_price) +
                   (r - dividend_yield + (volatility ^ 2) / 2) * time_to_maturity
-              ) / (volatility * sqrt(time_to_maturity)) - volatility *
-                sqrt(time_to_maturity)))
+              ) / (volatility * sqrt(time_to_maturity)) -
+                volatility * sqrt(time_to_maturity)))
       }
 
       if (payoff == "cash_or_nothing_put") {
         fair_value <-
           expression(
             exp(-r * time_to_maturity) *
-              pnorm(-(
+              pnorm(-((
                 log(initial_price / exercise_price) +
                   (r - dividend_yield + (volatility ^ 2) / 2) * time_to_maturity
-              ) / (volatility * sqrt(time_to_maturity)) - volatility *
-                sqrt(time_to_maturity)))
+              ) / (volatility * sqrt(time_to_maturity)) -
+                volatility * sqrt(time_to_maturity))))
       }
 
       if (payoff == "asset_or_nothing_call") {
