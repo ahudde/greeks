@@ -155,11 +155,6 @@ Malliavin_Geometric_Asian_Greeks <- function(
                mean(payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
     }
 
-    E_paths <- function(weight) {
-      return(exp(-(r - dividend_yield) * time_to_maturity) *
-               payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight)
-    }
-
     # TODO: comment
     I_0_geom <-
       exp(calc_I(log(initial_price * X), steps, dt) / time_to_maturity)
