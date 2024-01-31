@@ -42,7 +42,8 @@ Malliavin_European_Greeks(
 
 \item{payoff}{\itemize{
 \item the payoff function, either a string in ("call", "put",
-"cash_or_nothing_call", "cash_or_nothing_call"), or a function
+"cash_or_nothing_call", "cash_or_nothing_call", "asset_or_nothing_call",
+"asset_or_nothing_put"), or a function
 }}
 
 \item{greek}{\itemize{

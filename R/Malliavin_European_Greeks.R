@@ -12,7 +12,8 @@
 #' @param time_to_maturity - time to maturity in years
 #' @param volatility - volatility of the underlying asset
 #' @param payoff - the payoff function, either a string in ("call", "put",
-#' "cash_or_nothing_call", "cash_or_nothing_call"), or a function
+#' "cash_or_nothing_call", "cash_or_nothing_call", "asset_or_nothing_call",
+#' "asset_or_nothing_put"), or a function
 #' @param greek - the Greeks to be calculated in ("fair_value", "delta",
 #' "vega", "theta", "rho", "gamma")
 #' @param model - the model to be chosen
@@ -78,6 +79,12 @@ Malliavin_European_Greeks <-
     }
   } else if (payoff %in% c("digital_put", "cash_or_nothing_put")) {
     payoff <- function(x) {ifelse(x <= exercise_price, 1, 0)
+    }
+  } else if (payoff %in% c("asset_or_nothing_call")) {
+    payoff <- function(x) {ifelse(x >= exercise_price, x, 0)
+    }
+  } else if (payoff %in% c("asset_or_nothing_put")) {
+    payoff <- function(x) {ifelse(x <= exercise_price, x, 0)
     }
   }
 
