@@ -71,4 +71,63 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
 
   expect(max(error) < 0.1)
 
+  # We check, whether computation for vectorized parameters initial_value and
+  # exercise price works
+
+  vectorized_initial_price <-
+    Malliavin_Geometric_Asian_Greeks(
+      initial_price = 99:101,
+      exercise_price = exercise_price,
+      r = r,
+      time_to_maturity = time_to_maturity,
+      volatility = volatility,
+      dividend_yield = dividend_yield,
+      payoff = payoff,
+      greek = greek,
+      paths = 100)
+
+  single_initial_price_2 <-
+    Malliavin_Geometric_Asian_Greeks(
+      initial_price = 100,
+      exercise_price = exercise_price,
+      r = r,
+      time_to_maturity = time_to_maturity,
+      volatility = volatility,
+      dividend_yield = dividend_yield,
+      payoff = payoff,
+      greek = greek,
+      paths = 100)
+
+  expect(abs(vectorized_initial_price[2] - single_initial_price_2) < 1e-9,
+         "Malliavin_Geometric_Asian_Greeks: Vectorized computation wrt to
+         initial_value does not work")
+
+  vectorized_exercise_price <-
+    Malliavin_Geometric_Asian_Greeks(
+      initial_price = initial_price,
+      exercise_price = 99:101,
+      r = r,
+      time_to_maturity = time_to_maturity,
+      volatility = volatility,
+      dividend_yield = dividend_yield,
+      payoff = payoff,
+      greek = greek,
+      paths = 100)
+
+  single_exercise_price_2 <-
+    Malliavin_Geometric_Asian_Greeks(
+      initial_price = initial_price,
+      exercise_price = 100,
+      r = r,
+      time_to_maturity = time_to_maturity,
+      volatility = volatility,
+      dividend_yield = dividend_yield,
+      payoff = payoff,
+      greek = greek,
+      paths = 100)
+
+  expect(abs(vectorized_exercise_price[2] - single_exercise_price_2) < 1e-9,
+         "Malliavin_Geometric_Asian_Greeks: Vectorized computation wrt to
+         exercise_price does not work")
+
 })
