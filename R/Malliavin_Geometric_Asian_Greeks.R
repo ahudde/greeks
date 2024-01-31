@@ -87,15 +87,9 @@ Malliavin_Geometric_Asian_Greeks <- function(
     payoff <- function(x, exercise_price) {
       return(pmax(0, x - exercise_price))
     }
-    dpayoff <- function(x, exercise_price) {
-      return((x > exercise_price) + 0)
-    }
   } else if (payoff == "put") {
     payoff <- function(x, exercise_price) {
       return(pmax(0, exercise_price - x))
-    }
-    dpayoff <- function(x, exercise_price) {
-      return(-(x < exercise_price) + 0)
     }
   } else if (payoff == "digital_call") {
     payoff <- function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)
