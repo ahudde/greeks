@@ -130,4 +130,15 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
          "Malliavin_Geometric_Asian_Greeks: Vectorized computation wrt to
          exercise_price does not work")
 
+  # We check, whether custom payoff functions work
+
+  call <- function(x, exercise_price) {
+    return(pmax(0, x - exercise_price))
+  }
+
+  expect(max(abs(
+    Malliavin_Geometric_Asian_Greeks(payoff = call, paths = 100) -
+      Malliavin_Geometric_Asian_Greeks(payoff = "call", paths = 100))) < 1e-9,
+    "Malliavin_Geometric_Asian_Greeks: Custom payoff functions do not work")
+
 })
