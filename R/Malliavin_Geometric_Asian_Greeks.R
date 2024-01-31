@@ -131,7 +131,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
   X_T <- X[, steps + 1]
 
-  if (length(intersect(greek, c("vega", "vega_d")))) {
+  if ("vega" %in% greek) {
     XW <- calc_XW(X, W, steps, paths, dt)
     tXW <- calc_tXW(X, W, steps, paths, dt)
   }
@@ -143,10 +143,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
   I_0 <- calc_I(X, steps, dt)
 
-  if (length(intersect(
-    greek,
-    c("delta", "delta_d", "delta_2", "theta", "vega", "vega_d", "gamma", "gamma_kombi",
-      "rho_d")))) {
+  if (length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
     I_1 <- calc_I_1(X, steps, dt)
     I_2 <- calc_I_2(X, steps, dt)
   }
@@ -241,11 +238,11 @@ Malliavin_Geometric_Asian_Greeks <- function(
         exp(-r*time_to_maturity) *
         mean(
           payoff(I_0_geom, exercise_price) *
-               (
-                 2/(volatility * time_to_maturity**2) * W_T * I_W -
-                   1/volatility -
-                   W_T
-               ))
+            (
+              2/(volatility * time_to_maturity**2) * W_T * I_W -
+                1/volatility -
+                W_T
+            ))
 
     } #vega
 
