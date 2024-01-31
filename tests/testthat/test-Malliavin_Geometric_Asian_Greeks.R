@@ -132,13 +132,20 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
 
   # We check, whether custom payoff functions work
 
-  call <- function(x, exercise_price) {
-    return(pmax(0, x - exercise_price))
-  }
+  digital_call <-
+    function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)}
 
   expect(max(abs(
-    Malliavin_Geometric_Asian_Greeks(payoff = call, paths = 100) -
-      Malliavin_Geometric_Asian_Greeks(payoff = "call", paths = 100))) < 1e-9,
+    Malliavin_Geometric_Asian_Greeks(payoff = digital_call, paths = 100) -
+      Malliavin_Geometric_Asian_Greeks(payoff = "digital_call", paths = 100))) < 1e-9,
+    "Malliavin_Geometric_Asian_Greeks: Custom payoff functions do not work")
+
+  digital_put <-
+    function(x, exercise_price) {ifelse(x <= exercise_price, 1, 0)}
+
+  expect(max(abs(
+    Malliavin_Geometric_Asian_Greeks(payoff = digital_put, paths = 100) -
+      Malliavin_Geometric_Asian_Greeks(payoff = "digital_put", paths = 100))) < 1e-9,
     "Malliavin_Geometric_Asian_Greeks: Custom payoff functions do not work")
 
 })
