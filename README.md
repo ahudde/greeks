@@ -28,9 +28,9 @@ by the user.
 ## `greeks` on CRAN
 
 You can view the documentation of this package on
-[cran.r-project.org/web/packages/greeks/greeks.pdf](https://cran.r-project.org/web/packages/greeks/greeks.pdf)
+[CRAN.R-project.org/package=greeks/greeks.pdf](https://CRAN.R-project.org/package=greeks/greeks.pdf)
 and the vignette on
-[cran.r-project.org/web/packages/greeks/vignettes/using_greeks.html](https://cran.r-project.org/web/packages/greeks/vignettes/using_greeks.html).
+[CRAN.R-project.org/package=greeks/vignettes/using_greeks.html](https://CRAN.R-project.org/package=greeks/vignettes/using_greeks.html).
 
 ## Installation
 
