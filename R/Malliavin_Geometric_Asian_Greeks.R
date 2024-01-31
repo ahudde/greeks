@@ -185,33 +185,10 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
     } #delta
 
-
     if ("rho" %in% greek) {
-      rho <-
+      result[i, "rho"] <-
         (W_T/volatility - time_to_maturity) %>%
-        E_paths()
-
-      rho_geom_fd <-
-        -time_to_maturity * exp(-r*time_to_maturity) * payoff(I_0_geom, exercise_price) +
-        (time_to_maturity/2) * exp(-(r - dividend_yield) * time_to_maturity) *
-        dpayoff(I_0_geom, exercise_price) * I_0_geom
-
-      cont <-
-        rho_geom_fd -
-        BS_Geometric_Asian_Greeks(
-          initial_price = initial_price,
-          exercise_price = exercise_price,
-          r = r,
-          time_to_maturity = time_to_maturity,
-          volatility = volatility,
-          dividend_yield = dividend_yield,
-          payoff = payoff_name,
-          greek = "rho"
-        )
-
-      model <- lm(rho ~ cont)
-
-      result[i, "rho"] <- model$coefficients["(Intercept)"]
+        E()
     } #rho
 
     if ("theta" %in% greek) {
