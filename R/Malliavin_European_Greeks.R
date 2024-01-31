@@ -43,103 +43,103 @@ Malliavin_European_Greeks <-
            seed = 1,
            antithetic = FALSE) {
 
-  result <- vector(mode = "numeric", length = length(greek)) * NA
+    result <- vector(mode = "numeric", length = length(greek)) * NA
 
-  names(result) <- greek
+    names(result) <- greek
 
-  ## the seed is set
+    ## the seed is set
 
-  if (!is.na(seed)) {
-    dqset.seed(seed)
-  }
-
-  ## the increments of the Brownian motion ###
-
-  if (antithetic == TRUE) {
-    W_T <- dqrnorm(n = paths/2, sd = sqrt(time_to_maturity))
-    W_T <- rbind(W_T, -W_T)
-  } else {
-    W_T <- dqrnorm(n = paths, sd = sqrt(time_to_maturity))
-  }
-
-  ### the payoff function ###
-
-  if (inherits(payoff, "function")) {
-    print("custom payoff")
-  } else if (payoff == "call") {
-    payoff <- function(x) {
-      return(pmax(0, x-exercise_price))
+    if (!is.na(seed)) {
+      dqset.seed(seed)
     }
-  } else if (payoff == "put") {
-    payoff <- function(x) {
-      return(pmax(0, exercise_price-x))
-    }
-  } else if (payoff %in% c("digital_call", "cash_or_nothing_call")) {
-    payoff <- function(x) {ifelse(x >= exercise_price, 1, 0)
-    }
-  } else if (payoff %in% c("digital_put", "cash_or_nothing_put")) {
-    payoff <- function(x) {ifelse(x <= exercise_price, 1, 0)
-    }
-  } else if (payoff %in% c("asset_or_nothing_call")) {
-    payoff <- function(x) {ifelse(x >= exercise_price, x, 0)
-    }
-  } else if (payoff %in% c("asset_or_nothing_put")) {
-    payoff <- function(x) {ifelse(x <= exercise_price, x, 0)
-    }
-  }
 
-  if (model == "Black Scholes") {
-    X_T <- initial_price *
-      exp((r - (volatility^2)/2)*time_to_maturity +
-            (volatility*W_T))
+    ## the increments of the Brownian motion ###
+
+    if (antithetic == TRUE) {
+      W_T <- dqrnorm(n = paths/2, sd = sqrt(time_to_maturity))
+      W_T <- rbind(W_T, -W_T)
     } else {
-    stop("Unknown model")
+      W_T <- dqrnorm(n = paths, sd = sqrt(time_to_maturity))
+    }
+
+    ### the payoff function ###
+
+    if (inherits(payoff, "function")) {
+      print("custom payoff")
+    } else if (payoff == "call") {
+      payoff <- function(x) {
+        return(pmax(0, x-exercise_price))
+      }
+    } else if (payoff == "put") {
+      payoff <- function(x) {
+        return(pmax(0, exercise_price-x))
+      }
+    } else if (payoff %in% c("digital_call", "cash_or_nothing_call")) {
+      payoff <- function(x) {ifelse(x >= exercise_price, 1, 0)
+      }
+    } else if (payoff %in% c("digital_put", "cash_or_nothing_put")) {
+      payoff <- function(x) {ifelse(x <= exercise_price, 1, 0)
+      }
+    } else if (payoff %in% c("asset_or_nothing_call")) {
+      payoff <- function(x) {ifelse(x >= exercise_price, x, 0)
+      }
+    } else if (payoff %in% c("asset_or_nothing_put")) {
+      payoff <- function(x) {ifelse(x <= exercise_price, x, 0)
+      }
+    }
+
+    if (model == "Black Scholes") {
+      X_T <- initial_price *
+        exp((r - (volatility^2)/2)*time_to_maturity +
+              (volatility*W_T))
+    } else {
+      stop("Unknown model")
+    }
+
+    E <- function(weight) {
+      return(exp(-r*time_to_maturity) *
+               mean(payoff(X_T) * weight))
+    }
+
+    if ("fair_value" %in% greek) {
+      result["fair_value"] <-
+        E(1)
+    }
+
+    if ("delta" %in% greek) {
+      result["delta"] <-
+        (W_T / (initial_price * volatility * time_to_maturity)) %>%
+        E()
+    }
+
+    if ("vega" %in% greek) {
+      result["vega"] <-
+        (W_T^2/(volatility*time_to_maturity) - W_T - 1/volatility) %>%
+        E()
+    }
+
+    if ("rho" %in% greek) {
+      result["rho"] <-
+        (time_to_maturity * (W_T/(volatility*time_to_maturity) - 1)) %>%
+        E()
+    }
+
+    if ("theta" %in% greek) {
+      result["theta"] <-
+        -(W_T^2/(2*time_to_maturity^2) +
+            (r - volatility^2/2)*W_T/(volatility*time_to_maturity) -
+            (1/(2*time_to_maturity) + r)) %>%
+        E()
+    }
+
+    if ("gamma" %in% greek) {
+      result["gamma"] <-
+        ((1 / (initial_price^2 * volatility * time_to_maturity)) *
+           (W_T^2/(volatility*time_to_maturity) - W_T - 1/volatility)) %>%
+        E()
+    }
+
+    return(result)
+
   }
-
-  E <- function(weight) {
-    return(exp(-r*time_to_maturity) *
-             mean(payoff(X_T) * weight))
-  }
-
-  if ("fair_value" %in% greek) {
-    result["fair_value"] <-
-      E(1)
-  }
-
-  if ("delta" %in% greek) {
-    result["delta"] <-
-      (W_T / (initial_price * volatility * time_to_maturity)) %>%
-      E()
-  }
-
-  if ("vega" %in% greek) {
-    result["vega"] <-
-      (W_T^2/(volatility*time_to_maturity) - W_T - 1/volatility) %>%
-      E()
-  }
-
-  if ("rho" %in% greek) {
-    result["rho"] <-
-      (time_to_maturity * (W_T/(volatility*time_to_maturity) - 1)) %>%
-      E()
-  }
-
-  if ("theta" %in% greek) {
-    result["theta"] <-
-      -(W_T^2/(2*time_to_maturity^2) +
-         (r - volatility^2/2)*W_T/(volatility*time_to_maturity) -
-         (1/(2*time_to_maturity) + r)) %>%
-      E()
-  }
-
-  if ("gamma" %in% greek) {
-    result["gamma"] <-
-      ((1 / (initial_price^2 * volatility * time_to_maturity)) *
-      (W_T^2/(volatility*time_to_maturity) - W_T - 1/volatility)) %>%
-      E()
-  }
-
-  return(result)
-
-}
 
