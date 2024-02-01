@@ -19,11 +19,11 @@ affiliations:
 
 # Summary
 
-`greeks` is an R package for calculating sensitivities of financial option prices for European,
-geometric and arithmetic Asian, and American options, with various
-payoff functions in the Black Scholes model, and in more general jump diffusion
-models.
-It includes a Shiny app to interactively plot the results.
+
+`greeks` is an R package for calculating sensitivities of financial option
+prices for European, geometric and arithmetic Asian, and American options, with
+various payoff functions in the Black Scholes model, and in more general
+jump diffusion models.
 Furthermore, methods to compute implied volatilities are provided for a wide
 range of option types and custom payoff functions.
 Classical formulas are implemented for European options in the Black Scholes
@@ -32,6 +32,7 @@ In the case of Asian options, Malliavin Monte Carlo Greeks are implemented, see
 [@Hudde:2023].
 For American options, the Binomial Tree Method is implemented, as is presented
 in [@Hull:2022].
+`greeks` includes a Shiny app to interactively plot the results.
 
 # Statement of need
 
