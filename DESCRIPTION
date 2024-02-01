@@ -40,6 +40,8 @@ Imports:
     shiny,
     tidyr
 LinkingTo: Rcpp
+URL: https://github.com/ahudde/greeks
+BugReports: https://github.com/ahudde/greeks/issues
 NeedsCompilation: yes
 Packaged: 2022-01-28 23:05:43 UTC; Compi
 Author: Anselm Hudde [aut, cre] (<https://orcid.org/0000-0002-5652-2815>)
