@@ -19,7 +19,6 @@ affiliations:
 
 # Summary
 
-
 `greeks` is an R package for calculating sensitivities of financial option
 prices for European, geometric and arithmetic Asian, and American options, with
 various payoff functions in the Black Scholes model, and in more general
@@ -53,11 +52,10 @@ The framework `Quantlib` [@Quantlib], which is ported to R via `RQuantLib`
 [@RQuantLib], provides option prices and Greeks for American options in the
 Binomial Tree Model, and for European and geometric Asian options in the Black
 Scholes model.
-Yet, arithmetic Asian options are not considered, and no interactive
-visualization tool is provided.
+Yet, arithmetic Asian options are not considered.
 
 Further packages on CRAN include `derivmkts` [@derivmkts] and `OptionPricing`
-[@OptionPricing], both without visualizations.
+[@OptionPricing].
 `derivmkts` only computes Greeks for Binomial and European options.
 `OptionPricing` implements very efficient algorithms for arithmetic Asian call
 options, but not for put options, and only the Greeks $\Delta$ and $\Gamma$.
@@ -67,8 +65,8 @@ i.e., the only one for European, American, and geometric as well as arithmetic
 Asian Greeks.
 In addition, Asian Greeks with digital payoff functions and second-order Greeks
 are computed.
-Also, it is the only R package with included interactive visualization in a
-Shiny app, and with the computation of Greeks in jump diffusion models.
+Also, it is the only R package for the computation of Greeks in jump diffusion
+models.
 
 `greeks` has been applied to investigate the performance of Monte Carlo Greeks
 for jump diffusion Models from [@Hudde:2023].
