@@ -103,7 +103,7 @@ Greeks <-
                                        dividend_yield = dividend_yield))
     }
 
-    else if (tolower(option_type) == "asian" && tolower(model) == "jump_diffusion") {
+    else if (tolower(option_type) == "asian") {
       return(Malliavin_Asian_Greeks(payoff = payoff,
                                     greek = greek,
                                     initial_price = initial_price,
