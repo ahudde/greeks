@@ -41,6 +41,11 @@ in [@Hull:2022].
 The accurate pricing of financial options and the computation of the Greeks,
 i.e., the sensitivities of option prices with respect to the input parameters,
 is of great theoretical and practical interest in finance.
+For instance, the Greek $\Delta$ (Delta) measures how the price of an option
+changes with a minor change in the underlying asset's price, while $\Gamma$
+(Gamma) measures how $\Delta$ itself changes as the price of the underlying
+shifts.
+Both Greeks are important for hedging an option.
 Several software packages exist, but a comprehensive framework including both
 exotic options and an interactive visualization tool is still missing.
 
