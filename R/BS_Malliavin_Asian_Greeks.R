@@ -16,8 +16,8 @@
 #' @param dividend_yield - dividend yield
 #' @param payoff - the payoff function, either a string in ("call", "put"), or a
 #' function
-#' @param greek - Greeks to be calculated in c("fair_value", "delta", "gamma",
-#' "rho", "theta", "vega")
+#' @param greek - Greeks to be calculated in c("fair_value", "delta", "rho",
+#' "vega")
 #' @param steps - the number of integration steps
 #' @param paths - the number of simulated paths
 #' @param seed - the seed of the random number generator
@@ -106,7 +106,7 @@ BS_Malliavin_Asian_Greeks <- function(
     tXW <- calc_tXW(X, W, steps, paths, dt)
   }
 
-  if ("theta" %in% greek || "vega" %in% greek) {
+  if ("vega" %in% greek) {
     I_W <- calc_I(W, steps, dt)
   }
 
@@ -119,7 +119,7 @@ BS_Malliavin_Asian_Greeks <- function(
 
   if (length(intersect(
     greek,
-    c("delta", "theta", "vega", "gamma", "rho_d")))) {
+    c("delta", "vega")))) {
     I_1 <- calc_I_1(X, steps, dt)
     I_2 <- calc_I_2(X, steps, dt)
   }

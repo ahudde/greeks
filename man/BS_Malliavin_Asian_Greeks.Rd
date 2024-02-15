@@ -51,8 +51,8 @@ function
 }}
 
 \item{greek}{\itemize{
-\item Greeks to be calculated in c("fair_value", "delta", "gamma",
-"rho", "theta", "vega")
+\item Greeks to be calculated in c("fair_value", "delta", "rho",
+"vega")
 }}
 
 \item{steps}{\itemize{
