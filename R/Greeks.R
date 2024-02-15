@@ -2,6 +2,15 @@
 #' the Black Scholes model or a Jump Diffusion model in the case of Asian
 #' Options, or in the Binomial options pricing model
 #'
+#' @seealso [BS_European_Greeks()] for option_type = "European
+#' @seealso [Binomial_American_Greeks()] for option_type = "American"
+#' @seealso [BS_Geometric_Asian_Greeks()] for option_type = = "Geometric Asian"
+#' and model = "black_scholes"
+#' @seealso [BS_Malliavin_Asian_Greeks()] for option_type = = "Asian"
+#' and model = "black_scholes" and greek in c("fair_value", "delta", "rho",
+#' "vega")
+#' @seealso [Malliavin_Asian_Greeks()] for more general cases of Asian Greeks
+#'
 #' @export
 #'
 #' @param initial_price - initial price of the underlying asset

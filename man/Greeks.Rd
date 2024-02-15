@@ -90,3 +90,17 @@ Greeks(initial_price = 100, exercise_price = 100, r = -0.005,
 time_to_maturity = 1, volatility = 0.30, payoff = "put",
 option_type = "American")
 }
+\seealso{
+\code{\link[=BS_European_Greeks]{BS_European_Greeks()}} for option_type = "European
+
+\code{\link[=Binomial_American_Greeks]{Binomial_American_Greeks()}} for option_type = "American"
+
+\code{\link[=BS_Geometric_Asian_Greeks]{BS_Geometric_Asian_Greeks()}} for option_type = = "Geometric Asian"
+and model = "black_scholes"
+
+\code{\link[=BS_Malliavin_Asian_Greeks]{BS_Malliavin_Asian_Greeks()}} for option_type = = "Asian"
+and model = "black_scholes" and greek in c("fair_value", "delta", "rho",
+"vega")
+
+\code{\link[=Malliavin_Asian_Greeks]{Malliavin_Asian_Greeks()}} for more general cases of Asian Greeks
+}
