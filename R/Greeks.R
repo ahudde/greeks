@@ -4,14 +4,15 @@
 #'
 #' @export
 #'
-#' @seealso [BS_European_Greeks()] for option_type = "European
-#' @seealso [Binomial_American_Greeks()] for option_type = "American"
-#' @seealso [BS_Geometric_Asian_Greeks()] for option_type = = "Geometric Asian"
+#' @seealso [BS_European_Greeks] for option_type = "European
+#' @seealso [Binomial_American_Greeks] for option_type = "American"
+#' @seealso [BS_Geometric_Asian_Greeks] for option_type = = "Geometric Asian"
 #' and model = "black_scholes"
-#' @seealso [BS_Malliavin_Asian_Greeks()] for option_type = = "Asian"
+#' @seealso [BS_Malliavin_Asian_Greeks] for option_type = = "Asian"
 #' and model = "black_scholes" and greek in c("fair_value", "delta", "rho",
 #' "vega")
-#' @seealso [Malliavin_Asian_Greeks()] for more general cases of Asian Greeks
+#' @seealso [Malliavin_Asian_Greeks] for more general cases of Asian Greeks
+#' @seealso [Greeks_UI] for an interactive visualization
 #'
 #' @param initial_price - initial price of the underlying asset
 #' @param exercise_price - strike price of the option

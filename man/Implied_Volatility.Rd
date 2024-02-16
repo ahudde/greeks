@@ -73,6 +73,6 @@ Implied_Volatility(15, r = 0.05, option_type = "Asian",
 payoff = "call")
 }
 \seealso{
-\code{\link[=BS_Implied_Volatility]{BS_Implied_Volatility()}} for option_type = "European" and payoff
-in c("call", "put")
+\link{BS_Implied_Volatility} for the special case
+option_type = "European" and payoff in c("call", "put")
 }

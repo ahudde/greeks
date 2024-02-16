@@ -82,3 +82,7 @@ exercise_price = 100, r = 0.02, time_to_maturity = 4.5,
 volatility = 0.22, greek = c("fair_value", "delta", "rho"), payoff = "put")
 
 }
+\seealso{
+\link{BS_European_Greeks} for the exact and fast implementation for
+call-, put- and digital payoff functions
+}

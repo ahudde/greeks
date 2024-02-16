@@ -3,6 +3,9 @@
 #'
 #' @export
 #'
+#' @seealso [BS_European_Greeks] for the exact and fast implementation for
+#' call-, put- and digital payoff functions
+#'
 #' @import "stats"
 #' @importFrom "dqrng" "dqrnorm" "dqset.seed"
 #'

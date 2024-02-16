@@ -66,3 +66,8 @@ BS_European_Greeks(initial_price = 120, exercise_price = 100,
 r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 greek = c("fair_value", "delta", "gamma"), payoff = "put")
 }
+\seealso{
+\link{Malliavin_European_Greeks} for the Monte Carlo implementation
+
+\link{Greeks_UI} for an interactive visualization
+}

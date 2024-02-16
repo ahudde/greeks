@@ -66,3 +66,10 @@ greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma"),
 payoff = "put")
 
 }
+\seealso{
+\link{Malliavin_Geometric_Asian_Greeks} for the Monte Carlo
+implementation which provides digital and custom payoff functions and also
+works for the jump diffusion model
+
+\link{Greeks_UI} for an interactive visualization
+}

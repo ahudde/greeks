@@ -3,6 +3,8 @@
 #'
 #' @export
 #'
+#' @seealso [Greeks_UI] for an interactive visualization
+#'
 #' @import "stats"
 #' @import "Rcpp"
 #' @importFrom "dqrng" "dqrnorm" "dqset.seed"

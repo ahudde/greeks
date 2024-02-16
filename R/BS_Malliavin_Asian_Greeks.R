@@ -3,6 +3,10 @@
 #'
 #' @export
 #'
+#' @seealso [Malliavin_Asian_Greeks] for a greater set of Greeks and also
+#' in the jump diffusion model
+#' @seealso [Greeks_UI] for an interactive visualization
+#'
 #' @import "stats"
 #' @import "Rcpp"
 #' @importFrom "dqrng" "dqrnorm" "dqset.seed"

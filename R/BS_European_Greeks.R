@@ -3,6 +3,9 @@
 #'
 #' @export
 #'
+#' @seealso [Malliavin_European_Greeks] for the Monte Carlo implementation
+#' @seealso [Greeks_UI] for an interactive visualization
+#'
 #' @import "stats"
 #'
 #' @param initial_price - initial price of the underlying asset

@@ -4,6 +4,9 @@
 #'
 #' @export
 #'
+#' @seealso [BS_Malliavin_Asian_Greeks] for a faster computation, but only in
+#' the Black Scholes model and with a smaller set of Greeks
+#'
 #' @import "stats"
 #' @import "Rcpp"
 #' @importFrom "dqrng" "dqrnorm" "dqset.seed"

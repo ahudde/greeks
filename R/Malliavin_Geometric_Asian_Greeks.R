@@ -1,7 +1,10 @@
-#' Computes the Greeks of an Asian option with the Malliavin Monte Carlo
-#' Method in the Black Scholes model
+#' Computes the Greeks of an geometric Asian option with the Malliavin Monte
+#' Carlo Method in the Black Scholes- or Jump diffusion model
 #'
 #' @export
+#'
+#' @seealso [BS_Geometric_Asian_Greeks] for exact and fast computation in the
+#' Black Scholes model and for put- and call payoff functions
 #'
 #' @import "stats"
 #' @import "Rcpp"

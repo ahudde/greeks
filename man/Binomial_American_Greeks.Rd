@@ -75,3 +75,6 @@ payoff = "call", greek = c("fair_value", "delta", "vega", "theta", "rho",
 "epsilon", "gamma"), steps = 20)
 
 }
+\seealso{
+\link{Greeks_UI} for an interactive visualization
+}

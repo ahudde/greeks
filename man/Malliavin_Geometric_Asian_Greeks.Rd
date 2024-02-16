@@ -2,8 +2,8 @@
 % Please edit documentation in R/Malliavin_Geometric_Asian_Greeks.R
 \name{Malliavin_Geometric_Asian_Greeks}
 \alias{Malliavin_Geometric_Asian_Greeks}
-\title{Computes the Greeks of an Asian option with the Malliavin Monte Carlo
-Method in the Black Scholes model}
+\title{Computes the Greeks of an geometric Asian option with the Malliavin Monte
+Carlo Method in the Black Scholes- or Jump diffusion model}
 \usage{
 Malliavin_Geometric_Asian_Greeks(
   initial_price = 100,
@@ -98,12 +98,16 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the Greeks of an Asian option with the Malliavin Monte Carlo
-Method in the Black Scholes model
+Computes the Greeks of an geometric Asian option with the Malliavin Monte
+Carlo Method in the Black Scholes- or Jump diffusion model
 }
 \examples{
 Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,
 r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 greek = c("fair_value", "delta", "rho"), payoff = "put")
 
+}
+\seealso{
+\link{BS_Geometric_Asian_Greeks} for exact and fast computation in the
+Black Scholes model and for put- and call payoff functions
 }

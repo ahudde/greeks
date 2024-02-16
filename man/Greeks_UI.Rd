@@ -2,10 +2,10 @@
 % Please edit documentation in R/Greeks_UI.R
 \name{Greeks_UI}
 \alias{Greeks_UI}
-\title{Opens a shiny app to plot option prices and Greeks}
+\title{Opens a shiny app to interactively visualize option prices and Greeks}
 \usage{
 Greeks_UI()
 }
 \description{
-Opens a shiny app to plot option prices and Greeks
+Opens a shiny app to interactively visualize option prices and Greeks
 }

@@ -109,3 +109,7 @@ r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 greek = c("fair_value", "delta", "rho"), payoff = "put")
 
 }
+\seealso{
+\link{BS_Malliavin_Asian_Greeks} for a faster computation, but only in
+the Black Scholes model and with a smaller set of Greeks
+}

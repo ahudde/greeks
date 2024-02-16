@@ -1,4 +1,4 @@
-#' Opens a shiny app to plot option prices and Greeks
+#' Opens a shiny app to interactively visualize option prices and Greeks
 #'
 #' @export
 #'

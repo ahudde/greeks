@@ -81,3 +81,9 @@ r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 greek = c("fair_value", "delta", "rho"), payoff = "put")
 
 }
+\seealso{
+\link{Malliavin_Asian_Greeks} for a greater set of Greeks and also
+in the jump diffusion model
+
+\link{Greeks_UI} for an interactive visualization
+}
