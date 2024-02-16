@@ -2,6 +2,9 @@
 #'
 #' @export
 #'
+#' @seealso [BS_Implied_Volatility()] for option_type = "European" and payoff
+#' in c("call", "put")
+#'
 #' @param option_price - current price of the option
 #' @param initial_price - initial price of the underlying asset
 #' @param exercise_price - strike price of the option
