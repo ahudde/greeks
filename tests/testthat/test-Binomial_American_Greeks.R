@@ -157,7 +157,7 @@ test_that("Binomial_American_Greeks fair_value is correct", {
           american_option_value[i, j] <-
             max(
               (american_option_value[i, j+1] * p + american_option_value[i+1, j+1] * (1-p)),
-              exp(-(r-dividend_yield)*(j-1)*dt) * payoff(underlying[i, j], exercise_price))
+              exp(-r*(j-1)*dt) * payoff(underlying[i, j], exercise_price))
           european_option_value[i, j] <-
             (european_option_value[i, j+1] * p + european_option_value[i+1, j+1] * (1-p)) * exp(-r*dt)
         }
