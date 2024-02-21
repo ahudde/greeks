@@ -73,7 +73,7 @@ NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
       european_value(i) = p * european_value(i) + q * european_value(i+1);
       american_value(i) = p * american_value(i) + q * american_value(i+1);
       american_value(i) = max(
-        exp(-(r-dividend_yield)*j*dt) *
+        exp(-r*j*dt) *
           payoff_function(price(2*steps - 2*i + j - steps), exercise_price),
           american_value(i));
     }
