@@ -19,7 +19,7 @@
 #' @param start_volatility initial guess
 #' @param precision precision of the computation
 #'
-#' @return Named vector containing the values of the greeks specified in the
+#' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
 #'
 #' @examples Implied_Volatility(15, r = 0.05, option_type = "Asian",

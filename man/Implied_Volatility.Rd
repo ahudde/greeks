@@ -62,7 +62,7 @@ Implied_Volatility(
 \item{max_iter}{maximal number of iterations of the approximation}
 }
 \value{
-Named vector containing the values of the greeks specified in the
+Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
