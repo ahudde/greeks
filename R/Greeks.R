@@ -1,10 +1,66 @@
-#' Computes the Greeks of various options in the Black Scholes model or both in
-#' the Black Scholes model or a Jump Diffusion model in the case of Asian
+#' @title Computes the Greeks of various options in the Black Scholes model or
+#' both in the Black Scholes model or a Jump Diffusion model in the case of Asian
 #' Options, or in the Binomial options pricing model
+#'
+#' @description Greeks are derivatives of the option value with respect to
+#' underlying parameters.
+#' For instance, the Greek
+#' \eqn{\Delta = \frac{\partial \text{fair\_value}}{\partial \text{initial\_price}}}
+#' (Delta) measures how the price of an option changes with a minor change in
+#' the underlying asset's price, while
+#' \eqn{\Gamma = \frac{\partial \text{fair\_value}}{\partial \text{initial\_price}}}
+#' (Gamma) measures how \eqn{\Delta} itself changes as the price of the
+#' underlying asset shifts.
+#' Greeks can be computed for different types of options:
+#' For
+#' - **European Greeks** see also [BS_European_Greeks] and [Malliavin_European_Greeks]
+#' - **American Greeks** see also [Binomial_American_Greeks]
+#' - **Asian Greeks** see also [BS_Malliavin_Asian_Greeks] and [Malliavin_Asian_Greeks]
+#' - **Geometric Asian Greeks** see also [BS_Geometric_Asian_Greeks] and [Malliavin_Asian_Greeks]
+#'
+#' The Greeks are defined as the following partial derivatives of the option
+#' value:
+#' - \code{Delta} = \eqn{\Delta = \frac{\partial \text{fair\_value}}{\partial \text{initial\_price}}}, the derivative with respect to the price of the
+#' underlying asset
+#' - \code{Vega} = \eqn{\mathcal{V} = \frac{\partial \text{fair\_value}}{\partial \text{volatility}}},
+#' the derivative with respect to the volatility
+#' - \code{Theta} = \eqn{\Theta = -\frac{\partial \text{fair\_value}}{\partial \text{time\_to\_maturity}}},
+#' the negative derivative with respect to the time until expiration of the
+#' option
+#' - \code{rho} = \eqn{\rho = \frac{\partial \text{fair\_value}}{\partial r}},
+#' the derivative with respect to the risk-free interest rate
+#' - \code{Epsilon} = \eqn{\epsilon = \frac{\partial \text{fair\_value}}{\partial \text{time\_to\_maturity}}},
+#' the derivative with respect to the dividend yield of the underlying asset
+#' - \code{Lambda} = \eqn{\lambda = \Delta \times \frac{\text{initial\_price}}{\text{exercise\_price}}}
+#' - \code{Gamma} = \eqn{\Gamma = \frac{\partial^2 \text{fair\_value}}{\partial \text{initial\_price}^2}}, the second derivative with respect to the price of
+#' the underlying asset
+#' - \code{Vanna} = \eqn{\frac{\partial \Delta}{\partial \text{volatility}} = \frac{\partial^2 \text{fair\_value}}{\partial \text{intial\_price} \, \partial \text{volatility}}}, the derivative of \eqn{\Delta} with respect to the volatility
+#' - \code{Vomma} = \eqn{\frac{\partial^2 \text{fair\_value}}{\partial \text{volatility}^2}}, the second derivative with respect to the volatility
+#' - \code{Veta} = \eqn{
+#' \frac{\partial \mathcal V}{\partial r}
+#' = \frac{\partial^2 \text{fair\_value}}{\partial \text{volatility} \, \partial \text{time\_to\_maturity}}},
+#' the derivative of \eqn{\mathcal V} with respect to the time until expiration
+#' of the option
+#' - \code{Vera} = \eqn{\frac{\partial^2 \text{fair\_value}}{\partial \text{volatiliy} \, \partial \text{r}}},
+#' the derivative of \eqn{\mathcal V} with respect to the risk-free interest rate
+#' - \code{Speed} = \eqn{\frac{\partial \Gamma}{\partial \text{initial\_price}} = \frac{\partial^3 \text{fair\_value}}{\partial \text{initial\_price}^3}},
+#' the third derivative of the option value with respect to the price of the
+#' underlying asset
+#' - \code{Zomma} = \eqn{\frac{\Gamma}{\text{volatility}} = \frac{\partial^3 \text{fair\_value}}{\partial \text{volatility}^3}},
+#' the derivative of Gamma with respect to the volatility
+#'- \code{Color} = \eqn{\frac{\partial \Gamma}{\partial \text{r}} = \frac{\partial^3 \text{fair\_value}}{\partial \text{initial\_price}^2 \partial \text{r}}},
+#' the derivative of Gamma with respect to the risk-free interest rate
+#' - \code{Ultima} = \eqn{\frac{\partial \text{Vomma}}{\partial \text{volatility}} = \frac{\partial^3 \text{fair\_value}}{\partial \text{volatility}^3}},
+#' the third derivative with respect to the volatility
+#'
+#' For the definitions of Greeks, and the different types of option see Hull
+#' (2022) or
+#'
+#' [en.wikipedia.org/wiki/Greeks_(finance)](https://en.wikipedia.org/wiki/Greeks_(finance))
 #'
 #' @export
 #'
-#' @seealso [BS_European_Greeks] for option_type = "European
+#' @seealso [BS_European_Greeks] for option_type = "European"
 #' @seealso [Binomial_American_Greeks] for option_type = "American"
 #' @seealso [BS_Geometric_Asian_Greeks] for option_type = = "Geometric Asian"
 #' and model = "black_scholes"
@@ -43,6 +99,11 @@
 #' Greeks(initial_price = 100, exercise_price = 100, r = -0.005,
 #' time_to_maturity = 1, volatility = 0.30, payoff = "put",
 #' option_type = "American")
+#'
+#' @references
+#' Hull, J. C. (2022). Options, futures, and other derivatives (11th Edition). Pearson
+#'
+#' [en.wikipedia.org/wiki/Greeks_(finance)](https://en.wikipedia.org/wiki/Greeks_(finance))
 
 Greeks <-
   function(initial_price,
