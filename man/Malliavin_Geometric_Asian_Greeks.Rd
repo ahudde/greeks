@@ -2,7 +2,7 @@
 % Please edit documentation in R/Malliavin_Geometric_Asian_Greeks.R
 \name{Malliavin_Geometric_Asian_Greeks}
 \alias{Malliavin_Geometric_Asian_Greeks}
-\title{Computes the Greeks of an geometric Asian option with the Malliavin Monte
+\title{Computes the Greeks of a geometric Asian option with the Malliavin Monte
 Carlo Method in the Black Scholes- or Jump diffusion model}
 \usage{
 Malliavin_Geometric_Asian_Greeks(
@@ -98,7 +98,7 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the Greeks of an geometric Asian option with the Malliavin Monte
+Computes the Greeks of a geometric Asian option with the Malliavin Monte
 Carlo Method in the Black Scholes- or Jump diffusion model
 }
 \examples{

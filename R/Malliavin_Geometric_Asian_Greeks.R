@@ -1,4 +1,4 @@
-#' Computes the Greeks of an geometric Asian option with the Malliavin Monte
+#' Computes the Greeks of a geometric Asian option with the Malliavin Monte
 #' Carlo Method in the Black Scholes- or Jump diffusion model
 #'
 #' @export
