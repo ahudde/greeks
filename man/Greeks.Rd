@@ -133,10 +133,10 @@ the derivative of Gamma with respect to the risk-free interest rate
 the third derivative with respect to the volatility
 }
 
-For the definitions of Greeks, and the different types of option see Hull
+For the definitions of Greeks, and the different types of options see Hull
 (2022) or
 
-\href{https://en.wikipedia.org/wiki/Greeks_(finance)}{en.wikipedia.org/wiki/Greeks_(finance)}
+\href{https://en.wikipedia.org/wiki/Greeks_(finance)}{en.wikipedia.org/wiki/Greeks_(finance)}.
 }
 \examples{
 Greeks(initial_price = 100, exercise_price = 120, r = 0.01,

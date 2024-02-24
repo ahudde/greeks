@@ -53,10 +53,10 @@
 #' - \code{Ultima} = \eqn{\frac{\partial \text{Vomma}}{\partial \text{volatility}} = \frac{\partial^3 \text{fair\_value}}{\partial \text{volatility}^3}},
 #' the third derivative with respect to the volatility
 #'
-#' For the definitions of Greeks, and the different types of option see Hull
+#' For the definitions of Greeks, and the different types of options see Hull
 #' (2022) or
 #'
-#' [en.wikipedia.org/wiki/Greeks_(finance)](https://en.wikipedia.org/wiki/Greeks_(finance))
+#' [en.wikipedia.org/wiki/Greeks_(finance)](https://en.wikipedia.org/wiki/Greeks_(finance)).
 #'
 #' @export
 #'
