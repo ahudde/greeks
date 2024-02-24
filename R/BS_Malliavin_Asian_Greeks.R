@@ -1,5 +1,9 @@
+#' @title
 #' Computes the Greeks of an Asian option with the Malliavin Monte Carlo Method
 #' in the Black Scholes model
+#'
+#' @description
+#' For a descriptoin see [Malliavin_Asian_Greeks]
 #'
 #' @export
 #'
