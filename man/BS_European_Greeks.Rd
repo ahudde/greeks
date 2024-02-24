@@ -2,8 +2,8 @@
 % Please edit documentation in R/BS_European_Greeks.R
 \name{BS_European_Greeks}
 \alias{BS_European_Greeks}
-\title{Computes the Greeks of a European call- or put-option, or of digital options
-in the Black Scholes model}
+\title{Computes the Greeks of a European call- or put-option, or of digital
+options in the Black Scholes model.}
 \usage{
 BS_European_Greeks(
   initial_price = 100,
@@ -58,8 +58,7 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the Greeks of a European call- or put-option, or of digital options
-in the Black Scholes model
+For details on the definition of Greeks see \link{Greeks}.
 }
 \examples{
 BS_European_Greeks(initial_price = 120, exercise_price = 100,
