@@ -2,8 +2,8 @@
 % Please edit documentation in R/Binomial_American_Greeks.R
 \name{Binomial_American_Greeks}
 \alias{Binomial_American_Greeks}
-\title{Computes the Greeks of an American call- or put-option with the
-Binomial options pricing model}
+\title{Computes the Greeks of an American call- or put-option with the Binomial
+options pricing model}
 \usage{
 Binomial_American_Greeks(
   initial_price = 100,
