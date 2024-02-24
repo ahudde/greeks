@@ -1,5 +1,12 @@
+#' @title
 #' Computes the implied volatility for European put- and call options in the
 #' Black Scholes model via Halley's method.
+#'
+#' @description For the definition of *implied volatility* see the function
+#'  [Implied_Volatility].
+#'  [BS_Implied_Volatility] offers a very fast implementation for European put-
+#'  and call options applying Halley's method (see
+#'  [en.wikipedia.org/wiki/Halley%27s_method](https://en.wikipedia.org/wiki/Halley%27s_method)).
 #'
 #' @export
 #'
