@@ -3,7 +3,7 @@
 #' Put-Payoff in the Black Scholes model
 #'
 #' @description
-#' In contrast to a Asian options (see [Malliavin_Aisan_Greeks]), geometric
+#' In contrast to a Asian options (see [Malliavin_Asian_Greeks]), geometric
 #' Asian options evaluate the gemetric average
 #' \eqn{\exp \left( \frac{1}{T} \int_0^T \ln S_t dt \right)}, where
 #' \eqn{S_t} is the price of the underlying asset at time \eqn{t} and \eqn{T} is
