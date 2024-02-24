@@ -91,7 +91,6 @@
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
 #'
-#'
 #' @examples
 #' Greeks(initial_price = 100, exercise_price = 120, r = 0.01,
 #' time_to_maturity = 5, volatility = 0.30, payoff = "call")
