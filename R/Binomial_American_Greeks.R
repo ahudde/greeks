@@ -1,5 +1,9 @@
-#' Computes the Greeks of an American call- or put-option with the Binomial
-#' options pricing model
+#' @title
+#' Computes the Greeks of an American call- or put-option with the
+#' Binomial options pricing model
+#'
+#' @description
+#' For details see the function [Greeks]
 #'
 #' @export
 #'
