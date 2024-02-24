@@ -1,3 +1,4 @@
+#' @title
 #' Computes the implied volatility for various options via Newton's method
 #'
 #' @export

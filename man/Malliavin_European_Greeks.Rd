@@ -73,14 +73,18 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}
 }
 \description{
-Computes the Greeks of a European option with the Malliavin Monte Carlo
-Method in the Black Scholes model
+For details on the definition of Greeks see \link{Greeks}.
+For a description of Malliavin Monte Carlo Methods for Greeks see for example
+(Hudde & Rüschendorf, 2023)
 }
 \examples{
 Malliavin_European_Greeks(initial_price = 110,
 exercise_price = 100, r = 0.02, time_to_maturity = 4.5,
 volatility = 0.22, greek = c("fair_value", "delta", "rho"), payoff = "put")
 
+}
+\references{
+Hudde, A., & Rüschendorf, L. (2023). European and Asian Greeks for Exponential Lévy Processes. Methodol Comput Appl Probab, 25 (39). \url{https://doi.org/10.1007/s11009-023-10014-5}
 }
 \seealso{
 \link{BS_European_Greeks} for the exact and fast implementation for

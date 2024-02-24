@@ -11,6 +11,9 @@
 #' the option.
 #' For more details on the definition of Greeks see the function [Greeks].
 #'
+#' For a description of Malliavin Monte Carlo Methods for Greeks see for example
+#' (Hudde & Rüschendorf, 2023)
+#'
 #' @export
 #'
 #' @seealso [BS_Malliavin_Asian_Greeks] for a faster computation, but only in
@@ -47,6 +50,9 @@
 #' @examples Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,
 #' r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 #' greek = c("fair_value", "delta", "rho"), payoff = "put")
+#'
+#' @references
+#' Hudde, A., & Rüschendorf, L. (2023). European and Asian Greeks for Exponential Lévy Processes. Methodol Comput Appl Probab, 25 (39). [https://doi.org/10.1007/s11009-023-10014-5](https://doi.org/10.1007/s11009-023-10014-5)
 #'
 
 Malliavin_Asian_Greeks <- function(
