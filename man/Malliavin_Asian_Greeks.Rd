@@ -104,7 +104,8 @@ If \eqn{S_t} is the price of the underlying asset at time \eqn{t}, the
 execution of an Asian option depends on the average price of option,
 \eqn{\frac{1}{T} \int_0^T S_t dt}, where \eqn{T} is the time-to-maturity of
 the option.
-For more details on the definition of Greeks see the function \link{Greeks}.
+For more details on the definition of Greeks in general see the function
+\link{Greeks}.
 
 For a description of Malliavin Monte Carlo Methods for Greeks see for example
 (Hudde & Rüschendorf, 2023)
