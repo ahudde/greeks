@@ -3,7 +3,9 @@
 #' in the Black Scholes model
 #'
 #' @description
-#' For a descriptoin see [Malliavin_Asian_Greeks]
+#' For a description of Asian Greeks see [Malliavin_Asian_Greeks].
+#' BS_Malliavin_Asian_Greeks offers a fast implementation in the Black Scholes
+#' model.
 #'
 #' @export
 #'

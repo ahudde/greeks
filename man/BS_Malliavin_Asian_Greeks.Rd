@@ -72,7 +72,9 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-For a descriptoin see \link{Malliavin_Asian_Greeks}
+For a description of Asian Greeks see \link{Malliavin_Asian_Greeks}.
+BS_Malliavin_Asian_Greeks offers a fast implementation in the Black Scholes
+model.
 }
 \examples{
 BS_Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,
