@@ -99,9 +99,12 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-Computes the Greeks of an Asian option with the Malliavin Monte Carlo
-Method in the Black Scholes model, or for Asian options, also in a Jump
-Diffusion model
+Asian options are path-dependent.
+If \eqn{S_t} is the price of the underlying asset at time \eqn{t}, the
+execution of an Asian option depends on the average price of option,
+\eqn{\frac{1}{T} \int_0^T S_t dt}, where \eqn{T} is the time-to-maturity of
+the option.
+For more details on the definition of Greeks see the function \link{Greeks}.
 }
 \examples{
 Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,
