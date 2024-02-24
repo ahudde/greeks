@@ -1,5 +1,14 @@
+#' @title
 #' Computes the Greeks of a Geometric Asian Option with classical Call- and
 #' Put-Payoff in the Black Scholes model
+#'
+#' @description
+#' In contrast to a Asian options (see [Malliavin_Aisan_Greeks]), geometric
+#' Asian options evaluate the gemetric average
+#' \eqn{\exp \left( \frac{1}{T} \int_0^T \ln S_t dt \right)}, where
+#' \eqn{S_t} is the price of the underlying asset at time \eqn{t} and \eqn{T} is
+#' the time-to-maturity of the option.
+#' For more details on the definition of Greeks see the function [Greeks].
 #'
 #' @export
 #'
