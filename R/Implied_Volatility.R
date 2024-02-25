@@ -1,6 +1,17 @@
 #' @title
 #' Computes the implied volatility for various options via Newton's method
 #'
+#' @description
+#' If the value of an option, and other (model)parameters like the risk-free
+#' interest rate, the time-to-maturity, and the dividend yield are known, the
+#' assumed volatility of the underlying asset, the *implied volatility* can be
+#' inferred.
+#' See Hull (2022).
+#'
+#' @references
+#' Hull, J. C. (2022). Options, futures, and other derivatives (11th Edition).
+#' Pearson
+#'
 #' @export
 #'
 #' @seealso [BS_Implied_Volatility] for the special case
