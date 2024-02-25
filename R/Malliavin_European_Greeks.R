@@ -5,7 +5,7 @@
 #' @description
 #' For details on the definition of Greeks see [Greeks].
 #' For a description of Malliavin Monte Carlo Methods for Greeks see for example
-#'(Hudde & Rüschendorf, 2023)
+#' (Hudde & Rüschendorf, 2023).
 #'
 #' @export
 #'

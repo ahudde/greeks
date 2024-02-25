@@ -16,5 +16,9 @@ For performance reasons, just the Black-Scholes model is possible, and for
 some cases, the set of Greeks is limited.
 On the y-Axis, the option value resp. the value of the greeks are displayed,
 for the x-axis, several parameters like \code{initial_price} or \code{time_to_maturity}
-are possible
+are possible.
+
+\if{latex}{
+\figure{../vignettes/Greeks_UI.png}{The interdface of the functions}
+}
 }

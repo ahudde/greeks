@@ -107,7 +107,7 @@ the option.
 For more details on the definition of Greeks in general see \link{Greeks}.
 
 For a description of Malliavin Monte Carlo Methods for Greeks see for example
-(Hudde & Rüschendorf, 2023)
+(Hudde & Rüschendorf, 2023).
 }
 \examples{
 Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,

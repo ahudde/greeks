@@ -3,7 +3,7 @@
 #' options pricing model
 #'
 #' @description
-#' In contract to European Options, American options can a executed at any time
+#' In contract to European Options, American options can be executed at any time
 #' until the expiration date.
 #' For more details on the definition of Greeks in general see [Greeks].
 #' This functions computes Greeks of American put- and call options in the
