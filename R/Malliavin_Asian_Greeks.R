@@ -9,8 +9,7 @@
 #' execution of an Asian option depends on the average price of option,
 #' \eqn{\frac{1}{T} \int_0^T S_t dt}, where \eqn{T} is the time-to-maturity of
 #' the option.
-#' For more details on the definition of Greeks in general see the function
-#' [Greeks].
+#' For more details on the definition of Greeks in general see [Greeks].
 #'
 #' For a description of Malliavin Monte Carlo Methods for Greeks see for example
 #' (Hudde & Rüschendorf, 2023)
@@ -113,7 +112,7 @@ Malliavin_Asian_Greeks <- function(
     }
     dpayoff <- function(x, exercise_price) {
       return(-(x < exercise_price) + 0)
-      }
+    }
   } else if (payoff == "digital_call") {
     payoff <- function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)
     }

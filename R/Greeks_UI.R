@@ -1,6 +1,18 @@
 #' @title
 #' Opens a shiny app to interactively visualize option prices and Greeks.
 #'
+#' @description
+#' Opens a shiny app to interactively visualize option prices and Greeks.
+#' This works for European Options (see [BS_European_Greeks]), American
+#' Options (see [Binomial_American_Greeks]), Geometric Asian Options (see
+#' [BS_Geometric_Asian_Greeks]), as well as Asian options (see
+#' [BS_Malliavin_Asian_Greeks]).
+#' For performance reasons, just the Black-Scholes model is possible, and for
+#' some cases, the set of Greeks is limited.
+#' On the y-Axis, the option value resp. the value of the greeks are displayed,
+#' for the x-axis, several parameters like `initial_price` or `time_to_maturity`
+#' are possible
+#'
 #' @export
 #'
 #' @import "shiny"

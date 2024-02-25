@@ -65,7 +65,11 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-For details see the function \link{Greeks}
+In contract to European Options, American options can a executed at any time
+until the expiration date.
+For more details on the definition of Greeks in general see \link{Greeks}.
+This functions computes Greeks of American put- and call options in the
+binomial option pricing model (see (Hull, 2022)).
 }
 \examples{
 Binomial_American_Greeks(initial_price = 100, exercise_price = 100,
@@ -73,6 +77,9 @@ r = 0, time_to_maturity = 1, volatility = 0.3, dividend_yield = 0,
 payoff = "call", greek = c("fair_value", "delta", "vega", "theta", "rho",
 "epsilon", "gamma"), steps = 20)
 
+}
+\references{
+Hull, J. C. (2022). Options, futures, and other derivatives (11th Edition). Pearson
 }
 \seealso{
 \link{Greeks_UI} for an interactive visualization

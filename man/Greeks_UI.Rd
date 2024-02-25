@@ -2,10 +2,19 @@
 % Please edit documentation in R/Greeks_UI.R
 \name{Greeks_UI}
 \alias{Greeks_UI}
-\title{Opens a shiny app to interactively visualize option prices and Greeks}
+\title{Opens a shiny app to interactively visualize option prices and Greeks.}
 \usage{
 Greeks_UI()
 }
 \description{
-Opens a shiny app to interactively visualize option prices and Greeks
+Opens a shiny app to interactively visualize option prices and Greeks.
+This works for European Options (see \link{BS_European_Greeks}), American
+Options (see \link{Binomial_American_Greeks}), Geometric Asian Options (see
+\link{BS_Geometric_Asian_Greeks}), as well as Asian options (see
+\link{BS_Malliavin_Asian_Greeks}).
+For performance reasons, just the Black-Scholes model is possible, and for
+some cases, the set of Greeks is limited.
+On the y-Axis, the option value resp. the value of the greeks are displayed,
+for the x-axis, several parameters like \code{initial_price} or \code{time_to_maturity}
+are possible
 }

@@ -8,7 +8,7 @@
 #' \eqn{\exp \left( \frac{1}{T} \int_0^T \ln S_t dt \right)}, where
 #' \eqn{S_t} is the price of the underlying asset at time \eqn{t} and \eqn{T} is
 #' the time-to-maturity of the option.
-#' For more details on the definition of Greeks see the function [Greeks].
+#' For more details on the definition of Greeks see [Greeks].
 #'
 #' @export
 #'

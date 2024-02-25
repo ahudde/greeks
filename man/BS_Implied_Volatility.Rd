@@ -59,7 +59,7 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-For the definition of \emph{implied volatility} see the function
+For the definition of \emph{implied volatility} see
 \link{Implied_Volatility}.
 \link{BS_Implied_Volatility} offers a very fast implementation for European put-
 and call options applying Halley's method (see
