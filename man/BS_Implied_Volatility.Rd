@@ -63,6 +63,7 @@ For the definition of \emph{implied volatility} see
 \link{Implied_Volatility}.
 \link{BS_Implied_Volatility} offers a very fast implementation for European put-
 and call options applying Halley's method (see
+
 \href{https://en.wikipedia.org/wiki/Halley\%27s_method}{en.wikipedia.org/wiki/Halley\%27s_method}).
 }
 \examples{

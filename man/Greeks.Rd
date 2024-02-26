@@ -133,8 +133,43 @@ the derivative of Gamma with respect to the risk-free interest rate
 the third derivative with respect to the volatility
 }
 
-For the definitions of Greeks, and the different types of options see Hull
-(2022) or
+\link{Greeks} computes Greeks for the following option types:
+\itemize{
+\item \strong{European put- and call options}, which give to option holder the right
+but not the obligation to sell (resp. buy) the underlying asset for a
+specific price at a specific date.
+If $K$ is the exercise price, and \eqn{S_T} the value of the underlying asset
+at time-to-maturity \eqn{T}, a European options pay off the following amount
+at expiration:
+\itemize{
+\item \eqn{\max\{K - S_T, 0\}} for a \strong{put-option}
+\item \eqn{\max\{S_T - K, 0\}} for a \strong{call-option}
+}
+\item \strong{American put- and call options} are like European options, but allow
+the holder to exercise at any time until expiration
+\item \strong{European cash-or-nothing put- and call options} provide the holder with
+a fixed amount of cash, if the value of the underlying asset is below (resp.
+above) a certain strike price
+\item \strong{European asset-or-nothing put- and call options} are similar to
+cash-or-nothing options, but provide the holder with one share of the asset.
+\item \strong{Asian put- and call options} have a similar payoff to European put- and
+call options but differ from European options in that they are path dependent.
+Not the price \eqn{S_T} of the underlying asset at time-to-maturity \eqn{T}
+is evaluated, but the arithmetic average
+\eqn{\frac{1}{T} \int_0^T S_t dt}.
+We get the payoffs
+\itemize{
+\item \eqn{\max\{K - \frac{1}{T} \int_0^T S_t dt, 0\}} for an Asian
+\strong{put-option}
+\item \eqn{\max\{\frac{1}{T} \int_0^T S_t dt - K, 0\}} for an Asian
+\strong{call-option}
+}
+\item \strong{Geometric Asian options} differ from Asian options in that the geometric
+average
+\eqn{\exp \left( \frac{1}{T} \int_0^T \ln S_t dt \right)} is evaluated.
+}
+
+For reference see Hull (2022) or
 
 \href{https://en.wikipedia.org/wiki/Greeks_(finance)}{en.wikipedia.org/wiki/Greeks_(finance)}.
 }

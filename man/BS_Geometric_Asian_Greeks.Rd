@@ -56,12 +56,10 @@ Named vector containing the values of the Greeks specified in the
 parameter \code{greek}.
 }
 \description{
-In contrast to Asian options (see \link{Malliavin_Asian_Greeks}), geometric Asian
-options evaluate the geometric average
-\eqn{\exp \left( \frac{1}{T} \int_0^T \ln S_t dt \right)}, where
-\eqn{S_t} is the price of the underlying asset at time \eqn{t} and \eqn{T} is
-the time-to-maturity of the option.
-For more details on the definition of Greeks see \link{Greeks}.
+For the definition of geometric Asian options see
+\link{Malliavin_Geometric_Asian_Greeks}.
+\link{BS_Geometric_Asian_Greeks} offers a fast and exaction computation of
+Geometric Asian Greeks.
 }
 \examples{
 BS_Geometric_Asian_Greeks(initial_price = 110, exercise_price = 100,
