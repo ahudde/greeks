@@ -39,7 +39,7 @@
 #' volatility = 0.22, greek = c("fair_value", "delta", "rho"), payoff = "put")
 #'
 #' @references
-#' Hudde, A., & Rüschendorf, L. (2023). European and Asian Greeks for Exponential Lévy Processes. Methodol Comput Appl Probab, 25 (39). [https://doi.org/10.1007/s11009-023-10014-5](https://doi.org/10.1007/s11009-023-10014-5)
+#' Hudde, A., & Rüschendorf, L. (2023). European and Asian Greeks for Exponential Lévy Processes. Methodol Comput Appl Probab, 25 (39). \doi{10.1007/s11009-023-10014-5}
 #'
 
 Malliavin_European_Greeks <-
