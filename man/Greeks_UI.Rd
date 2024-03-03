@@ -19,6 +19,6 @@ for the x-axis, several parameters like \code{initial_price} or \code{time_to_ma
 are possible.
 
 \if{latex}{
-\figure{Greeks_UI.png}{The interface of the functions}
+\figure{GreeksUI.png}{The interface of the functions}
 }
 }

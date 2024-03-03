@@ -14,7 +14,7 @@
 #' are possible.
 #'
 #' \if{latex}{
-#' \figure{Greeks_UI.png}{The interface of the functions}
+#' \figure{GreeksUI.png}{The interface of the functions}
 #' }
 #'
 #' @export
