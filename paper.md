@@ -85,4 +85,18 @@ to provide a better understanding of option prices and Greeks by interactive
 visualizations.
 `greeks` is also suited for financial risk management purposes.
 
+# How to run the Shiny app
+
+The interactive shiny app is started with `greeks::Greeks_UI()`:
+\begin{center}
+\includegraphics[width=0.5\textwidth]{./man/figures/GreeksUI.png}
+\end{center}
+This works for European Options, American Options, Geometric Asian Options, as
+well as Asian options.
+For performance reasons, just the Black-Scholes model is possible, and for
+some cases, the set of Greeks is limited.
+On the y-Axis, the option value resp. the value of the greeks are displayed,
+for the x-axis, several parameters like `initial_price` or `time_to_maturity`
+are possible.
+
 # References
