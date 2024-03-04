@@ -22,7 +22,7 @@ affiliations:
 The `greeks` R package leverages the Black Scholes model and more general jump
 diffusion models to compute sensitivities of financial option prices for
 European, geometric and arithmetic Asian, as well as  American options, with
-various payoff functions (for a treatmeant see [@Hull:2022], and [@Angus:1999]
+various payoff functions (for a treatment see [@Hull:2022], and [@Angus:1999]
 for the case of geometric Asian options).
 The Black Scholes model is the standard approach for modelling stock prices,
 while jump diffusion models aim to offer a more realistic representation of
