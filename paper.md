@@ -78,11 +78,9 @@ models.
 
 `greeks` has been applied to investigate the performance of Monte Carlo Greeks
 for jump diffusion Models from [@Hudde:2023].
-Furthermore, `greeks` is used in graduate courses in financial mathematics (such
-as
-https://www.hs-koblenz.de/fileadmin/media/fb_mathematik-und-technik/Pruefungsamt-Dokumente/Modulhandbuch_Ma-AM_aktuell.pdf#page=32)
-to provide a better understanding of option prices and Greeks by interactive
-visualizations.
+Furthermore, `greeks` can be used in (under-)graduate courses in financial
+mathematics to provide a better understanding of option prices and Greeks by
+interactive visualizations.
 `greeks` is also suited for financial risk management purposes.
 
 # How to run the Shiny app
