@@ -5,16 +5,15 @@ tags:
 - Option Pricing
 - Financial Mathematics
 - Malliavin Calculus
-date: "27 July 2023"
+bibliography: paper.bib
+affiliations:
+- name: University of Applied Sciences Koblenz, Germany
+  index: 1
 authors:
 - name: Anselm Hudde
   orcid: "0000-0002-5652-2815"
   equal-contrib: yes
   affiliation: 1
-bibliography: paper.bib
-affiliations:
-- name: University of Applied Sciences Koblenz, Germany
-  index: 1
 ---
 
 # Summary
@@ -94,8 +93,10 @@ The interactive shiny app is started with `greeks::Greeks_UI()`:
 \end{center}
 This works for European Options, American Options, Geometric Asian Options, as
 well as Asian options.
-For performance reasons, just the Black-Scholes model is possible, and for
-some cases, the set of Greeks is limited.
+Due to the computational complexity required by the jump diffusion model, making
+it impractical for interactive exploration, the Shiny app only supports the much
+quicker-to-compute Black-Scholes model.
+For the same reason, the set of Greeks is limited depending on the option type.
 On the y-Axis, the option value resp. the value of the greeks are displayed,
 for the x-axis, several parameters like `initial_price` or `time_to_maturity`
 are possible.
