@@ -99,4 +99,9 @@ On the y-axis, the option value and the value of the Greeks are displayed.
 For the x-axis, several parameters like `initial_price` or `time_to_maturity`
 are possible choices for visualization.
 
+# Acknowledgements
+
+I would like thank the Editor Charlotte Soneson and the reviewers Oskar Laverny
+and Ba Hung for their continuous support in improving the package and the paper.
+
 # References
