@@ -12,7 +12,6 @@ affiliations:
 authors:
 - name: Anselm Hudde
   orcid: "0000-0002-5652-2815"
-  equal-contrib: yes
   affiliation: 1
 ---
 
