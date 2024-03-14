@@ -169,28 +169,24 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
     assign(param, vectorized_param[i])
 
-    E <- function(weight) {
-      return(exp(-(r - dividend_yield) * time_to_maturity) *
-               mean(payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
-    }
-
     # TODO: comment
     I_0_geom <-
       exp(calc_I(log(initial_price * X), steps, dt) / time_to_maturity)
 
-    if ("fair_value" %in% greek) {
-      result[i, "fair_value"] <-
-        exp(-(r - dividend_yield)*time_to_maturity) *
-        payoff(I_0_geom, exercise_price) %>%
-        mean()
+    #TODO: comment
+    E_I_0_geom <- function(weight) {
+      return(exp(-(r - dividend_yield) * time_to_maturity) *
+               mean(payoff(I_0_geom, exercise_price) * weight))
+    }
 
+    if ("fair_value" %in% greek) {
+      result[i, "fair_value"] <- E_I_0_geom(1)
     } #fair_value
 
     if ("delta" %in% greek) {
       result[i, "delta"] <-
-        2*exp(-r*time_to_maturity)/(initial_price*volatility*time_to_maturity) *
+        2*exp(-(r-dividend_yield)*time_to_maturity)/(initial_price*volatility*time_to_maturity) *
         mean(payoff(I_0_geom, exercise_price) * W_T)
-
     } #delta
 
     if ("rho" %in% greek) {
