@@ -12,7 +12,6 @@ affiliations:
 authors:
 - name: Anselm Hudde
   orcid: "0000-0002-5652-2815"
-  equal-contrib: yes
   affiliation: 1
 ---
 
@@ -95,13 +94,13 @@ Due to the computational complexity required by the jump diffusion model, making
 it impractical for interactive exploration, the Shiny app only supports the much
 quicker-to-compute Black-Scholes model.
 For the same reason, the set of Greeks is limited depending on the option type.
-On the y-axis, the option value and the value of the Greeks are displayed.
+On the y-axis, the option value and the values of the Greeks are displayed.
 For the x-axis, several parameters like `initial_price` or `time_to_maturity`
 are possible choices for visualization.
 
 # Acknowledgements
 
-I would like thank the Editor Charlotte Soneson and the reviewers Oskar Laverny
+I would like to thank the Editor Charlotte Soneson and the reviewers Oskar Laverny
 and Ba Hung for their continuous support in improving the package and the paper.
 
 # References
