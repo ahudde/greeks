@@ -5,7 +5,9 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
 
   number_of_runs <- 8
 
-  error <- numeric(number_of_runs)
+  Greeks <- c("fair_value", "delta", "vega", "theta", "rho", "gamma")
+
+  error <- matrix(nrow = number_of_runs, ncol = length(Greeks))
 
   set.seed(42)
 
@@ -19,10 +21,8 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
     dividend_yield <- runif(1, 0, 0.1)
     volatility <- runif(1, 0.01, 1)
     model <- "Black_Scholes"
-    greeks <- c("fair_value", "delta", "rho", "vega", "theta", "gamma")
     payoff <- rep(c("put", "call"), number_of_runs/2)[i]
-    greek <- c("fair_value", "fair_value", "delta", "delta", "vega", "vega", "gamma", "gamma")[i]
-    antithetic <- c(TRUE, FALSE)[i]
+    antithetic <- sample(c("call", "put"), 1)
 
     Value_MC <-
       Malliavin_Geometric_Asian_Greeks(
@@ -33,8 +33,8 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
         volatility = volatility,
         dividend_yield = dividend_yield,
         payoff = payoff,
-        greek = greek,
-        paths = 100000,
+        greek = Greeks,
+        paths = 10000,
         steps = 24,
         antithetic = antithetic
       )
@@ -48,17 +48,16 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
         volatility = volatility,
         dividend_yield = dividend_yield,
         payoff = payoff,
-        greek = greek
+        greek = Greeks
       )
 
-
-    error[i] <-
-      min(abs(Value_MC - Value_exact)/(abs(Value_MC) + 1e-5), #TODO: Klammer hier überall richtig machen
+    error[i, ] <-
+      min(abs(Value_MC - Value_exact)/(abs(Value_MC) + 1e-5),
           abs(Value_MC - Value_exact))
 
   }
 
-  expect(max(error) < 0.1)
+  expect(max(error) < 0.01)
 
   # We check, whether computation for vectorized parameters initial_value and
   # exercise price works
@@ -72,10 +71,10 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
       volatility = volatility,
       dividend_yield = dividend_yield,
       payoff = payoff,
-      greek = greek,
+      greek = Greeks,
       paths = 100)
 
-  single_initial_price_2 <-
+  single_initial_price <-
     Malliavin_Geometric_Asian_Greeks(
       initial_price = 100,
       exercise_price = exercise_price,
@@ -84,10 +83,10 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
       volatility = volatility,
       dividend_yield = dividend_yield,
       payoff = payoff,
-      greek = greek,
+      greek = Greeks,
       paths = 100)
 
-  expect(abs(vectorized_initial_price[2] - single_initial_price_2) < 1e-9,
+  expect(max(abs(vectorized_initial_price[2, ] - single_initial_price)) < 1e-9,
          "Malliavin_Geometric_Asian_Greeks: Vectorized computation wrt to
          initial_value does not work")
 
@@ -100,10 +99,10 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
       volatility = volatility,
       dividend_yield = dividend_yield,
       payoff = payoff,
-      greek = greek,
+      greek = Greeks,
       paths = 100)
 
-  single_exercise_price_2 <-
+  single_exercise_price <-
     Malliavin_Geometric_Asian_Greeks(
       initial_price = initial_price,
       exercise_price = 100,
@@ -112,10 +111,10 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
       volatility = volatility,
       dividend_yield = dividend_yield,
       payoff = payoff,
-      greek = greek,
+      greek = Greeks,
       paths = 100)
 
-  expect(abs(vectorized_exercise_price[2] - single_exercise_price_2) < 1e-9,
+  expect(max(abs(vectorized_exercise_price[2, ] - single_exercise_price)) < 1e-9,
          "Malliavin_Geometric_Asian_Greeks: Vectorized computation wrt to
          exercise_price does not work")
 
@@ -137,4 +136,4 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
       Malliavin_Geometric_Asian_Greeks(payoff = "digital_put", paths = 100))) < 1e-9,
     "Malliavin_Geometric_Asian_Greeks: Custom payoff functions do not work")
 
-})
+    })

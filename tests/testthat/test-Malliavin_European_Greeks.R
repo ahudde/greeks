@@ -22,7 +22,6 @@ test_that("Malliavin_European_Greeks is correct", {
     payoff <- c("call", "put", "cash_or_nothing_call", "cash_or_nothing_put",
                 "asset_or_nothing_call", "asset_or_nothing_put")[i]
     antithetic <- sample(c(TRUE, FALSE), 1)
-    greek <- Greeks
 
     Malliavin_Value <-
       Malliavin_European_Greeks(
@@ -32,7 +31,7 @@ test_that("Malliavin_European_Greeks is correct", {
         time_to_maturity = time_to_maturity,
         volatility = volatility,
         payoff = payoff,
-        greek = greek,
+        greek = Greeks,
         paths = 2000000,
         antithetic = antithetic
       )
@@ -46,7 +45,7 @@ test_that("Malliavin_European_Greeks is correct", {
         volatility = volatility,
         dividend_yield = 0,
         payoff = payoff,
-        greek = greek
+        greek = Greeks
       )
 
     error[i, ] <-
