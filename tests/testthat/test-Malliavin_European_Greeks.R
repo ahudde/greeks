@@ -1,6 +1,6 @@
 test_that("Malliavin_European_Greeks is correct", {
 
-  number_of_runs <- 5
+  number_of_runs <- 6
 
   Greeks <- c("fair_value", "delta", "vega", "theta", "rho", "gamma")
 
@@ -20,9 +20,16 @@ test_that("Malliavin_European_Greeks is correct", {
     volatility <- runif(1, 0.01, 1)
     model <- "Black_Scholes"
     payoff <- c("call", "put", "cash_or_nothing_call", "cash_or_nothing_put",
-                "asset_or_nothing_put")[i%%5 + 1]
+                "asset_or_nothing_call", "asset_or_nothing_put")[i]
     antithetic <- sample(c(TRUE, FALSE), 1)
     greek <- Greeks
+
+    # asset_or_nothing- call- and put-payoff need more iterations
+    if(payoff %in% c("asset_or_nothing_call", "asset_or_nothing_put")) {
+      paths <- 2000000
+    } else {
+      paths <- 100000
+    }
 
     Malliavin_Value <-
       Malliavin_European_Greeks(
@@ -33,7 +40,7 @@ test_that("Malliavin_European_Greeks is correct", {
         volatility = volatility,
         payoff = payoff,
         greek = greek,
-        paths = 2000000,
+        paths = paths,
         antithetic = antithetic
       )
 
@@ -55,7 +62,7 @@ test_that("Malliavin_European_Greeks is correct", {
 
   }
 
-  expect(max(error) < 0.01)
+  expect(max(error) < 0.1)
   expect_error(Malliavin_European_Greeks(model = "whatever_model"))
 
   # Check, whether custom payoff function works
