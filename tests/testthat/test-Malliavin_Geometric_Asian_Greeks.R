@@ -5,11 +5,6 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
 
   number_of_runs <- 8
 
-  definition_of_greeks <-
-    data.frame(greek = "delta", start = "fair_value", param = "initial_price") %>%
-    add_row(greek = "rho", start = "fair_value", param = "r") %>%
-    add_row(greek = "vega", start = "fair_value", param = "volatility")
-
   error <- numeric(number_of_runs)
 
   set.seed(42)
@@ -28,12 +23,6 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
     payoff <- rep(c("put", "call"), number_of_runs/2)[i]
     greek <- c("fair_value", "fair_value", "delta", "delta", "vega", "vega", "gamma", "gamma")[i]
     antithetic <- c(TRUE, FALSE)[i]
-    param <-
-      definition_of_greeks[definition_of_greeks$greek == greek, "param"] %>%
-      as.character()
-    start <-
-      definition_of_greeks[definition_of_greeks$greek == greek, "start"] %>%
-      as.character()
 
     Value_MC <-
       Malliavin_Geometric_Asian_Greeks(

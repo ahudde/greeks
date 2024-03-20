@@ -61,8 +61,7 @@ test_that("Malliavin_European_Greeks is correct", {
          "The results of Malliavin_European_Greeks() are not close enough to
          BS_European_Greeks()")
 
-  expect_error(Malliavin_European_Greeks(model = "whatever_model"),
-               "Malliavin_European_Greeks should throw an error here")
+  expect_error(Malliavin_European_Greeks(model = "whatever_model"))
 
   # Check, whether custom payoff function works
 
