@@ -24,13 +24,6 @@ test_that("Malliavin_European_Greeks is correct", {
     antithetic <- sample(c(TRUE, FALSE), 1)
     greek <- Greeks
 
-    # asset_or_nothing- call- and put-payoff need more iterations
-    if(payoff %in% c("asset_or_nothing_call", "asset_or_nothing_put")) {
-      paths <- 2000000
-    } else {
-      paths <- 100000
-    }
-
     Malliavin_Value <-
       Malliavin_European_Greeks(
         initial_price = initial_price,
@@ -40,7 +33,7 @@ test_that("Malliavin_European_Greeks is correct", {
         volatility = volatility,
         payoff = payoff,
         greek = greek,
-        paths = paths,
+        paths = 2000000,
         antithetic = antithetic
       )
 
@@ -62,8 +55,14 @@ test_that("Malliavin_European_Greeks is correct", {
 
   }
 
-  expect(max(error) < 0.1)
-  expect_error(Malliavin_European_Greeks(model = "whatever_model"))
+  # "asset_or_nothing_call and asset_or_nothing_put payoff-functions have much
+  # more variance
+  expect(max(error[1:4]) < 0.01 && max(error[5:6]) < 0.1,
+         "The results of Malliavin_European_Greeks() are not close enough to
+         BS_European_Greeks()")
+
+  expect_error(Malliavin_European_Greeks(model = "whatever_model"),
+               "Malliavin_European_Greeks should throw an error here")
 
   # Check, whether custom payoff function works
 
@@ -75,6 +74,6 @@ test_that("Malliavin_European_Greeks is correct", {
     sum(abs(Malliavin_European_Greeks(payoff = call_function) -
               Malliavin_European_Greeks(payoff = "call")))
 
-  expect(abs(diff) < 1e-7)
+  expect(abs(diff) < 1e-7, "Custom payoff function does not seem to work")
 
 })
