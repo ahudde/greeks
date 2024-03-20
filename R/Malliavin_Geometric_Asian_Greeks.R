@@ -200,7 +200,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
            ((1/(volatility * time_to_maturity)) * I_0 * W_T -
               (1/volatility) * X_T * W_T + time_to_maturity * X_T) / I_1 +
            (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
-        E()
+        E_I_0_geom()
     } #theta
 
     if ("vega" %in% greek) {
@@ -224,7 +224,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
             + ((W_T^2 - time_to_maturity)*I_0 - 4*volatility^2*I_2)*I_0/I_1^2
             + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
             + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
-        E()
+        E_I_0_geom()
     } #gamma
 
   }
