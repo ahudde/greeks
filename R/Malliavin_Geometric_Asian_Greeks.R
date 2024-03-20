@@ -144,11 +144,6 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
   X_T <- X[, steps + 1]
 
-  if ("vega" %in% greek) {
-    XW <- calc_XW(X, W, steps, paths, dt)
-    tXW <- calc_tXW(X, W, steps, paths, dt)
-  }
-
   # TODO: comment
   I_W <- calc_I(W, steps, dt)
 
