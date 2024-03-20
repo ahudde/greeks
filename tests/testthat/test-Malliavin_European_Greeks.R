@@ -1,10 +1,10 @@
 test_that("Malliavin_European_Greeks is correct", {
 
-  number_of_runs <- 30
+  number_of_runs <- 5
 
   Greeks <- c("fair_value", "delta", "vega", "theta", "rho", "gamma")
 
-  error <- numeric(number_of_runs)
+  error <- matrix(nrow = number_of_runs, ncol = length(Greeks))
 
   set.seed(42)
 
@@ -19,11 +19,10 @@ test_that("Malliavin_European_Greeks is correct", {
     time_to_maturity <- runif(1, 0.2, 6)
     volatility <- runif(1, 0.01, 1)
     model <- "Black_Scholes"
-    payoff <- sample(
-      c("call", "put", "cash_or_nothing_call", "cash_or_nothing_put",
-        "asset_or_nothing_put"), 1)
+    payoff <- c("call", "put", "cash_or_nothing_call", "cash_or_nothing_put",
+                "asset_or_nothing_put")[i%%5 + 1]
     antithetic <- sample(c(TRUE, FALSE), 1)
-    greek <- sample(Greeks, 1)
+    greek <- Greeks
 
     Malliavin_Value <-
       Malliavin_European_Greeks(
@@ -50,9 +49,9 @@ test_that("Malliavin_European_Greeks is correct", {
         greek = greek
       )
 
-    error[i] <-
-      min(abs(Malliavin_Value - Exact_Value)/(abs(Malliavin_Value + epsilon)),
-          abs(Malliavin_Value - Exact_Value))
+    error[i, ] <-
+      pmin(abs(Malliavin_Value - Exact_Value)/(abs(Malliavin_Value + epsilon)),
+           abs(Malliavin_Value - Exact_Value))
 
   }
 
