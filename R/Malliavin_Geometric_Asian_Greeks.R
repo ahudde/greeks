@@ -185,14 +185,13 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
     if ("delta" %in% greek) {
       result[i, "delta"] <-
-        2*exp(-(r-dividend_yield)*time_to_maturity)/(initial_price*volatility*time_to_maturity) *
-        mean(payoff(I_0_geom, exercise_price) * W_T)
+        (2/(initial_price*volatility*time_to_maturity)) * E_I_0_geom(W_T)
     } #delta
 
     if ("rho" %in% greek) {
       result[i, "rho"] <-
         (W_T/volatility - time_to_maturity) %>%
-        E()
+        E_I_0_geom()
     } #rho
 
     if ("theta" %in% greek) {
