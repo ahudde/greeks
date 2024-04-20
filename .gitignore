@@ -14,3 +14,4 @@ greeks*.tgz
 ..Rcheck
 CRAN-SUBMISSION
 *.xls
+*.log
