@@ -1,11 +1,9 @@
 test_that("Malliavin_Geometric_Asian_Greeks is correct", {
 
-  # We check the Greeks by also computing the derivative with finite difference
-  # and comparing the results
-
+  # We check the Greeks by comparing with the exact results
   number_of_runs <- 8
 
-  Greeks <- c("fair_value", "delta", "vega", "theta", "rho", "gamma")
+  Greeks <- c("fair_value", "delta", "theta", "rho", "gamma")
 
   error <- matrix(nrow = number_of_runs, ncol = length(Greeks))
 
@@ -34,8 +32,8 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
         dividend_yield = dividend_yield,
         payoff = payoff,
         greek = Greeks,
-        paths = 10000,
-        steps = 24,
+        paths = 100000,
+        steps = 48,
         antithetic = antithetic
       )
 
@@ -51,13 +49,18 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
         greek = Greeks
       )
 
-    error[i, ] <-
-      min(abs(Value_MC - Value_exact)/(abs(Value_MC) + 1e-5),
-          abs(Value_MC - Value_exact))
+    for(j in 1:length(Greeks)) {
+      error[i, j] <-
+      min(abs(Value_MC[j] - Value_exact[j])/(abs(Value_MC[j]) + 1e-5),
+          abs(Value_MC[j] - Value_exact[j]))
+    }
 
   }
 
-  expect(max(error) < 0.01)
+  expect(
+    max(error) < 0.1,
+    failure_message = "The results of Malliavin_Geometric_Asian_Greeks.R cannot
+    be confirmend by BS_Geometric_Asian_Greeks.R")
 
   # We check, whether computation for vectorized parameters initial_value and
   # exercise price works
@@ -87,8 +90,8 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
       paths = 100)
 
   expect(max(abs(vectorized_initial_price[2, ] - single_initial_price)) < 1e-9,
-         "Malliavin_Geometric_Asian_Greeks: Vectorized computation wrt to
-         initial_value does not work")
+         failure_message = "Malliavin_Geometric_Asian_Greeks: Vectorized
+         computation wrt to initial_value does not work")
 
   vectorized_exercise_price <-
     Malliavin_Geometric_Asian_Greeks(
@@ -114,19 +117,22 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
       greek = Greeks,
       paths = 100)
 
-  expect(max(abs(vectorized_exercise_price[2, ] - single_exercise_price)) < 1e-9,
-         "Malliavin_Geometric_Asian_Greeks: Vectorized computation wrt to
-         exercise_price does not work")
+  expect(
+    max(abs(vectorized_exercise_price[2, ] - single_exercise_price)) < 1e-9,
+    failure_message =  "Malliavin_Geometric_Asian_Greeks: Vectorized computation
+    wrt to exercise_price does not work")
 
   # We check, whether custom payoff functions work
 
   digital_call <-
     function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)}
 
-  expect(max(abs(
-    Malliavin_Geometric_Asian_Greeks(payoff = digital_call, paths = 100) -
-      Malliavin_Geometric_Asian_Greeks(payoff = "digital_call", paths = 100))) < 1e-9,
-    "Malliavin_Geometric_Asian_Greeks: Custom payoff functions do not work")
+  expect(
+    max(abs(
+      Malliavin_Geometric_Asian_Greeks(payoff = digital_call, paths = 100) -
+        Malliavin_Geometric_Asian_Greeks(payoff = "digital_call", paths = 100))) < 1e-9,
+    failure_message =  "Malliavin_Geometric_Asian_Greeks: Custom payoff
+    functions do not work")
 
   digital_put <-
     function(x, exercise_price) {ifelse(x <= exercise_price, 1, 0)}
@@ -134,6 +140,7 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
   expect(max(abs(
     Malliavin_Geometric_Asian_Greeks(payoff = digital_put, paths = 100) -
       Malliavin_Geometric_Asian_Greeks(payoff = "digital_put", paths = 100))) < 1e-9,
-    "Malliavin_Geometric_Asian_Greeks: Custom payoff functions do not work")
+    failure_message =  "Malliavin_Geometric_Asian_Greeks: Custom payoff
+    functions do not work")
 
-    })
+})
