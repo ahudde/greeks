@@ -32,7 +32,7 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
         dividend_yield = dividend_yield,
         payoff = payoff,
         greek = Greeks,
-        paths = 100000,
+        paths = 1000000,
         steps = 48,
         antithetic = antithetic
       )
