@@ -6,7 +6,7 @@ output:
 # greeks 1.4.0
 
 `greeks` is now published in JOSS:
-[![status](https://joss.theoj.org/papers/61ae139acab91fdb0664b33a23e43c93/status.svg)](https://joss.theoj.org/papers/61ae139acab91fdb0664b33a23e43c93)
+[![status](https://joss.theoj.org/papers/10.21105/joss.05987/status.svg)](https://doi.org/10.21105/joss.05987)
 
 Hudde, A., (2024). greeks: Sensitivities of Prices of Financial Options and Implied Volatilities. Journal of Open Source Software, 9(95), 5987, https://doi.org/10.21105/joss.05987
 

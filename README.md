@@ -1,7 +1,7 @@
 # `greeks`
 ![](https://www.r-pkg.org/badges/version/greeks)
 [![R-CMD-check](https://github.com/ahudde/greeks/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ahudde/greeks/actions/workflows/R-CMD-check.yaml)
-[![status](https://joss.theoj.org/papers/61ae139acab91fdb0664b33a23e43c93/status.svg)](https://joss.theoj.org/papers/61ae139acab91fdb0664b33a23e43c93)
+[![status](https://joss.theoj.org/papers/10.21105/joss.05987/status.svg)](https://doi.org/10.21105/joss.05987)
 ![](https://cranlogs.r-pkg.org/badges/greeks)
 [![Codecov test coverage](https://codecov.io/gh/ahudde/greeks/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ahudde/greeks?branch=main)
 
