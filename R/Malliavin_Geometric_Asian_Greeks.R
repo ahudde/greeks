@@ -95,11 +95,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
            nrow = length(vectorized_param),
            dimnames = list(NULL, greek)) * NA
 
-  ## the payoff function ##
-
-  ## TODO: comment
-  payoff_name <- payoff
-
+  # the payoff function
   if (inherits(payoff, "function")) {
     print("custom payoff")
   } else if (payoff == "call") {
@@ -118,8 +114,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
     }
   }
 
-  ## the seed is set
-
+  # the seed is set
   if (!is.na(seed)) {
     dqset.seed(seed)
   }
@@ -144,11 +139,10 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
   X_T <- X[, steps + 1]
 
-  # TODO: comment
+  # the calculation of I_W, the integral \int_0^T W_t dt
   I_W <- calc_I(W, steps, dt)
 
-  ### the calculation of I_{(n)}, the integral \int_0^T t^n X_t dt ###
-
+  # the calculation of I_{(n)}, the integral \int_0^T t^n X_t dt
   I_0 <- calc_I(X, steps, dt)
 
   if (length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
@@ -164,11 +158,11 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
     assign(param, vectorized_param[i])
 
-    # TODO: comment
+    # the calculation of the geometric average of X
     I_0_geom <-
       exp(calc_I(log(initial_price * X), steps, dt) / time_to_maturity)
 
-    #TODO: comment
+    # the value of the greek, given the Malliavin weight
     E_I_0_geom <- function(weight) {
       return(exp(-(r - dividend_yield) * time_to_maturity) *
                mean(payoff(I_0_geom, exercise_price) * weight))
