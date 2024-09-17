@@ -44,6 +44,10 @@ Greeks_UI <- function() {
       "Veta" = "veta",
       "Speed" = "speed")
 
+  # TODO: Maybe this could be done in a more elegant way
+  greeks_list_reversed <- names(greeks_list)
+  names(greeks_list_reversed) <- as.vector(greeks_list)
+
   params_list <-
     list(
       "Initial Price" = "initial_price",
@@ -468,6 +472,11 @@ Greeks_UI <- function() {
             pivot_longer(cols = -x,
                          names_to = "Greek",
                          values_to = "Value")
+
+          # The entries of the Greeks column are change to a more human readable
+          # format
+          Option_price$Greek <- greeks_list_reversed[Option_price$Greek]
+
         } else {
 
           ## FUN is the function applied to sapply that compute the Greeks
@@ -502,7 +511,9 @@ Greeks_UI <- function() {
             Option_price[row, ] <- round(Option_price_list[[row]], 4)
           }
 
-          colnames(Option_price) <- greek
+          # The entries of the Greeks column are change to a more human readable
+          # format
+          colnames(Option_price) <- greeks_list_reversed[greek]
 
           Option_price <-
             Option_price %>%
