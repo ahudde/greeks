@@ -19,7 +19,7 @@ test_that("BS_Geometric_Asian_Greeks is correct", {
   set.seed(42)
 
   ## TODO: epsilon is a bad variable name, since is can be confused with the
-  ## Greek epsilon, also change that in test-Bs_European_Greeks
+  ## Greek epsilon, also change that in test-BS_European_Greeks
   epsilon <- 1e-5
 
   for(i in 1:number_of_runs) {
