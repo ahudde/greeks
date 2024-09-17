@@ -1,6 +1,6 @@
 Package: greeks
 Title: Sensitivities of Prices of Financial Options and Implied Volatilities
-Version: 1.4.2
+Version: 1.4.3
 Authors@R: 
     person(given = "Anselm",
            family = "Hudde",
@@ -23,7 +23,7 @@ Description: Methods to calculate sensitivities of financial option prices for
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.2
 Suggests: 
     knitr,
     rmarkdown,
