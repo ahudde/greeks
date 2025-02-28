@@ -194,14 +194,9 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
     if ("vega" %in% greek) {
       result[i, "vega"] <-
-        exp(-r*time_to_maturity) *
-        mean(
-          payoff(I_0_geom, exercise_price) *
-            (
-              2/(volatility * time_to_maturity**2) * W_T * I_W -
-                1/volatility -
-                W_T
-            ))
+            (2/(volatility * time_to_maturity**2) * W_T * I_W -
+                1/volatility - W_T)  %>%
+                E_I_0_geom()
 
     } #vega
 
