@@ -20,7 +20,7 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
     volatility <- runif(1, 0.01, 1)
     model <- "Black_Scholes"
     payoff <- rep(c("put", "call"), number_of_runs/2)[i]
-    antithetic <- sample(c("call", "put"), 1)
+    antithetic <- sample(c(TRUE, FALSE), 1)
 
     Value_MC <-
       Malliavin_Geometric_Asian_Greeks(
