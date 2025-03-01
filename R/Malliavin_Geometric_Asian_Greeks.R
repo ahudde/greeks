@@ -145,9 +145,15 @@ Malliavin_Geometric_Asian_Greeks <- function(
   # the calculation of I_{(n)}, the integral \int_0^T t^n X_t dt
   I_0 <- calc_I(X, steps, dt)
 
+  # TODO: comment
   if (length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
     I_1 <- calc_I_1(X, steps, dt)
     I_2 <- calc_I_2(X, steps, dt)
+  }
+
+  # the calculation of I_ln_X, the integral \int_0^T ln(X_t) dt
+  if("theta" %in% greek) {
+    I_ln_X <- calc_I(log(X), steps, dt)
   }
 
   if ("gamma" %in% greek) {
@@ -185,10 +191,11 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
     if ("theta" %in% greek) {
       result[i, "theta"] <-
-        ((r - dividend_yield) - 1/time_to_maturity +
-           ((1/(volatility * time_to_maturity)) * I_0 * W_T -
-              (1/volatility) * X_T * W_T + time_to_maturity * X_T) / I_1 +
-           (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
+        ((r - dividend_yield) +
+           (2 / (volatility * time_to_maturity^3)) * W_T * I_ln_X -
+           (1 / time_to_maturity) -
+           (2 / (volatility * time_to_maturity^2)) * log(X_T) * W_T +
+           (2 / time_to_maturity)) %>%
         E_I_0_geom()
     } #theta
 
