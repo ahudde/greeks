@@ -27,8 +27,8 @@
 #' @param volatility - volatility of the underlying asset
 #' @param dividend_yield - dividend yield
 #' @param payoff - the payoff function, either a string in ("call", "put")
-#' @param greek - the Greeks to be calculated in c("fair_value", "delta",
-#' "vega", "theta", "rho", "gamma", "vomma")
+#' @param greek - Greeks to be calculated in c("fair_value", "delta", "rho",
+#' "vega", "theta", "gamma", "vomma")
 #'
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
@@ -47,7 +47,7 @@ BS_Geometric_Asian_Greeks <- function(
     volatility = 0.3,
     dividend_yield = 0,
     payoff = "call",
-    greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma")) {
+    greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma", "vomma")) {
 
   result <- numeric(length(greek)) * NA
 
