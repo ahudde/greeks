@@ -23,8 +23,8 @@
 #' @param payoff - the payoff function, either a string in ("call", "put",
 #' "cash_or_nothing_call", "cash_or_nothing_call", "asset_or_nothing_call",
 #' "asset_or_nothing_put"), or a function
-#' @param greek - the Greeks to be calculated in ("fair_value", "delta",
-#' "vega", "theta", "rho", "gamma")
+#' @param greek - Greeks to be calculated in ("fair_value", "delta", "vega",
+#' "theta", "rho", "gamma")
 #' @param model - the model to be chosen
 #' @param paths - the number of simulated paths
 #' @param seed - the seed of the random number generator
