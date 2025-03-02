@@ -467,7 +467,7 @@ Greeks_UI <- function() {
               dividend_yield = dividend_yield,
               payoff = payoff,
               greek = greek
-            ) |> as_tibble() %>%
+            ) %>% as_tibble() %>%
             add_column(x = x) %>%
             pivot_longer(cols = -x,
                          names_to = "Greek",
