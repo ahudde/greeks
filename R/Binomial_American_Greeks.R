@@ -24,7 +24,8 @@
 #' @param volatility - volatility of the underlying asset.
 #' @param dividend_yield - dividend yield.
 #' @param payoff - the payoff function, a string in ("call", "put").
-#' @param greek - the Greek to be calculated.
+#' @param greek - Greeks to be calculated in c("fair_value", "delta", "vega",
+#' "theta", "rho", "epsilon", "gamma")
 #' @param steps - the number of integration steps.
 #' @param eps - the step size for the finite difference method to calculate
 #' theta, vega, rho and epsilon
@@ -104,17 +105,13 @@ Binomial_American_Greeks <-
     }
 
     if ("delta" %in% greek) {
-
       v_up <- compute_fair_value(initial_price = initial_price + eps)
-
       v_down <- compute_fair_value(initial_price = initial_price - eps)
-
       result["delta"] <- (v_up - v_down) / (2*eps)
 
     }
 
     if ("gamma" %in% greek) {
-
       eps_gamma <- initial_price/50
 
       v_up <- compute_fair_value(initial_price = initial_price + eps_gamma)
@@ -128,33 +125,25 @@ Binomial_American_Greeks <-
 
     if ("vega" %in% greek) {
       v_up <- compute_fair_value(volatility = volatility + eps)
-
       v_down <- compute_fair_value(volatility = volatility - eps)
-
       result["vega"] <- (v_up - v_down) / (2*eps)
     }
 
     if ("theta" %in% greek) {
       v_up <- compute_fair_value(time_to_maturity = time_to_maturity + eps)
-
       v_down <- compute_fair_value(time_to_maturity = time_to_maturity - eps)
-
       result["theta"] <- - (v_up - v_down) / (2*eps)
     }
 
     if ("rho" %in% greek) {
       v_up <- compute_fair_value(r = r + eps)
-
       v_down <- compute_fair_value(r = r - eps)
-
       result["rho"] <- (v_up - v_down) / (2*eps)
     }
 
     if ("epsilon" %in% greek) {
       v_up <- compute_fair_value(dividend_yield = dividend_yield + eps)
-
       v_down <- compute_fair_value(dividend_yield = dividend_yield - eps)
-
       result["epsilon"] <- (v_up - v_down) / (2*eps)
     }
 
