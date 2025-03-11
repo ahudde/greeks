@@ -32,7 +32,7 @@
 #' @param dividend_yield - dividend yield
 #' @param payoff - the payoff function, either a string in ("call", "put",
 #' "digital_call", "digital_put"), or a function
-#' @param greek - the Greek to be calculated
+#' @param greek - Greeks to be calculated in c("fair_value", "delta", "rho", "vega", "theta", "gamma)
 #' @param model - the model to be chosen in ("black_scholes", "jump_diffusion")
 #' @param lambda - the lambda of the Poisson process in the jump-diffusion model
 #' @param alpha - the alpha in the jump-diffusion model influences the jump size
