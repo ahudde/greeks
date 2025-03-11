@@ -13,7 +13,7 @@ BS_Geometric_Asian_Greeks(
   volatility = 0.3,
   dividend_yield = 0,
   payoff = "call",
-  greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma")
+  greek = c("fair_value", "delta", "rho", "vega", "theta", "gamma", "vomma")
 )
 }
 \arguments{
@@ -47,8 +47,8 @@ vector
 }}
 
 \item{greek}{\itemize{
-\item the Greeks to be calculated in c("fair_value", "delta",
-"vega", "theta", "rho", "gamma", "vomma")
+\item Greeks to be calculated in c("fair_value", "delta", "rho",
+"vega", "theta", "gamma", "vomma")
 }}
 }
 \value{

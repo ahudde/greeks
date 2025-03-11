@@ -15,7 +15,7 @@ Implied_Volatility(
   option_type = "European",
   payoff = "call",
   start_volatility = 0.3,
-  precision = 1e-06,
+  precision = 0.000001,
   max_iter = 30
 )
 }

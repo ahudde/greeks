@@ -15,7 +15,7 @@ Binomial_American_Greeks(
   payoff = "call",
   greek = c("fair_value", "delta", "vega", "theta", "rho", "epsilon", "gamma"),
   steps = 1000,
-  eps = 1/1e+05
+  eps = 1/100000
 )
 }
 \arguments{
@@ -48,7 +48,8 @@ Binomial_American_Greeks(
 }}
 
 \item{greek}{\itemize{
-\item the Greek to be calculated.
+\item Greeks to be calculated in c("fair_value", "delta", "vega",
+"theta", "rho", "epsilon", "gamma")
 }}
 
 \item{steps}{\itemize{

@@ -14,7 +14,7 @@ BS_Implied_Volatility(
   dividend_yield = 0,
   payoff = "call",
   start_volatility = 0.3,
-  precision = 1e-09
+  precision = 0.000000001
 )
 }
 \arguments{
