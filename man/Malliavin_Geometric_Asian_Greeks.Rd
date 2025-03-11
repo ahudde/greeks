@@ -56,7 +56,7 @@ vector
 }}
 
 \item{greek}{\itemize{
-\item the Greek to be calculated
+\item Greeks to be calculated in c("fair_value", "delta", "rho", "vega", "theta", "gamma)
 }}
 
 \item{model}{\itemize{

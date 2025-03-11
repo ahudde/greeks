@@ -47,8 +47,8 @@ Malliavin_European_Greeks(
 }}
 
 \item{greek}{\itemize{
-\item the Greeks to be calculated in ("fair_value", "delta",
-"vega", "theta", "rho", "gamma")
+\item Greeks to be calculated in ("fair_value", "delta", "vega",
+"theta", "rho", "gamma")
 }}
 
 \item{model}{\itemize{
