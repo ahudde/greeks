@@ -156,10 +156,6 @@ Malliavin_Geometric_Asian_Greeks <- function(
     I_ln_X <- calc_I(log(X), steps, dt)
   }
 
-  if ("gamma" %in% greek) {
-    I_3 <- calc_I_3(X, steps, dt)
-  }
-
   for (i in 1:length(vectorized_param)) {
 
     assign(param, vectorized_param[i])
@@ -201,20 +197,16 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
     if ("vega" %in% greek) {
       result[i, "vega"] <-
-            (2/(volatility * time_to_maturity**2) * W_T * I_W -
-                1/volatility - W_T)  %>%
-                E_I_0_geom()
+        (2/(volatility * time_to_maturity**2) * W_T * I_W -
+           1/volatility - W_T)  %>%
+        E_I_0_geom()
 
     } #vega
 
     if ("gamma" %in% greek) {
       result[i, "gamma"] <-
-        ((1/(volatility^2*initial_price^2)) *
-           (2*volatility^2
-            - 4*volatility*W_T*I_0/I_1
-            + ((W_T^2 - time_to_maturity)*I_0 - 4*volatility^2*I_2)*I_0/I_1^2
-            + volatility * (3*W_T*I_2 - volatility*I_3)*I_0^2/I_1^3
-            + 3*volatility^2*I_0^2*I_2^2/I_1^4)) %>%
+        ((-(1/initial_price) * (2/(initial_price*volatility*time_to_maturity)) * W_T) +
+           (4/(initial_price^2 * volatility^2 * time_to_maturity) * (W_T^2 - time_to_maturity))) %>%
         E_I_0_geom()
     } #gamma
 
