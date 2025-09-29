@@ -78,6 +78,6 @@ test_that("BS_Geometric_Asian_Greeks is correct", {
           abs(Vals - Vals_fd))
   }
 
-  expect(max(error) < sqrt(epsilon))
+  expect_true(max(error) < sqrt(epsilon))
 
 })

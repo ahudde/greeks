@@ -104,6 +104,6 @@ test_that("BS_European_Greeks is correct", {
 
   }
 
-  expect(max(error) < sqrt(epsilon))
+  expect_true(max(error) < sqrt(epsilon))
 
 })
