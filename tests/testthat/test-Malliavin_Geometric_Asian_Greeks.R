@@ -57,10 +57,7 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
 
   }
 
-  expect(
-    max(error) < 0.1,
-    failure_message = "The results of Malliavin_Geometric_Asian_Greeks.R cannot
-    be confirmend by BS_Geometric_Asian_Greeks.R")
+  expect_true(max(error) < 0.1)
 
   # We check, whether computation for vectorized parameters initial_value and
   # exercise price works
@@ -89,9 +86,7 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
       greek = Greeks,
       paths = 100)
 
-  expect(max(abs(vectorized_initial_price[2, ] - single_initial_price)) < 1e-9,
-         failure_message = "Malliavin_Geometric_Asian_Greeks: Vectorized
-         computation wrt to initial_value does not work")
+  expect_true(max(abs(vectorized_initial_price[2, ] - single_initial_price)) < 1e-9)
 
   vectorized_exercise_price <-
     Malliavin_Geometric_Asian_Greeks(
@@ -117,30 +112,26 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
       greek = Greeks,
       paths = 100)
 
-  expect(
-    max(abs(vectorized_exercise_price[2, ] - single_exercise_price)) < 1e-9,
-    failure_message =  "Malliavin_Geometric_Asian_Greeks: Vectorized computation
-    wrt to exercise_price does not work")
+  expect_true(
+    max(abs(vectorized_exercise_price[2, ] - single_exercise_price)) < 1e-9
+  )
 
   # We check, whether custom payoff functions work
 
   digital_call <-
     function(x, exercise_price) {ifelse(x >= exercise_price, 1, 0)}
 
-  expect(
+  expect_true(
     max(abs(
       Malliavin_Geometric_Asian_Greeks(payoff = digital_call, paths = 100) -
         Malliavin_Geometric_Asian_Greeks(payoff = "digital_call", paths = 100))) < 1e-9,
-    failure_message =  "Malliavin_Geometric_Asian_Greeks: Custom payoff
-    functions do not work")
+    )
 
   digital_put <-
     function(x, exercise_price) {ifelse(x <= exercise_price, 1, 0)}
 
-  expect(max(abs(
+  expect_true(max(abs(
     Malliavin_Geometric_Asian_Greeks(payoff = digital_put, paths = 100) -
-      Malliavin_Geometric_Asian_Greeks(payoff = "digital_put", paths = 100))) < 1e-9,
-    failure_message =  "Malliavin_Geometric_Asian_Greeks: Custom payoff
-    functions do not work")
+      Malliavin_Geometric_Asian_Greeks(payoff = "digital_put", paths = 100))) < 1e-9)
 
 })

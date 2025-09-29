@@ -95,10 +95,7 @@ test_that("Binomial_American_Greeks is correct", {
 
   }
 
-  expect(
-    max(error) < 0.1,
-    failure_message = "The results of Binomial_American_Greeks.R cannot be
-    confirmend by finite difference")
+  expect_true(max(error) < 0.1)
 
 })
 
@@ -213,8 +210,6 @@ test_that("Binomial_American_Greeks fair_value is correct", {
     )
 
   }
-  expect(max(error) < 1e-5,
-         failure_message = "The results of Binomial_American_Greeks.R cannot be
-    confirmend by Binomial_Americian_Greeks_test")
+  expect_true(max(error) < 1e-5)
 
 })

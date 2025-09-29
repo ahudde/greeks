@@ -61,8 +61,7 @@ test_that("Malliavin_Asian_Greeks is correct", {
 
   }
 
-  expect(max(error) < 0.1, "Malliavin_Asian_Greeks: Malliavin - Malliavin_d
-         difference too high")
+  expect_true(max(error) < 0.1)
 
 
 
@@ -147,7 +146,7 @@ test_that("Malliavin_Asian_Greeks is correct", {
 
   }
 
-  expect(max(error) < 0.1, "Malliavin_Asian_Greeks: Delta error too high")
+  expect_true(max(error) < 0.1)
 
   # Now, we check rho and vega
 
@@ -216,7 +215,6 @@ test_that("Malliavin_Asian_Greeks is correct", {
 
   }
 
-  expect(max(error) < 0.1,
-         paste0("Malliavin_Asian_Greeks: ", greek, " error too high"))
+  expect_true(max(error) < 0.1)
 
 })

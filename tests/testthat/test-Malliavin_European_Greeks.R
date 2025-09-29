@@ -56,9 +56,7 @@ test_that("Malliavin_European_Greeks is correct", {
 
   # "asset_or_nothing_call and asset_or_nothing_put payoff-functions have much
   # more variance
-  expect(max(error[1:4]) < 0.01 && max(error[5:6]) < 0.1,
-         "The results of Malliavin_European_Greeks() are not close enough to
-         BS_European_Greeks()")
+  expect_true(max(error[1:4]) < 0.01 && max(error[5:6]) < 0.1)
 
   expect_error(Malliavin_European_Greeks(model = "whatever_model"))
 
@@ -72,6 +70,6 @@ test_that("Malliavin_European_Greeks is correct", {
     sum(abs(Malliavin_European_Greeks(payoff = call_function) -
               Malliavin_European_Greeks(payoff = "call")))
 
-  expect(abs(diff) < 1e-7, "Custom payoff function does not seem to work")
+  expect_true(abs(diff) < 1e-7)
 
 })
