@@ -57,6 +57,10 @@ Binomial_American_Greeks <-
            steps = 1000,
            eps = 1/100000) {
 
+    if (length(payoff) != 1 || !(payoff %in% c("call", "put"))) {
+      stop("payoff must be either 'call' or 'put'.", call. = FALSE)
+    }
+
     ## Definition of a helper-function of make better use of
     ## Binomial_American_Greeks.cpp
 

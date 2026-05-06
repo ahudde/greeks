@@ -26,7 +26,7 @@ NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
                                            const int steps = 1000) {
 
   // payoff_function
-  double (*payoff_function)(double price, double exercise_price);
+  double (*payoff_function)(double price, double exercise_price) = 0;
 
   // iterators
   int i;
@@ -59,6 +59,8 @@ NumericVector Binomial_American_Greeks_cpp(double initial_price = 100,
     payoff_function = &american_call;
   } else if (payoff == "put") {
     payoff_function = &american_put;
+  } else {
+    stop("payoff must be either 'call' or 'put'.");
   }
 
   for(i = 0; i <= steps; i++) {

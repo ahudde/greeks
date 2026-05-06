@@ -218,3 +218,15 @@ test_that("Binomial_American_Greeks fair_value is correct", {
     confirmend by Binomial_Americian_Greeks_test")
 
 })
+
+test_that("Binomial_American_Greeks rejects invalid payoff input", {
+  expect_error(
+    Binomial_American_Greeks(payoff = "foo", steps = 3),
+    "payoff must be either 'call' or 'put'"
+  )
+
+  expect_error(
+    Binomial_American_Greeks_cpp(payoff = "foo", steps = 3),
+    "payoff must be either 'call' or 'put'"
+  )
+})
