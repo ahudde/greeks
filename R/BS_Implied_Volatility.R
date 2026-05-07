@@ -47,86 +47,15 @@ BS_Implied_Volatility <-
            start_volatility = 0.3,
            precision = 1e-9) {
 
-    ## check if option price can be obtained
-
-    option_price_zero_vol <-
-      BS_European_Greeks(
-        initial_price = initial_price,
-        exercise_price = exercise_price,
-        r = r,
-        time_to_maturity = time_to_maturity,
-        volatility = 1e-12,
-        dividend_yield = dividend_yield,
-        payoff = payoff,
-        greek = "fair_value"
-      )
-
-    if (option_price <= option_price_zero_vol) {
-      stop("Option price is too low. Implied volatility is not defined.")
-    }
-
-    ## Start computation
-
-    volatility <- start_volatility
-
-    d1 <- (log(initial_price/exercise_price) +
-             (r - dividend_yield + (volatility^2)/2) * time_to_maturity) /
-      (volatility * sqrt(time_to_maturity))
-
-    d2 <- d1 - volatility * sqrt(time_to_maturity)
-
-    if (payoff == "call") {
-
-      fair_value <-
-        initial_price * exp(-dividend_yield*time_to_maturity) * pnorm(d1) -
-        exp(-r*time_to_maturity) * exercise_price * pnorm(d2)
-
-    } else if (payoff == "put") {
-
-      fair_value <-
-        exp(-r*time_to_maturity) * exercise_price * pnorm(-d2) -
-        initial_price * exp(-dividend_yield * time_to_maturity) * pnorm(-d1)
-
-    }
-
-    while (TRUE) {
-
-      vega <-
-        initial_price*exp(-dividend_yield*time_to_maturity) * dnorm(d1) *
-        sqrt(time_to_maturity)
-
-      vomma <-
-        initial_price * exp(-dividend_yield * time_to_maturity) *
-        dnorm(d1) * sqrt(time_to_maturity) * d1 * d2 / volatility
-
-      volatility <-
-        volatility -
-        (2 * (fair_value - option_price) * vega) / (2 * vega^2 - (fair_value - option_price) * vomma)
-
-      if (abs(fair_value - option_price) < precision) {
-        return(volatility)
-      }
-
-      d1 <- (log(initial_price/exercise_price) +
-               (r - dividend_yield + (volatility^2)/2) * time_to_maturity) /
-        (volatility * sqrt(time_to_maturity))
-
-      d2 <- d1 - volatility * sqrt(time_to_maturity)
-
-      if (payoff == "call") {
-
-        fair_value <-
-          initial_price * exp(-dividend_yield*time_to_maturity) * pnorm(d1) -
-          exp(-r*time_to_maturity) * exercise_price * pnorm(d2)
-
-      } else if (payoff == "put") {
-
-        fair_value <-
-          exp(-r*time_to_maturity) * exercise_price * pnorm(-d2) -
-          initial_price * exp(-dividend_yield * time_to_maturity) * pnorm(-d1)
-
-      }
-
-    }
-
+    BS_Implied_Volatility_cpp(
+      option_price = option_price,
+      initial_price = initial_price,
+      exercise_price = exercise_price,
+      r = r,
+      time_to_maturity = time_to_maturity,
+      dividend_yield = dividend_yield,
+      payoff = payoff,
+      start_volatility = start_volatility,
+      precision = precision
+    )
   }

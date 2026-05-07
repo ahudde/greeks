@@ -9,6 +9,10 @@ BS_Geometric_Asian_Greeks_cpp <- function(initial_price, exercise_price, r, time
     .Call(`_greeks_BS_Geometric_Asian_Greeks_cpp`, initial_price, exercise_price, r, time_to_maturity, volatility, dividend_yield, payoff, greek)
 }
 
+BS_Implied_Volatility_cpp <- function(option_price, initial_price, exercise_price, r, time_to_maturity, dividend_yield, payoff, start_volatility, precision) {
+    .Call(`_greeks_BS_Implied_Volatility_cpp`, option_price, initial_price, exercise_price, r, time_to_maturity, dividend_yield, payoff, start_volatility, precision)
+}
+
 Binomial_American_Greeks_cpp <- function(initial_price = 100, exercise_price = 100, r = 0, time_to_maturity = 1, volatility = 0.3, dividend_yield = 0, payoff = "call", steps = 1000L) {
     .Call(`_greeks_Binomial_American_Greeks_cpp`, initial_price, exercise_price, r, time_to_maturity, volatility, dividend_yield, payoff, steps)
 }

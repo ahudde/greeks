@@ -46,6 +46,25 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// BS_Implied_Volatility_cpp
+double BS_Implied_Volatility_cpp(double option_price, double initial_price, double exercise_price, double r, double time_to_maturity, double dividend_yield, std::string payoff, double start_volatility, double precision);
+RcppExport SEXP _greeks_BS_Implied_Volatility_cpp(SEXP option_priceSEXP, SEXP initial_priceSEXP, SEXP exercise_priceSEXP, SEXP rSEXP, SEXP time_to_maturitySEXP, SEXP dividend_yieldSEXP, SEXP payoffSEXP, SEXP start_volatilitySEXP, SEXP precisionSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< double >::type option_price(option_priceSEXP);
+    Rcpp::traits::input_parameter< double >::type initial_price(initial_priceSEXP);
+    Rcpp::traits::input_parameter< double >::type exercise_price(exercise_priceSEXP);
+    Rcpp::traits::input_parameter< double >::type r(rSEXP);
+    Rcpp::traits::input_parameter< double >::type time_to_maturity(time_to_maturitySEXP);
+    Rcpp::traits::input_parameter< double >::type dividend_yield(dividend_yieldSEXP);
+    Rcpp::traits::input_parameter< std::string >::type payoff(payoffSEXP);
+    Rcpp::traits::input_parameter< double >::type start_volatility(start_volatilitySEXP);
+    Rcpp::traits::input_parameter< double >::type precision(precisionSEXP);
+    rcpp_result_gen = Rcpp::wrap(BS_Implied_Volatility_cpp(option_price, initial_price, exercise_price, r, time_to_maturity, dividend_yield, payoff, start_volatility, precision));
+    return rcpp_result_gen;
+END_RCPP
+}
 // Binomial_American_Greeks_cpp
 NumericVector Binomial_American_Greeks_cpp(double initial_price, double exercise_price, double r, double time_to_maturity, double volatility, double dividend_yield, std::string payoff, const int steps);
 RcppExport SEXP _greeks_Binomial_American_Greeks_cpp(SEXP initial_priceSEXP, SEXP exercise_priceSEXP, SEXP rSEXP, SEXP time_to_maturitySEXP, SEXP volatilitySEXP, SEXP dividend_yieldSEXP, SEXP payoffSEXP, SEXP stepsSEXP) {
@@ -202,6 +221,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_greeks_BS_European_Greeks_cpp", (DL_FUNC) &_greeks_BS_European_Greeks_cpp, 8},
     {"_greeks_BS_Geometric_Asian_Greeks_cpp", (DL_FUNC) &_greeks_BS_Geometric_Asian_Greeks_cpp, 8},
+    {"_greeks_BS_Implied_Volatility_cpp", (DL_FUNC) &_greeks_BS_Implied_Volatility_cpp, 9},
     {"_greeks_Binomial_American_Greeks_cpp", (DL_FUNC) &_greeks_Binomial_American_Greeks_cpp, 8},
     {"_greeks_calc_I", (DL_FUNC) &_greeks_calc_I, 3},
     {"_greeks_calc_I_1", (DL_FUNC) &_greeks_calc_I_1, 3},
