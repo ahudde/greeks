@@ -5,6 +5,10 @@ BS_European_Greeks_cpp <- function(initial_price, exercise_price, r, time_to_mat
     .Call(`_greeks_BS_European_Greeks_cpp`, initial_price, exercise_price, r, time_to_maturity, volatility, dividend_yield, payoff, greek)
 }
 
+BS_Geometric_Asian_Greeks_cpp <- function(initial_price, exercise_price, r, time_to_maturity, volatility, dividend_yield, payoff, greek) {
+    .Call(`_greeks_BS_Geometric_Asian_Greeks_cpp`, initial_price, exercise_price, r, time_to_maturity, volatility, dividend_yield, payoff, greek)
+}
+
 Binomial_American_Greeks_cpp <- function(initial_price = 100, exercise_price = 100, r = 0, time_to_maturity = 1, volatility = 0.3, dividend_yield = 0, payoff = "call", steps = 1000L) {
     .Call(`_greeks_Binomial_American_Greeks_cpp`, initial_price, exercise_price, r, time_to_maturity, volatility, dividend_yield, payoff, steps)
 }
