@@ -139,3 +139,11 @@ test_that("BS_European_Greeks rejects invalid positive model parameters", {
     fixed = TRUE
   )
 })
+
+test_that("BS_European_Greeks rejects duplicate greek inputs", {
+  expect_error(
+    BS_European_Greeks(greek = c("fair_value", "fair_value")),
+    "greek must not contain duplicate values",
+    fixed = TRUE
+  )
+})

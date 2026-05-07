@@ -51,7 +51,12 @@ BS_European_Greeks <-
 
       if (!is.numeric(value) || length(value) != 1 || is.na(value) ||
           !is.finite(value) || value <= 0) {
+        stop(param, " must be a positive finite number.", call. = FALSE)
       }
+    }
+
+    if (anyDuplicated(greek)) {
+      stop("greek must not contain duplicate values.", call. = FALSE)
     }
 
     result <- vector(mode = "numeric", length = length(greek)) * NA
