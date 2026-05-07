@@ -140,6 +140,26 @@ test_that("BS_European_Greeks rejects invalid positive model parameters", {
   )
 })
 
+test_that("BS_European_Greeks rejects invalid finite model parameters", {
+  expect_error(
+    BS_European_Greeks(r = c(0.01, 0.02), greek = "fair_value"),
+    "r must be a finite number",
+    fixed = TRUE
+  )
+
+  expect_error(
+    BS_European_Greeks(r = Inf, greek = "fair_value"),
+    "r must be a finite number",
+    fixed = TRUE
+  )
+
+  expect_error(
+    BS_European_Greeks(dividend_yield = NA_real_, greek = "fair_value"),
+    "dividend_yield must be a finite number",
+    fixed = TRUE
+  )
+})
+
 test_that("BS_European_Greeks rejects duplicate greek inputs", {
   expect_error(
     BS_European_Greeks(greek = c("fair_value", "fair_value")),

@@ -55,6 +55,17 @@ BS_European_Greeks <-
       }
     }
 
+    finite_params <- c("r", "dividend_yield")
+
+    for (param in finite_params) {
+      value <- get(param)
+
+      if (!is.numeric(value) || length(value) != 1 || is.na(value) ||
+          !is.finite(value)) {
+        stop(param, " must be a finite number.", call. = FALSE)
+      }
+    }
+
     if (anyDuplicated(greek)) {
       stop("greek must not contain duplicate values.", call. = FALSE)
     }
