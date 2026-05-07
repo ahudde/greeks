@@ -42,6 +42,18 @@ BS_European_Greeks <-
                      "lambda", "gamma", "vanna", "charm", "vomma", "veta",
                      "speed")) {
 
+    # check for invalid parameter values
+    positive_params <- c("initial_price", "exercise_price", "time_to_maturity",
+                         "volatility")
+
+    for (param in positive_params) {
+      value <- get(param)
+
+      if (!is.numeric(value) || length(value) != 1 || is.na(value) ||
+          !is.finite(value) || value <= 0) {
+      }
+    }
+
     result <- vector(mode = "numeric", length = length(greek)) * NA
 
     names(result) <- greek

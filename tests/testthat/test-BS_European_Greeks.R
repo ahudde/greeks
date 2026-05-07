@@ -107,3 +107,35 @@ test_that("BS_European_Greeks is correct", {
   expect(max(error) < sqrt(epsilon), "Error in BS_European_Greeks is too high")
 
 })
+
+test_that("BS_European_Greeks rejects invalid positive model parameters", {
+  invalid_positive_params <- list(
+    initial_price = 0,
+    exercise_price = 0,
+    time_to_maturity = 0,
+    volatility = 0
+  )
+
+  for (param in names(invalid_positive_params)) {
+    args <- list(greek = "fair_value")
+    args[[param]] <- invalid_positive_params[[param]]
+
+    expect_error(
+      do.call(BS_European_Greeks, args),
+      paste0(param, " must be a positive finite number"),
+      fixed = TRUE
+    )
+  }
+
+  expect_error(
+    BS_European_Greeks(initial_price = c(100, 101), greek = "fair_value"),
+    "initial_price must be a positive finite number",
+    fixed = TRUE
+  )
+
+  expect_error(
+    BS_European_Greeks(volatility = Inf, greek = "fair_value"),
+    "volatility must be a positive finite number",
+    fixed = TRUE
+  )
+})
