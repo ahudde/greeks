@@ -143,8 +143,6 @@ BS_European_Greeks <-
 
       pnorm_minus_d2 <- pnorm(-d2)
 
-      dnorm_minus_d2 <- dnorm(-d2)
-
       pnorm_minus_d1 <- pnorm(-d1)
 
       ## option-value
