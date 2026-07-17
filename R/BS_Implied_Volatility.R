@@ -26,6 +26,7 @@
 #' @param payoff - the payoff function, a string in ("call", "put").
 #' @param start_volatility - the volatility value to start the approximation
 #' @param precision - precision of the result
+#' @param max_iter - maximum number of iterations
 #'
 #' @useDynLib greeks, .registration=TRUE
 #'
@@ -45,7 +46,14 @@ BS_Implied_Volatility <-
            dividend_yield = 0,
            payoff = "call",
            start_volatility = 0.3,
-           precision = 1e-9) {
+           precision = 1e-9,
+           max_iter = 30) {
+
+    if (!is.numeric(max_iter) || length(max_iter) != 1 || is.na(max_iter) ||
+        !is.finite(max_iter) || max_iter < 1 ||
+        max_iter > .Machine$integer.max || max_iter != floor(max_iter)) {
+      stop("max_iter must be a positive integer.", call. = FALSE)
+    }
 
     BS_Implied_Volatility_cpp(
       option_price = option_price,
@@ -56,6 +64,7 @@ BS_Implied_Volatility <-
       dividend_yield = dividend_yield,
       payoff = payoff,
       start_volatility = start_volatility,
-      precision = precision
+      precision = precision,
+      max_iter = as.integer(max_iter)
     )
   }

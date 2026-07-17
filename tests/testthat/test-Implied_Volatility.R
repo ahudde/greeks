@@ -94,3 +94,79 @@ test_that("implied volatility is correct", {
   expect_error(Implied_Volatility(option_price = 10, exercise_price = 90))
 
 })
+
+test_that("European implied volatility respects iteration controls", {
+  option_price <- BS_European_Greeks(
+    initial_price = 100,
+    exercise_price = 100,
+    r = 0.02,
+    time_to_maturity = 1,
+    volatility = 0.8,
+    dividend_yield = 0.01,
+    payoff = "call",
+    greek = "fair_value"
+  )
+
+  expect_error(
+    BS_Implied_Volatility(
+      option_price = option_price,
+      initial_price = 100,
+      exercise_price = 100,
+      r = 0.02,
+      time_to_maturity = 1,
+      dividend_yield = 0.01,
+      payoff = "call",
+      start_volatility = 0.1,
+      precision = 1e-12,
+      max_iter = 1
+    ),
+    "Maximum number of iterations reached (max_iter = 1)",
+    fixed = TRUE
+  )
+
+  expect_error(
+    Implied_Volatility(
+      option_price = option_price,
+      initial_price = 100,
+      exercise_price = 100,
+      r = 0.02,
+      time_to_maturity = 1,
+      dividend_yield = 0.01,
+      option_type = "European",
+      payoff = "call",
+      start_volatility = 0.1,
+      precision = 1e-12,
+      max_iter = 1
+    ),
+    "Maximum number of iterations reached (max_iter = 1)",
+    fixed = TRUE
+  )
+
+  expect_error(
+    BS_Implied_Volatility(option_price, max_iter = 0),
+    "max_iter must be a positive integer",
+    fixed = TRUE
+  )
+  expect_error(
+    Implied_Volatility(option_price, precision = -1),
+    "precision must be a positive finite number",
+    fixed = TRUE
+  )
+})
+
+test_that("infeasible high prices terminate at max_iter", {
+  expect_error(
+    BS_Implied_Volatility(
+      option_price = 101,
+      initial_price = 100,
+      exercise_price = 100,
+      r = 0,
+      time_to_maturity = 1,
+      dividend_yield = 0,
+      payoff = "call",
+      max_iter = 2
+    ),
+    "Maximum number of iterations reached (max_iter = 2)",
+    fixed = TRUE
+  )
+})

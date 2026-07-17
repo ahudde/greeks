@@ -1,6 +1,6 @@
 Package: greeks
 Title: Sensitivities of Prices of Financial Options and Implied Volatilities
-Version: 1.5.5
+Version: 1.5.6
 Authors@R: 
     person(given = "Anselm",
            family = "Hudde",

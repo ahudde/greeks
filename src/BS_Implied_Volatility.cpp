@@ -81,7 +81,8 @@ double BS_Implied_Volatility_cpp(double option_price,
                                  double dividend_yield,
                                  std::string payoff,
                                  double start_volatility,
-                                 double precision) {
+                                 double precision,
+                                 int max_iter) {
   require_finite("option_price", option_price);
   require_positive_finite("initial_price", initial_price);
   require_positive_finite("exercise_price", exercise_price);
@@ -90,6 +91,10 @@ double BS_Implied_Volatility_cpp(double option_price,
   require_finite("dividend_yield", dividend_yield);
   require_positive_finite("start_volatility", start_volatility);
   require_positive_finite("precision", precision);
+
+  if (max_iter <= 0) {
+    stop("max_iter must be a positive integer.");
+  }
 
   if (!is_supported_payoff(payoff)) {
     stop("payoff must be one of 'call' or 'put'.");
@@ -108,21 +113,23 @@ double BS_Implied_Volatility_cpp(double option_price,
     black_scholes_values(initial_price, exercise_price, r, time_to_maturity,
                          dividend_yield, volatility, payoff);
 
-  while (true) {
+  for (int iteration = 0; iteration < max_iter; ++iteration) {
     checkUserInterrupt();
 
     const double price_error = values.fair_value - option_price;
-
-    volatility -=
-      (2.0 * price_error * values.vega) /
-      (2.0 * values.vega * values.vega - price_error * values.vomma);
 
     if (std::abs(price_error) < precision) {
       return volatility;
     }
 
+    volatility -=
+      (2.0 * price_error * values.vega) /
+      (2.0 * values.vega * values.vega - price_error * values.vomma);
+
     values =
       black_scholes_values(initial_price, exercise_price, r, time_to_maturity,
                            dividend_yield, volatility, payoff);
   }
+
+  stop("Maximum number of iterations reached (max_iter = %d).", max_iter);
 }

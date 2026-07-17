@@ -63,7 +63,9 @@ Implied_Volatility <-
         time_to_maturity = time_to_maturity,
         dividend_yield = dividend_yield,
         payoff = payoff,
-        start_volatility = start_volatility))
+        start_volatility = start_volatility,
+        precision = precision,
+        max_iter = max_iter))
     }
 
     ## Now the other cases
@@ -104,7 +106,9 @@ Implied_Volatility <-
         dividend_yield = dividend_yield,
         option_type = option_type_start_price,
         payoff = payoff,
-        start_volatility = start_volatility)
+        start_volatility = start_volatility,
+        precision = precision,
+        max_iter = max_iter)
 
     } else {
       start_volatility = 0.3
