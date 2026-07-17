@@ -166,7 +166,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
     # the value of the greek, given the Malliavin weight
     E_I_0_geom <- function(weight) {
-      return(exp(-(r - dividend_yield) * time_to_maturity) *
+      return(exp(-r * time_to_maturity) *
                mean(payoff(I_0_geom, exercise_price) * weight))
     }
 
@@ -187,7 +187,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
 
     if ("theta" %in% greek) {
       result[i, "theta"] <-
-        ((r - dividend_yield) +
+        (r +
            (2 / (volatility * time_to_maturity^3)) * W_T * I_ln_X -
            (1 / time_to_maturity) -
            (2 / (volatility * time_to_maturity^2)) * log(X_T) * W_T +

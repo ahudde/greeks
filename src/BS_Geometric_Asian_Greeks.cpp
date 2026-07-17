@@ -84,10 +84,10 @@ NumericVector BS_Geometric_Asian_Greeks_cpp(double initial_price,
 
   const double normal_shift = sigma * sqrt_time_over_3;
   const double adjusted_d_geom = d_geom + normal_shift;
-  const double discount_factor = std::exp(-rate_minus_dividend * time);
+  const double discount_factor = std::exp(-r * time);
   const double geometric_prefactor =
     std::exp(-(time / 2.0) *
-             (rate_minus_dividend + (sigma * sigma) / 6.0));
+             (r + dividend_yield + (sigma * sigma) / 6.0));
   const double discounted_strike = discount_factor * strike;
 
   const double normal_shift_vega = sqrt_time_over_3;
@@ -128,12 +128,12 @@ NumericVector BS_Geometric_Asian_Greeks_cpp(double initial_price,
 
     const double call_theta =
       -spot * geometric_prefactor *
-      (-0.5 * (rate_minus_dividend + (sigma * sigma) / 6.0) *
+      (-0.5 * (r + dividend_yield + (sigma * sigma) / 6.0) *
        standard_normal_cdf(adjusted_d_geom) +
        standard_normal_pdf(adjusted_d_geom) *
        (d_geom_theta + sigma / (2.0 * std::sqrt(3.0 * time)))) +
       strike * discount_factor *
-      (-(rate_minus_dividend) * standard_normal_cdf(d_geom) +
+      (-r * standard_normal_cdf(d_geom) +
        standard_normal_pdf(d_geom) * d_geom_theta);
 
     const double call_gamma =
@@ -196,12 +196,12 @@ NumericVector BS_Geometric_Asian_Greeks_cpp(double initial_price,
 
     const double put_theta =
       spot * geometric_prefactor *
-      (-0.5 * (rate_minus_dividend + (sigma * sigma) / 6.0) *
+      (-0.5 * (r + dividend_yield + (sigma * sigma) / 6.0) *
        standard_normal_cdf(put_argument) -
        standard_normal_pdf(put_argument) *
        (d_geom_theta + sigma / (2.0 * std::sqrt(3.0 * time)))) +
       strike * discount_factor *
-      (rate_minus_dividend * standard_normal_cdf(minus_d_geom) +
+      (r * standard_normal_cdf(minus_d_geom) +
        standard_normal_pdf(minus_d_geom) * d_geom_theta);
 
     const double put_gamma =

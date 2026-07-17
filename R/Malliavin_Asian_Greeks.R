@@ -184,12 +184,12 @@ Malliavin_Asian_Greeks <- function(
     assign(param, vectorized_param[i])
 
     E <- function(weight) {
-      return(exp(-(r - dividend_yield)*time_to_maturity) *
+      return(exp(-r * time_to_maturity) *
                mean(payoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
     }
 
     dE <- function(weight) {
-      return(exp(-(r - dividend_yield)*time_to_maturity) *
+      return(exp(-r * time_to_maturity) *
                mean(dpayoff(initial_price * I_0/time_to_maturity, exercise_price) * weight))
     }
 
@@ -222,7 +222,7 @@ Malliavin_Asian_Greeks <- function(
 
     if ("theta" %in% greek) {
       result[i, "theta"] <-
-        ((r - dividend_yield) - 1/time_to_maturity +
+        (r - 1/time_to_maturity +
            ((1/(volatility * time_to_maturity)) * I_0 * W_T -
               (1/volatility) * X_T * W_T + time_to_maturity * X_T) / I_1 +
            (1/time_to_maturity * I_0 * I_2 - I_2 * X_T) / (I_1^2)) %>%
@@ -231,7 +231,7 @@ Malliavin_Asian_Greeks <- function(
 
     if ("theta_d" %in% greek) {
       result[i, "theta_d"] <-
-        (r - dividend_yield) * E(1) +
+        r * E(1) +
         dE(initial_price * (I_0/time_to_maturity^2 - X_T/time_to_maturity))
     }
 

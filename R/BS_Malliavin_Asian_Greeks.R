@@ -173,7 +173,7 @@ BS_Malliavin_Asian_Greeks <- function(
 
     E_paths <- function(weight) {
       return(
-        exp(-(r - dividend_yield) * time_to_maturity) *
+        exp(-r * time_to_maturity) *
           payoff_function(initial_price * I_0/time_to_maturity, exercise_price) *
                weight)
     }
@@ -181,7 +181,7 @@ BS_Malliavin_Asian_Greeks <- function(
     if("fair_value" %in% greek || "rho" %in% greek) {
 
       geom_fair_value <-
-        exp(-(r - dividend_yield)*time_to_maturity) *
+        exp(-r * time_to_maturity) *
         cache$`payoff_function(I_0_geom, exercise_price)`
 
     }
