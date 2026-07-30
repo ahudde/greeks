@@ -206,7 +206,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
     if ("gamma" %in% greek) {
       result[i, "gamma"] <-
         ((-(1/initial_price) * (2/(initial_price*volatility*time_to_maturity)) * W_T) +
-           (4/(initial_price^2 * volatility^2 * time_to_maturity) * (W_T^2 - time_to_maturity))) %>%
+           (4/(initial_price^2 * volatility^2 * time_to_maturity^2) * (W_T^2 - time_to_maturity))) %>%
         E_I_0_geom()
     } #gamma
 
