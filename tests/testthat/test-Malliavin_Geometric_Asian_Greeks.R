@@ -18,10 +18,7 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
     time_to_maturity <- runif(1, 0.2, 1.5)
     dividend_yield <- runif(1, 0, 0.1)
     volatility <- runif(1, 0.01, 1)
-    model <- "Black_Scholes"
     payoff <- rep(c("put", "call"), number_of_runs/2)[i]
-    antithetic <- sample(c(TRUE, FALSE), 1)
-
     Value_MC <-
       Malliavin_Geometric_Asian_Greeks(
         initial_price = initial_price,
@@ -33,8 +30,7 @@ test_that("Malliavin_Geometric_Asian_Greeks is correct", {
         payoff = payoff,
         greek = Greeks,
         paths = 1000000,
-        steps = 48,
-        antithetic = antithetic
+        steps = 48
       )
 
     Value_exact <-

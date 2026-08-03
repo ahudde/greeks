@@ -45,7 +45,7 @@
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
 #'
-#' @examples Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,
+#' @examples Malliavin_Geometric_Asian_Greeks(initial_price = 110, exercise_price = 100,
 #' r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 #' greek = c("fair_value", "delta", "rho"), payoff = "put")
 #'
@@ -139,27 +139,15 @@ Malliavin_Geometric_Asian_Greeks <- function(
   # the calculation of I_W, the integral \int_0^T W_t dt
   I_W <- calc_I(W, steps, dt)
 
-  # the calculation of I_{(n)}, the integral \int_0^T t^n X_t dt
-  I_0 <- calc_I(X, steps, dt)
-
-  # TODO: comment
-  if (length(intersect(greek, c("delta", "theta", "vega", "gamma")))) {
-    I_1 <- calc_I_1(X, steps, dt)
-    I_2 <- calc_I_2(X, steps, dt)
-  }
-
   # the calculation of I_ln_X, the integral \int_0^T ln(X_t) dt
-  if("theta" %in% greek) {
-    I_ln_X <- calc_I(log(X), steps, dt)
-  }
+  I_ln_X <- calc_I(log(X), steps, dt)
 
   for (i in 1:length(vectorized_param)) {
 
     assign(param, vectorized_param[i])
 
     # the calculation of the geometric average of X
-    I_0_geom <-
-      exp(calc_I(log(initial_price * X), steps, dt) / time_to_maturity)
+    I_0_geom <- initial_price * exp(I_ln_X / time_to_maturity)
 
     # the value of the Greek, given the Malliavin weight
     payoff_I_0_geom_exercise_price <- payoff(I_0_geom, exercise_price)
