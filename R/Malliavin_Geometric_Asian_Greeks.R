@@ -41,8 +41,6 @@
 #' @param steps - the number of integration steps
 #' @param paths - the number of simulated paths
 #' @param seed - the seed of the random number generator
-#' @param antithetic - if TRUE, antithetic random numbers will be chosen to
-#' decrease variance
 #'
 #' @return Named vector containing the values of the Greeks specified in the
 #' parameter \code{greek}.
@@ -71,8 +69,7 @@ Malliavin_Geometric_Asian_Greeks <- function(
     jump_distribution = function(n) stats::rt(n, df = 3),
     steps = round(time_to_maturity*252),
     paths = 10000,
-    seed = 1,
-    antithetic = FALSE) {
+    seed = 1) {
 
   params <- c("initial_price", "exercise_price", "r", "time_to_maturity",
               "volatility", "dividend_yield")
@@ -164,10 +161,11 @@ Malliavin_Geometric_Asian_Greeks <- function(
     I_0_geom <-
       exp(calc_I(log(initial_price * X), steps, dt) / time_to_maturity)
 
-    # the value of the greek, given the Malliavin weight
+    # the value of the Greek, given the Malliavin weight
+    payoff_I_0_geom_exercise_price <- payoff(I_0_geom, exercise_price)
     E_I_0_geom <- function(weight) {
       return(exp(-r * time_to_maturity) *
-               mean(payoff(I_0_geom, exercise_price) * weight))
+               mean(payoff_I_0_geom_exercise_price * weight))
     }
 
     if ("fair_value" %in% greek) {
