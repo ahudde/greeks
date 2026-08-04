@@ -20,8 +20,7 @@ Malliavin_Geometric_Asian_Greeks(
   jump_distribution = function(n) stats::rt(n, df = 3),
   steps = round(time_to_maturity * 252),
   paths = 10000,
-  seed = 1,
-  antithetic = FALSE
+  seed = 1
 )
 }
 \arguments{
@@ -87,11 +86,6 @@ which generates random numbers with the desired distribution
 \item{seed}{\itemize{
 \item the seed of the random number generator
 }}
-
-\item{antithetic}{\itemize{
-\item if TRUE, antithetic random numbers will be chosen to
-decrease variance
-}}
 }
 \value{
 Named vector containing the values of the Greeks specified in the
@@ -110,7 +104,7 @@ description of the Malliavin Monte Carlo Method for Greeks see for example
 (Hudde & Rüschendorf, 2023).
 }
 \examples{
-Malliavin_Asian_Greeks(initial_price = 110, exercise_price = 100,
+Malliavin_Geometric_Asian_Greeks(initial_price = 110, exercise_price = 100,
 r = 0.02, time_to_maturity = 4.5, dividend_yield = 0.015, volatility = 0.22,
 greek = c("fair_value", "delta", "rho"), payoff = "put")
 
