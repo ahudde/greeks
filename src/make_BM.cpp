@@ -12,7 +12,7 @@ NumericMatrix make_BM(NumericVector v, int steps, int paths) {
   W(_, 0) = W(_, 0) * 0;
 
   for(col = 1; col < steps+1; col++) {
-    W(_, col) = v[Range(s, s + paths)] + W(_, col - 1);
+    W(_, col) = v[Range(s, s + paths - 1)] + W(_, col - 1);
     s += paths;
   }
 
